@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { CapturefarmPageRoutingModule } from './capturefarm-routing.module';
 
 import { CapturefarmPage } from './capturefarm.page';
-import { MapComponent } from '../../../components/map/map.component';
 
 @NgModule({
   imports: [
@@ -16,6 +15,6 @@ import { MapComponent } from '../../../components/map/map.component';
     IonicModule,
     CapturefarmPageRoutingModule
   ],
-  declarations: [CapturefarmPage, MapComponent]
+  declarations: [CapturefarmPage]
 })
 export class CapturefarmPageModule {}

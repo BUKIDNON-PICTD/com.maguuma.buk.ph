@@ -3,6 +3,9 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { OfflineManagerService } from './services/offlinemanager.service';
+import { NetworkService } from './services/network.service';
+import { ConnectionStatus } from './interfaces/connectionstatus';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +13,135 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  public appPages = [
+  public   appPages = [
     {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
+      folderid: 'txn',
+      title: 'Transaction',
+      items: [
+        {
+          title: 'Individual Entity',
+          url: '/app/tabs/entityindividual',
+          icon: 'person-add'
+        },
+        {
+          title: 'Capture Farmer',
+          url: '/app/tabs/capturefarmer',
+          icon: 'pin'
+        },
+        {
+          title: 'Farm Inventory List',
+          url: '/app/tabs/farmlocationlist',
+          icon: 'map'
+        },
+        {
+          title: 'Farmer List',
+          url: '/app/tabs/farmerlist',
+          icon: 'people'
+        }
+      ]
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
+      folderid: 'master',
+      title: 'Master',
+      items: [
+        {
+
+          title: 'Commodity',
+          url: '/app/tabs/commodity',
+          icon: 'list'
+        },
+        {
+          title: 'Commodity Type',
+          url: '/app/tabs/commoditytype',
+          icon: 'list'
+        },
+        {
+          title: 'Commodity Variety',
+          url: '/app/tabs/commodityvariety',
+          icon: 'list'
+        },
+        {
+          title: 'Facility',
+          url: '/app/tabs/facility',
+          icon: 'build'
+        },
+        {
+          title: 'Livestock Breed',
+          url: '/app/tabs/livestockbreed',
+          icon: 'paw'
+        },
+        {
+          title: 'Livestock Specie',
+          url: '/app/tabs/livestockspecie',
+          icon: 'paw'
+        }
+      ]
+
     }
+    // ,
+    // {
+    //   folderid: 'report',
+    //   title: 'Report',
+    //   items: [
+    //     {
+
+    //       title: 'Schedule',
+    //       url: '/app/tabs/schedule',
+    //       icon: 'calendar'
+    //     },
+    //     {
+    //       title: 'Speakers',
+    //       url: '/app/tabs/speakers',
+    //       icon: 'contacts'
+    //     },
+    //     {
+    //       title: 'Map',
+    //       url: '/app/tabs/map',
+    //       icon: 'map'
+    //     },
+    //     {
+    //       title: 'About',
+    //       url: '/app/tabs/about',
+    //       icon: 'information-circle'
+    //     }
+    //   ]
+    // }
+    // ,
+    // {
+    //   folderid: 'account',
+    //   title: 'Account',
+    //   items: [
+    //     {
+
+    //       title: 'Schedule',
+    //       url: '/app/tabs/schedule',
+    //       icon: 'calendar'
+    //     },
+    //     {
+    //       title: 'Speakers',
+    //       url: '/app/tabs/speakers',
+    //       icon: 'contacts'
+    //     },
+    //     {
+    //       title: 'Map',
+    //       url: '/app/tabs/map',
+    //       icon: 'map'
+    //     },
+    //     {
+    //       title: 'About',
+    //       url: '/app/tabs/about',
+    //       icon: 'information-circle'
+    //     }
+    //   ]
+    // }
   ];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private offlineManager: OfflineManagerService,
+    private networkService: NetworkService
   ) {
     this.initializeApp();
   }
@@ -35,6 +150,11 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
+        if (status === ConnectionStatus.Online) {
+          this.offlineManager.checkForEvents().subscribe();
+        }
+      });
     });
   }
 }

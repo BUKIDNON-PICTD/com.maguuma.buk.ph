@@ -5,29 +5,16 @@ import { IonicModule } from '@ionic/angular';
 
 import { TabsPage } from './tabs-page';
 import { TabsPageRoutingModule } from './tabs-page-routing.module';
-
-import { AboutModule } from '../about/about.module';
-import { MapModule } from '../map/map.module';
-import { ScheduleModule } from '../schedule/schedule.module';
-import { SessionDetailModule } from '../session-detail/session-detail.module';
-import { SpeakerDetailModule } from '../speaker-detail/speaker-detail.module';
-import { SpeakerListModule } from '../speaker-list/speaker-list.module';
 import { HomePageModule } from '../home/home.module';
-import { FarminventorylistPageModule } from '../transaction/farminventorylist/farminventorylist.module';
-import { FarmerlistPageModule } from '../transaction/farmerlist/farmerlist.module';
-import { CapturefarmerPageModule } from './../transaction/capturefarmer/capturefarmer.module';
-import { CapturefarmPageModule } from './../transaction/capturefarm/capturefarm.module';
-import { EntityindividualPageModule } from '../transaction/entityindividual/entityindividual.module';
+import { FarminventorylistPageModule } from '../transactions/farminventorylist/farminventorylist.module';
+import { FarmerlistPageModule } from '../transactions/farmerlist/farmerlist.module';
+import { CapturefarmerPageModule } from './../transactions/capturefarmer/capturefarmer.module';
+import { CapturefarmPageModule } from './../transactions/capturefarm/capturefarm.module';
+import { EntityindividualPageModule } from '../transactions/entityindividual/entityindividual.module';
 @NgModule({
   imports: [
-    AboutModule,
     CommonModule,
     IonicModule,
-    MapModule,
-    ScheduleModule,
-    SessionDetailModule,
-    SpeakerDetailModule,
-    SpeakerListModule,
     TabsPageRoutingModule,
     HomePageModule,
     FarminventorylistPageModule,
