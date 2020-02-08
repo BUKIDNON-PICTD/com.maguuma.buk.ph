@@ -1,5 +1,7 @@
 {
   "name": "com.maguuma.buk.ph",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
