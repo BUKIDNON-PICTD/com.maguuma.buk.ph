@@ -15,15 +15,23 @@ export enum ConnectionStatus {
 
 export class NetworkService {
 
-
+  private isApp: boolean;
   private status: BehaviorSubject<ConnectionStatus> = new BehaviorSubject(ConnectionStatus.Offline);
 
   constructor(private network: Network, private toastController: ToastController, private plt: Platform) {
-    this.plt.ready().then(() => {
+    this.plt.ready().then((source) => {
+      if (this.plt.is('android')) {
+            console.log('android');
+      } else if (this.plt.is('ios')) {
+            console.log('ios');
+      } else {
+            console.log('platform is not mobile');
+      }
       this.initializeNetworkEvents();
       let status =  this.network.type !== 'none' ? ConnectionStatus.Online : ConnectionStatus.Offline;
       this.status.next(status);
     });
+
   }
 
   public initializeNetworkEvents() {
@@ -61,4 +69,7 @@ export class NetworkService {
   public getCurrentNetworkStatus(): ConnectionStatus {
     return this.status.getValue();
   }
+
+
+ 
 }

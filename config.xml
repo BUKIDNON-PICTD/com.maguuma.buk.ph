@@ -2,7 +2,7 @@
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Maguuma</name>
     <description>A farmers profile information system.</description>
-    <author email="reaguilar2@up.edu.ph" >Rufino John E. Aguilar</author>
+    <author email="reaguilar2@up.edu.ph">Rufino John E. Aguilar</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -6,6 +6,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { OfflineManagerService } from './services/offlinemanager.service';
 import { NetworkService } from './services/network.service';
 import { ConnectionStatus } from './interfaces/connectionstatus';
+import { SyncService } from './services/sync.service';
+import { Storage } from '@ionic/storage';
+
+const API_STORAGE_KEY = 'tagabukid';
 
 @Component({
   selector: 'app-root',
@@ -141,7 +145,9 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private offlineManager: OfflineManagerService,
-    private networkService: NetworkService
+    private networkService: NetworkService,
+    private syncService: SyncService,
+    private storage: Storage,
   ) {
     this.initializeApp();
   }
@@ -152,9 +158,24 @@ export class AppComponent {
       this.splashScreen.hide();
       this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
         if (status === ConnectionStatus.Online) {
+          this.syncService.getMasterFilesFromServer().subscribe(res => {
+            if(typeof res.data === 'object' && res.data !== null){
+              this.setLocalData('masterfile', res.data);
+            }
+          });
           this.offlineManager.checkForEvents().subscribe();
         }
       });
     });
+  }
+
+  // Save result of API requests
+  private setLocalData(key, data) {
+    this.storage.set(`${API_STORAGE_KEY}-${key}`, data);
+  }
+
+  // Get cached API result
+  private getLocalData(key) {
+    return this.storage.get(`${API_STORAGE_KEY}-${key}`);
   }
 }
