@@ -1,3 +1,4 @@
+import { ToastController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
@@ -11,7 +12,7 @@ import { tap, map, catchError, retry } from "rxjs/operators";
 })
 export class SyncService {
 
-  constructor(private storage: Storage, private http: HttpClient) { }
+  constructor(private storage: Storage, private http: HttpClient, private toastController: ToastController) { }
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({
