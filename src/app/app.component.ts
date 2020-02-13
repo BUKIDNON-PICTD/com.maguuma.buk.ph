@@ -55,28 +55,13 @@ export class AppComponent {
           icon: 'list'
         },
         {
-          title: 'Commodity Type',
-          url: '/app/tabs/commoditytype',
-          icon: 'list'
-        },
-        {
-          title: 'Commodity Variety',
-          url: '/app/tabs/commodityvariety',
-          icon: 'list'
-        },
-        {
           title: 'Facility',
-          url: '/app/tabs/facility',
+          url: '/facility',
           icon: 'build'
         },
         {
-          title: 'Livestock Breed',
-          url: '/app/tabs/livestockbreed',
-          icon: 'paw'
-        },
-        {
-          title: 'Livestock Specie',
-          url: '/app/tabs/livestockspecie',
+          title: 'Livestock',
+          url: '/livestock',
           icon: 'paw'
         }
       ]

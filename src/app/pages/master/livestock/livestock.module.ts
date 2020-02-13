@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LivestockbreedPageRoutingModule } from './livestockbreed-routing.module';
+import { LivestockPageRoutingModule } from './livestock-routing.module';
 
-import { LivestockbreedPage } from './livestockbreed.page';
+import { LivestockPage } from './livestock.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LivestockbreedPageRoutingModule
+    LivestockPageRoutingModule
   ],
-  declarations: [LivestockbreedPage]
+  declarations: [LivestockPage]
 })
-export class LivestockbreedPageModule {}
+export class LivestockPageModule {}

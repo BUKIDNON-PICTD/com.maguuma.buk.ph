@@ -25,24 +25,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/master/commodity/commodity.module').then( m => m.CommodityPageModule)
   },
   {
-    path: 'commoditytype',
-    loadChildren: () => import('./pages/master/commoditytype/commoditytype.module').then( m => m.CommoditytypePageModule)
-  },
-  {
-    path: 'commodityvariety',
-    loadChildren: () => import('./pages/master/commodityvariety/commodityvariety.module').then( m => m.CommodityvarietyPageModule)
-  },
-  {
     path: 'facility',
     loadChildren: () => import('./pages/master/facility/facility.module').then( m => m.FacilityPageModule)
-  },
-  {
-    path: 'livestockbreed',
-    loadChildren: () => import('./pages/master/livestockbreed/livestockbreed.module').then( m => m.LivestockbreedPageModule)
-  },
-  {
-    path: 'livestockspecie',
-    loadChildren: () => import('./pages/master/livestockspecie/livestockspecie.module').then( m => m.LivestockspeciePageModule)
   },
   {
     path: 'home',
@@ -59,6 +43,10 @@ const routes: Routes = [
   {
     path: 'entityindividual',
     loadChildren: () => import('./pages/transactions/entityindividual/entityindividual.module').then( m => m.EntityindividualPageModule)
+  },
+  {
+    path: 'livestock',
+    loadChildren: () => import('./pages/master/livestock/livestock.module').then( m => m.LivestockPageModule)
   }
 ];
 

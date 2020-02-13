@@ -8,7 +8,7 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./commodity.page.scss'],
 })
 export class CommodityPage implements OnInit {
-  // @ViewChild("commoditySlider", { static: true }) commoditySlider;
+ 
   items: any[] = [];
   currentmastertype: any;
   prevmastertype: any;
