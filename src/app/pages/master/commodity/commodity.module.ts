@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { CommodityPageRoutingModule } from './commodity-routing.module';
 
 import { CommodityPage } from './commodity.page';
-
 @NgModule({
   imports: [
     CommonModule,

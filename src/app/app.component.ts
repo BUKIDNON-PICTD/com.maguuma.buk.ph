@@ -9,7 +9,7 @@ import { ConnectionStatus } from './interfaces/connectionstatus';
 import { SyncService } from './services/sync.service';
 import { Storage } from '@ionic/storage';
 
-const API_STORAGE_KEY = 'tagabukid';
+
 
 @Component({
   selector: 'app-root',
@@ -51,7 +51,7 @@ export class AppComponent {
         {
 
           title: 'Commodity',
-          url: '/app/tabs/commodity',
+          url: '/commodity',
           icon: 'list'
         },
         {
@@ -159,8 +159,10 @@ export class AppComponent {
       this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
         if (status === ConnectionStatus.Online) {
           this.syncService.getMasterFilesFromServer().subscribe(res => {
-            if(typeof res.data === 'object' && res.data !== null){
-              this.setLocalData('masterfile', res.data);
+            if(typeof res.data === 'object' && res.data !== null) {
+              Object.keys(res.data).forEach(key => {
+                this.setLocalData(key, res.data[key]);
+              });
             }
           });
           this.offlineManager.checkForEvents().subscribe();
@@ -171,11 +173,11 @@ export class AppComponent {
 
   // Save result of API requests
   private setLocalData(key, data) {
-    this.storage.set(`${API_STORAGE_KEY}-${key}`, data);
+    this.storage.set(`${key}`, data);
   }
 
   // Get cached API result
   private getLocalData(key) {
-    return this.storage.get(`${API_STORAGE_KEY}-${key}`);
+    return this.storage.get(`${key}`);
   }
 }

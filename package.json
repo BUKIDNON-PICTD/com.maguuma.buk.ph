@@ -25,6 +25,8 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.11.10",
     "@ionic/storage": "^2.2.0",
+    "@types/ol": "^6.1.0",
+    "admin-lte": "^3.0.2",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-device": "^2.0.2",
@@ -36,6 +38,7 @@
     "cordova-plugin-whitelist": "^1.3.3",
     "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
+    "ol": "^6.2.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.10.2"

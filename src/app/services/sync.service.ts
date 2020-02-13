@@ -18,7 +18,6 @@ export class SyncService {
       'Content-Type': 'application/json'
     })
   }
- 
   // Handle API errors
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -76,5 +75,4 @@ export class SyncService {
   private setLocalData(key, data) {
     this.storage.set(`${key}`, data);
   }
-  
 }

@@ -18,8 +18,8 @@ import { Network } from '@ionic-native/network/ngx';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    HttpClientModule,
     IonicStorageModule.forRoot(),
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [
