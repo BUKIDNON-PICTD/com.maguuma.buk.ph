@@ -150,6 +150,8 @@ export class AppComponent {
               });
             }
           });
+          this.syncService.syncEntity();
+         
           this.offlineManager.checkForEvents().subscribe();
         }
       });
