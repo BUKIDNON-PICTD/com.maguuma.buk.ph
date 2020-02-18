@@ -52,7 +52,7 @@ const routes: Routes = [
             loadChildren: () => import('../transactions/farmerdetail/farmerdetail.module').then(m => m.FarmerdetailPageModule)
           },
           {
-            path: 'farmlocationdetail/:locationid',
+            path: 'farmlocationdetail/:farmerid/:locationid',
             loadChildren: () => import('../transactions/farmlocationdetail/farmlocationdetail.module').then(m => m.FarmlocationdetailPageModule)
           }
         ]

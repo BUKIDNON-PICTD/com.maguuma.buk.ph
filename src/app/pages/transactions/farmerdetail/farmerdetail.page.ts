@@ -10,7 +10,7 @@ import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
 })
 export class FarmerdetailPage {
   defaultHref: any;
-  item: any;
+  farmer: any;
   farmerPersonalProfileForm: FormGroup;
   validation_messages: any;
 
@@ -19,7 +19,7 @@ export class FarmerdetailPage {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {
-    this.farmerPersonalProfileForm = formBuilder.group({
+    this.farmerPersonalProfileForm = this.formBuilder.group({
       postnametitle: [
         "",
         Validators.compose([
@@ -440,7 +440,7 @@ export class FarmerdetailPage {
     const farmerid = this.route.snapshot.paramMap.get("farmerid");
     this.farmerService.getItem(farmerid).then(item => {
       this.farmerPersonalProfileForm.patchValue(item);
-      this.item = item;
+      this.farmer = item;
     });
   }
 

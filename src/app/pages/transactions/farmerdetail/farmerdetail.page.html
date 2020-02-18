@@ -3,16 +3,16 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{item?.farmer?.name}}</ion-title>
+    <ion-title>{{farmer?.farmer?.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <form [formGroup]="farmerPersonalProfileForm">
     {{farmerPersonalProfileForm.value | json}}
-    <ion-item-divider color="primary">
-      <ion-label>Farmer Name</ion-label>
-    </ion-item-divider>
+    <ion-toolbar color="primary">
+      <ion-title>Farmer Details</ion-title>
+    </ion-toolbar>
     <div formGroupName="farmer">
       <ion-item>
         <ion-label position="floating">Last Name</ion-label>
@@ -91,9 +91,9 @@
           <small class="error-message">{{ validation.message }}</small>
       </ng-container>
     </div>
-    <ion-item-divider color="primary">
-      <ion-label>Farmer Details</ion-label>
-    </ion-item-divider>
+    <ion-toolbar color="primary">
+      <ion-title>Farmer Details</ion-title>
+    </ion-toolbar>
     <div formGroupName='farmer'>
       <ion-item>
         <ion-label position="floating">Birth Date</ion-label>
@@ -144,13 +144,20 @@
           <small class="error-message">{{ validation.message }}</small>
       </ng-container>
     </div>
-    <ion-item-divider color="primary">
-      <ion-label>Farm Location</ion-label>
-    </ion-item-divider>
+    <ion-toolbar color="primary">
+      <nav class="navbar navbar-expand navbar-primary navbar-dark">
+        <ion-title>Farmer Details</ion-title>
+        <a class="btn btn-primary btn-sm" href="#">
+          <i class="fas fa-plus">
+          </i>
+          Add
+        </a>
+      </nav>
+    </ion-toolbar>
     <ion-list #farmerList formArrayName='farmlocations'>
       <ion-item-sliding *ngFor="let item of farmlocations.controls; index as id" #slidingItem>
       
-        <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{ item.value.objid }}">
+        <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{farmer?.objid}}/{{ item.value.objid }}">
           <ion-label>
             <h3>{{item.value.location.text}}</h3>
             <p>

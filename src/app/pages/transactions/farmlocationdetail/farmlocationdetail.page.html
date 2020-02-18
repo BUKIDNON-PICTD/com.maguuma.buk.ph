@@ -1,9 +1,65 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Farm Location Detail</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{farmer?.farmer?.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-toolbar color='primary'>
+    <ion-title>{{farmlocation?.location?.text}}</ion-title>
+  </ion-toolbar>
+  <form [formGroup]="farmerLocationForm">
+    {{farmerLocationForm.value | json}}
 
+    <ion-item>
+      <ion-label position="floating">Province</ion-label>
+      <ion-select placeholder="Select One" formControlName="province" (ionChange)="onProvinceChange()">
+        <ion-select-option *ngFor="let province of provinces" value="{{province.objid}}">{{province.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.province">
+      <ng-container *ngIf="farmerLocationForm.get('province')?.hasError(validation.type) && (farmerLocationForm.get('province')?.dirty || farmerLocationForm.get('province')?.touched)">
+          <small class="error-message">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Municipality/City</ion-label>
+      <ion-select placeholder="Select One" formControlName="municipality" (ionChange)="onMunicipalityChange()">
+        <ion-select-option *ngFor="let municipality of municipalities" value="{{municipality.objid}}">{{municipality.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.municipality">
+      <ng-container *ngIf="farmerLocationForm.get('municipality')?.hasError(validation.type) && (farmerLocationForm.get('municipality')?.dirty || farmerLocationForm.get('municipality')?.touched)">
+          <small class="error-message">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Barangay</ion-label>
+      <ion-select placeholder="Select One" formControlName="barangay" >
+        <ion-select-option *ngFor="let barangay of barangays" value="{{barangay.objid}}">{{barangay.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.barangay">
+      <ng-container *ngIf="farmerLocationForm.get('barangay')?.hasError(validation.type) && (farmerLocationForm.get('barangay')?.dirty || farmerLocationForm.get('barangay')?.touched)">
+          <small class="error-message">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Street</ion-label>
+      <ion-input autocapitalize inputmode="text" formControlName="street"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.street">
+      <ng-container *ngIf="farmerLocationForm.get('street')?.hasError(validation.type) && (farmerLocationForm.get('street')?.dirty || farmerLocationForm.get('street')?.touched)">
+          <small class="error-message">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+  </form>
+  <map></map>
 </ion-content>
