@@ -47,7 +47,13 @@ const routes: Routes = [
   {
     path: 'livestock',
     loadChildren: () => import('./pages/master/livestock/livestock.module').then( m => m.LivestockPageModule)
-  }
+  },
+  {
+    path: 'farmlocationdetail',
+    loadChildren: () => import('./pages/transactions/farmlocationdetail/farmlocationdetail.module').then( m => m.FarmlocationdetailPageModule)
+  },
+  
+
 ];
 
 @NgModule({

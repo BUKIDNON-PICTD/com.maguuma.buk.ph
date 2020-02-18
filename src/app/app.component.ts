@@ -27,16 +27,16 @@ export class AppComponent {
           url: '/app/tabs/entityindividual',
           icon: 'person-add'
         },
-        {
-          title: 'Capture Farmer',
-          url: '/app/tabs/capturefarmer',
-          icon: 'pin'
-        },
-        {
-          title: 'Farm Inventory List',
-          url: '/app/tabs/farmlocationlist',
-          icon: 'map'
-        },
+        // {
+        //   title: 'Capture Farmer',
+        //   url: '/app/tabs/capturefarmer',
+        //   icon: 'pin'
+        // },
+        // {
+        //   title: 'Farm Inventory List',
+        //   url: '/app/tabs/farmlocationlist',
+        //   icon: 'map'
+        // },
         {
           title: 'Farmer List',
           url: '/app/tabs/farmerlist',
@@ -143,13 +143,13 @@ export class AppComponent {
       this.splashScreen.hide();
       this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
         if (status === ConnectionStatus.Online) {
-          this.syncService.getMasterFilesFromServer().subscribe(res => {
-            if(typeof res.data === 'object' && res.data !== null) {
-              Object.keys(res.data).forEach(key => {
-                this.setLocalData(key, res.data[key]);
-              });
-            }
-          });
+          // this.syncService.getMasterFilesFromServer().subscribe(res => {
+          //   if(typeof res.data === 'object' && res.data !== null) {
+          //     Object.keys(res.data).forEach(key => {
+          //       this.setLocalData(key, res.data[key]);
+          //     });
+          //   }
+          // });
           // this.syncService.sync();
           this.offlineManager.checkForEvents().subscribe();
         }

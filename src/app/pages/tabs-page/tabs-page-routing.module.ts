@@ -18,11 +18,12 @@ const routes: Routes = [
           {
             path: '',
             component: HomePage,
-          },
-          {
-            path: 'session/:sessionId',
-            // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
           }
+          // ,
+          // {
+          //   path: 'session/:sessionId',
+          //   // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
+          // }
         ]
       },
       {
@@ -31,37 +32,12 @@ const routes: Routes = [
           {
             path: '',
             component: EntityindividualPage,
-          },
-          {
-            path: 'session/:sessionId',
-            // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
           }
-        ]
-      },
-      {
-        path: 'capturefarmer',
-        children: [
-          {
-            path: '',
-            component: CapturefarmerPage,
-          },
-          {
-            path: 'session/:sessionId',
-            // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
-          }
-        ]
-      },
-      {
-        path: 'farmlocationlist',
-        children: [
-          {
-            path: '',
-            component: FarminventorylistPage,
-          },
-          {
-            path: 'session/:sessionId',
-            // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
-          }
+          // ,
+          // {
+          //   path: 'session/:sessionId',
+          //   // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
+          // }
         ]
       },
       {
@@ -72,8 +48,12 @@ const routes: Routes = [
             component: FarmerlistPage,
           },
           {
-            path: 'session/:sessionId',
-            // loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
+            path: 'farmerdetail/:farmerid',
+            loadChildren: () => import('../transactions/farmerdetail/farmerdetail.module').then(m => m.FarmerdetailPageModule)
+          },
+          {
+            path: 'farmlocationdetail/:locationid',
+            loadChildren: () => import('../transactions/farmlocationdetail/farmlocationdetail.module').then(m => m.FarmlocationdetailPageModule)
           }
         ]
       },
