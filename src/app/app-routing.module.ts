@@ -52,6 +52,10 @@ const routes: Routes = [
     path: 'farmlocationdetail',
     loadChildren: () => import('./pages/transactions/farmlocationdetail/farmlocationdetail.module').then( m => m.FarmlocationdetailPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
   
 
 ];

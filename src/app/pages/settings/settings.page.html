@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="settingForm" (ngSubmit)="saveItem()">
+    <div class="card-body">
+      <div class="form-group">
+        <ion-item>
+          <ion-label position="floating">Setting Name</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="name"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.name">
+          <ng-container
+            *ngIf="settingForm.get('name')?.hasError(validation.type) && (settingForm.get('name')?.dirty || settingForm.get('name')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group">
+        <ion-item>
+          <ion-label position="floating">Setting Value</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="value"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.value">
+          <ng-container
+            *ngIf="settingForm.get('value')?.hasError(validation.type) && (settingForm.get('value')?.dirty || settingForm.get('value')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+     </div>
+    </div>
+    <div class="card-footer">
+      <ion-button expand="full" type="submit" [disabled]="!settingForm.valid">Save</ion-button>
+    </div>
+  </form>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Setting List</h3>
+       
+        <div class="card-tools">
+          <div class="input-group input-group-sm" style="width: 300px;">
+            <ion-searchbar [(ngModel)]="queryText" (ionChange)="loadItems(null)" placeholder="Search"></ion-searchbar>
+          </div>
+        </div>
+      </div>
+      <div class="card-body table-responsive p-0">
+        <ion-list #ItemList>
+          <ion-item-sliding *ngFor="let item of items" #slidingItem>
+            <ion-item>
+              <ion-label>
+                <h3>{{item.name}}</h3>
+                <p>
+                  {{item.value}}
+                </p>
+              </ion-label>
+            </ion-item>
+            <ion-item-options>
+              <a class="btn btn-app btn-danger btn-sm" (click)="itemSelected(item)">
+                <i class="fas fa-edit"></i>
+                Edit
+              </a>
+              <a class="btn btn-app btn-danger btn-sm" (click)="deleteItem(item)">
+                <i class="fas fa-trash-alt"></i>
+                Delete
+              </a>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-list-header [hidden]="items.length > 0">
+          No Items Found
+        </ion-list-header>
+      </div>
+    </div>
+  </div>
+</ion-content>
