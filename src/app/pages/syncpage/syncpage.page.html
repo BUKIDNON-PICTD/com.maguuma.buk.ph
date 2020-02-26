@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sync Service : Server is <span *ngIf="syncserverstatus">Online</span><span *ngIf="!syncserverstatus">Offline</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  >
+  <ion-button *ngIf="!syncinprogress && syncserverstatus" color="success" (click)="startSync()" >Start Sync</ion-button>
+  <ion-button *ngIf="syncinprogress && syncserverstatus" color="danger" (click)="stopSync()" >Stop Sync</ion-button>
+  <ion-list-header *ngIf="showProgressbarForMasterFileSync">
+    <ion-label >Master File sync started</ion-label>
+  </ion-list-header>
+  <ion-progress-bar type="indeterminate" *ngIf="showProgressbarForMasterFileSync"></ion-progress-bar>
+
+  <ion-list-header *ngIf="showProgressbarForFarmerPreparation">
+    <ion-label >Preparation in progress at {{(prepFarmerProgress * 100).toFixed(2)}}%</ion-label>
+  </ion-list-header>
+  <ion-progress-bar [value]="prepFarmerProgress" *ngIf="showProgressbarForFarmerPreparation"></ion-progress-bar>
+
+  <ion-list-header *ngIf="showProgressbarForFarmerSync">
+    <ion-label >Farmer Sync in progress at {{(syncFarmerProgress * 100).toFixed(2)}}% {{syncFarmerProgressText}}</ion-label>
+  </ion-list-header>
+  <ion-progress-bar [value]="syncFarmerProgress" *ngIf="showProgressbarForFarmerSync"></ion-progress-bar>
+
+  <ion-content  #loglist class="loglist"> 
+    <ion-list *ngIf="showProgressbarForFarmerSync" >
+      <ion-item *ngFor="let log of logs">
+        <p>{{log.message}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  
+<!--   
+  <ion-list-header>
+    <ion-label *ngIf="prepEntityProgress == 0">Preparing Entity Sync</ion-label>
+    <ion-label *ngIf="prepEntityProgress > 0 && prepEntityProgress != 100">Preparation in progress at {{(prepEntityProgress * 100).toFixed(2)}}%</ion-label>
+    <ion-label *ngIf="prepEntityProgress == 100">No Entity to Prepare for Sync</ion-label>
+  </ion-list-header>
+  <ion-progress-bar type="indeterminate" *ngIf="prepEntityProgress == 0"></ion-progress-bar>
+  <ion-progress-bar [value]="prepEntityProgress" *ngIf="prepEntityProgress > 0 && prepEntityProgress != 100"></ion-progress-bar>
+  <ion-list-header>
+    <ion-label *ngIf="syncEntityProgress == 0">Initializing Entity Sync</ion-label>
+    <ion-label *ngIf="syncEntityProgress > 0 && syncEntityProgress != 100">Entity Sync in progress at {{(syncEntityProgress * 100).toFixed(2)}}%</ion-label>
+    <ion-label *ngIf="syncEntityProgress == 100">No Entity to Sync</ion-label>
+  </ion-list-header>
+  <ion-progress-bar type="indeterminate" *ngIf="syncEntityProgress == 0"></ion-progress-bar>
+  <ion-progress-bar [value]="syncEntityProgress" *ngIf="syncEntityProgress > 0 && syncEntityProgress != 100"></ion-progress-bar>
+
+   -->
+
+</ion-content>
+
+<style>
+.loglist {
+  max-height: 350px;
+}
+</style>

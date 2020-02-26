@@ -87,6 +87,11 @@ export class FarmlocationdetailPage {
   ionViewWillEnter() {
     this.farmerid = this.route.snapshot.paramMap.get("farmerid");
     this.locationid = this.route.snapshot.paramMap.get("locationid");
+    
+  }
+
+  ionViewDidEnter() {
+    this.defaultHref = `/app/tabs/farmerlist/farmerdetail/` + this.farmerid;
     this.farmerService.getItem(this.farmerid).then(item => {
       if (item) {
         let farmlocation = item.farmlocations.find(
@@ -94,11 +99,9 @@ export class FarmlocationdetailPage {
         );
         this.farmlocation = farmlocation;
         this.farmer = item;
+        console.log(item);
+        this.farmerLocationForm.patchValue(farmlocation);
       }
     });
-  }
-
-  ionViewDidEnter() {
-    this.defaultHref = `/app/tabs/farmerlist/farmerdetail/` + this.farmerid;
   }
 }

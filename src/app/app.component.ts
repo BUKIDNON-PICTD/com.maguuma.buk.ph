@@ -8,6 +8,9 @@ import { NetworkService } from './services/network.service';
 import { ConnectionStatus } from './interfaces/connectionstatus';
 import { SyncService } from './services/sync.service';
 import { Storage } from '@ionic/storage';
+import { Socket } from 'ngx-socket-io';
+import { BehaviorSubject } from 'rxjs';
+
 
 
 
@@ -124,6 +127,7 @@ export class AppComponent {
     //   ]
     // }
   ];
+  
 
   constructor(
     private platform: Platform,
@@ -131,13 +135,14 @@ export class AppComponent {
     private statusBar: StatusBar,
     private offlineManager: OfflineManagerService,
     private networkService: NetworkService,
-    private syncService: SyncService,
     private storage: Storage,
+    public socket: Socket
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
+
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -151,9 +156,9 @@ export class AppComponent {
           //   }
           // });
           // this.syncService.sync();
-          this.offlineManager.checkForEvents().subscribe();
         }
       });
+     
     });
   }
 

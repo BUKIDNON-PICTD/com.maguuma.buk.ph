@@ -6,62 +6,72 @@ import { Storage } from '@ionic/storage';
 })
 export class FarmerService {
 
-  constructor(private storage: Storage) { }
+  public tblfarmers: any;
+  public tblfarmerlist: any;
+
+  constructor(private storage: Storage) { 
+    this.tblfarmers = new Storage({
+      storeName: '_tblfarmers',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+
+    this.tblfarmerlist = new Storage({
+      storeName: '_tblfarmerlist',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+  }
+
+  makelist() {
+    this.getRawItems().then(items => {
+      this.tblfarmerlist.set('farmerlist', items.map(item => {
+        return {
+                objid:item.objid, 
+                fno: item.fno,
+                farmer : item.farmer
+              }
+        }))
+    });
+  }
 
   addfarmer(farmer: any): Promise<any> {
-    return this.storage.get('agri_farmerprofile').then( items => {
-      if (items) {
-        items.push(farmer);
-        return this.storage.set('agri_farmerprofile', items);
-      } else {
-        return this.storage.set('agri_farmerprofile', [farmer]);
+    return this.tblfarmers.get(farmer.objid).then( item => {
+      if (!item) {
+        return this.storage.set(farmer.objid, farmer);
       }
     });
   }
 
   getItems(): Promise<any[]> {
-    return this.storage.get('agri_farmerprofile');
+    return this.tblfarmerlist.get('farmerlist');
+  }
+
+  getRawItems(): Promise<any[]>{
+    return this.tblfarmers.keys()
+    .then(keys => Promise.all(keys.map(k => this.tblfarmers.get(k))));
   }
 
   getItem(objid): Promise<any> {
-    return this.storage.get('agri_farmerprofile').then(items => {
-      return items.find(i => i.objid === objid);
+    return this.tblfarmers.get(objid).then(item => {
+      return item;
     });
   }
 
   updatefarmer(farmer: any): Promise<any> {
-    return this.storage.get('agri_farmerprofile').then( items => {
-      if (!items || items.length === 0) {
+    return this.tblfarmers.get(farmer.objid).then( item => {
+      if (!item) {
         return null;
       }
-      let newItems: any[] = [];
-
-      for(let i of items) {
-        if (i.objid == farmer.objid) {
-          newItems.push(farmer);
-        } else {
-          newItems.push(i);
-        }
-      }
-
-      return this.storage.set('agri_farmerprofile', newItems);
+      return this.tblfarmers.set(farmer.objid, farmer);
     });
   }
 
   deletefarmer(objid:string): Promise<any> {
-    return this.storage.get('agri_farmerprofile').then( items => {
-      if (!items || items.length === 0) {
+    return this.tblfarmers.get(objid).then( item => {
+      if (!item) {
         return null;
       }
 
-      let toKeep: any[] = [];
-
-      for (let i of items) {
-        if (i.objid !== objid) {
-          toKeep.push(i);
-        }
-      }
-      return this.storage.set('agri_farmerprofile', toKeep);
+      return this.tblfarmers.remove(objid);
     });
   }
 }

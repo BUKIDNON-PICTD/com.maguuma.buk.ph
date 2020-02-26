@@ -37,6 +37,16 @@ export class SettingService {
     });
   }
 
+  getItemByName(name): Promise<any> {
+    return this.storage.get("settings").then(items => {
+      if (!items || items.length === 0) {
+        return null;
+      }
+     
+      return items.find(i => i.name === name);
+    });
+  }
+
   updateItem(item: any): Promise<any> {
     return this.storage.get("settings").then(items => {
       if (!items || items.length === 0) {

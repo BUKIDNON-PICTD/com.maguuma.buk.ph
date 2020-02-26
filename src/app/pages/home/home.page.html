@@ -8,46 +8,14 @@
 <ion-content>
 
   <ion-card class="welcome-card">
-    <ion-list-header>
-      <ion-label *ngIf="prepEntityProgress == 0">Preparing Entity Sync</ion-label>
-      <ion-label *ngIf="prepEntityProgress > 0 && prepEntityProgress != 100">Preparation in progress at {{(prepEntityProgress * 100).toFixed(2)}}%</ion-label>
-      <ion-label *ngIf="prepEntityProgress == 100">No Entity to Prepare for Sync</ion-label>
-    </ion-list-header>
-    <ion-progress-bar type="indeterminate" *ngIf="prepEntityProgress == 0"></ion-progress-bar>
-    <ion-progress-bar [value]="prepEntityProgress" *ngIf="prepEntityProgress > 0 && prepEntityProgress != 100"></ion-progress-bar>
-    <ion-list-header>
-      <ion-label *ngIf="syncEntityProgress == 0">Initializing Entity Sync</ion-label>
-      <ion-label *ngIf="syncEntityProgress > 0 && syncEntityProgress != 100">Entity Sync in progress at {{(syncEntityProgress * 100).toFixed(2)}}%</ion-label>
-      <ion-label *ngIf="syncEntityProgress == 100">No Entity to Sync</ion-label>
-    </ion-list-header>
-    <ion-progress-bar type="indeterminate" *ngIf="syncEntityProgress == 0"></ion-progress-bar>
-    <ion-progress-bar [value]="syncEntityProgress" *ngIf="syncEntityProgress > 0 && syncEntityProgress != 100"></ion-progress-bar>
-
-    <ion-list-header>
-      <ion-label *ngIf="prepFarmerProgress == 0">Preparing Farmer Sync</ion-label>
-      <ion-label *ngIf="prepFarmerProgress > 0 && prepFarmerProgress != 100">Preparation in progress at {{(prepFarmerProgress * 100).toFixed(2)}}%</ion-label>
-      <ion-label *ngIf="prepFarmerProgress == 100">No Farmer to Prepare for Sync</ion-label>
-    </ion-list-header>
-    <ion-progress-bar type="indeterminate" *ngIf="prepFarmerProgress == 0"></ion-progress-bar>
-    <ion-progress-bar [value]="prepFarmerProgress" *ngIf="prepFarmerProgress > 0 && prepFarmerProgress != 100"></ion-progress-bar>
-    <ion-list-header>
-      <ion-label *ngIf="syncFarmerProgress == 0">Initializing Farmer Sync</ion-label>
-      <ion-label *ngIf="syncFarmerProgress > 0 && syncFarmerProgress != 100">Farmer Sync in progress at {{(syncFarmerProgress * 100).toFixed(2)}}%</ion-label>
-      <ion-label *ngIf="syncFarmerProgress == 100">No Farmer to Sync</ion-label>
-    </ion-list-header>
-    <ion-progress-bar type="indeterminate" *ngIf="syncFarmerProgress == 0"></ion-progress-bar>
-    <ion-progress-bar [value]="syncFarmerProgress" *ngIf="syncFarmerProgress > 0 && syncFarmerProgress != 100"></ion-progress-bar>
-
+  
     <ion-img src="/assets/banner.jpg"></ion-img>
-    <!-- <ion-card-header>
-      <ion-card-subtitle>MIS Wall</ion-card-subtitle>
+    <ion-card-header>
       <ion-card-title>Maguuma</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>still working on logo</p>
-    </ion-card-content> -->
+      <p>A Farmers Profile Information System</p>
+    </ion-card-content>
   </ion-card>
-  <!-- <h1>TEST</h1> -->
-  <!-- <example></example>
-  <map></map> -->
+
 </ion-content>
