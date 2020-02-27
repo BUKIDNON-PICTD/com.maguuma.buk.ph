@@ -33,12 +33,6 @@ export class FarmerService {
     });
   }
 
-  // updatelocation(){
-  //   this.getRawItems().then(items => {
-  //     this.tblfarmers.set('farmerlist', i);
-  //   });
-  // }
-
   addfarmer(farmer: any): Promise<any> {
     return this.tblfarmers.get(farmer.objid).then( item => {
       if (!item) {

@@ -162,38 +162,35 @@
           <small class="error-message">{{ validation.message }}</small>
       </ng-container>
     </div>
-
-    <ion-toolbar color="primary">
-      <nav class="navbar navbar-expand navbar-primary navbar-dark">
-        <ion-title>Farmer Details</ion-title>
-        <a class="btn btn-primary btn-sm" href="#">
-          <i class="fas fa-plus">
-          </i>
-          Add
-        </a>
-      </nav>
-    </ion-toolbar>
-    <ion-list #farmerList formArrayName='farmlocations'>
-      <ion-item-sliding *ngFor="let item of farmlocations.controls; index as id" #slidingItem>
-      
-        <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{farmer?.objid}}/{{ item.value.objid }}">
-          <ion-label>
-            <h3>{{item.value.location.text}}</h3>
-            <p>
-              Area(sqm) : {{item.value.areasqm}} <br>
-              Mode of Acquisition : {{item.value.modeofacquisition}}
-            </p>
-          </ion-label>
-        </ion-item>
-    
-        <!-- <ion-item-options>
-            <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
-              <i class="fas fa-trash-alt"></i>
-              Delete
-            </a>
-         
-        </ion-item-options> -->
-      </ion-item-sliding>
-    </ion-list>
   </form>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Farmer Details</ion-title>
+      <a class="btn btn-primary btn-sm" href="#">
+        <i class="fas fa-plus">
+        </i>
+        Add
+      </a>
+    </nav>
+  </ion-toolbar>
+  <ion-list #farmerList>
+    <ion-item-sliding *ngFor="let item of farmer?.farmlocations" #slidingItem>
+      <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{farmer?.objid}}/{{ item.objid }}">
+        <ion-label>
+          <h3>{{item.location.text}}</h3>
+          <p>
+            Area(sqm) : {{item.areasqm}} <br>
+            Mode of Acquisition : {{item.modeofacquisition}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <!-- <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+            <i class="fas fa-trash-alt"></i>
+            Delete
+          </a>
+       
+      </ion-item-options> -->
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

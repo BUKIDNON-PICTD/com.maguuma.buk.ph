@@ -201,21 +201,7 @@ export class FarmerdetailPage {
           ])
         ],
       }),
-      farmlocations: formBuilder.array([
-        formBuilder.group({
-          areasqm: [''],
-          farmerprofileid: [''],
-          pin: [''],
-          modeofacquisition: [''],
-          objid: [''],
-          barangay: {
-            objid : ['']
-          },
-          location: {
-            text: [''],
-          }
-        })
-      ])
+      // farmlocations: this.formBuilder.array([])
       // ;
       // recordlog: {
       //   lastupdatedbyuserid: [
@@ -448,9 +434,41 @@ export class FarmerdetailPage {
       ]
     };
   }
-  get farmlocations(): FormArray {
-    return this.farmerPersonalProfileForm.get('farmlocations') as FormArray;
-  }
+  // get farmlocations(): FormArray {
+  //   return this.farmerPersonalProfileForm.get('farmlocations') as FormArray;
+  // }
+
+  // newFarmLocation(): FormGroup {
+  //   return this.formBuilder.group({
+  //       areasqm: [''],
+  //       farmerprofileid: [''],
+  //       pin: [''],
+  //       modeofacquisition: [''],
+  //       objid: [''],
+  //       barangay: {
+  //         objid : ['']
+  //       },
+  //       location: {
+  //         text: [''],
+  //       }
+  //     })
+  // }
+
+  // farmlocations(): FormGroup{
+  //   return this.formBuilder.group({
+  //     areasqm: [''],
+  //     farmerprofileid: [''],
+  //     pin: [''],
+  //     modeofacquisition: [''],
+  //     objid: [''],
+  //     barangay: {
+  //       objid : ['']
+  //     },
+  //     location: {
+  //       text: [''],
+  //     }
+  //   });
+  // }
   ionViewWillEnter() {
     const farmerid = this.route.snapshot.paramMap.get("farmerid");
     this.farmerService.getItem(farmerid).then(item => {
