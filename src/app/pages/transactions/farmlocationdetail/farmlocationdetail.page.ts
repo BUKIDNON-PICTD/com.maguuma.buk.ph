@@ -32,13 +32,19 @@ export class FarmlocationdetailPage {
       pin: [""],
       modeofacquisition: [""],
       objid: [""],
-      location: {
-        text: [""]
-      },
-      barangay: [""],
-      province: [""],
-      municipality: [""],
-      street: [""],
+      location: formBuilder.group({
+        text: ['']
+      }),
+      barangay: formBuilder.group({
+        objid: ['']
+      }),
+      province: formBuilder.group({
+        objid: ['']
+      }),
+      municipality: formBuilder.group({
+        objid: ['']
+      }),
+      street: [''],
   
     });
 
@@ -62,10 +68,18 @@ export class FarmlocationdetailPage {
       this.provinces = items;
     });
 
+    this.storage.get('municipality').then(items => {
+      this.municipalities = items;
+    });
+
+    this.storage.get('barangay').then(items => {
+      this.barangays = items;
+    });
+
   }
 
   onProvinceChange() {
-    let province = this.farmerLocationForm.get('province').value;
+    let province = this.farmerLocationForm.get('province.objid').value;
     this.storage.get('municipality').then(items => {
       let filtereditems = items.filter(
         i => i.parentid === province
@@ -75,7 +89,7 @@ export class FarmlocationdetailPage {
   }
 
   onMunicipalityChange() {
-    let municipality = this.farmerLocationForm.get('municipality').value;
+    let municipality = this.farmerLocationForm.get('municipality.objid').value;
     this.storage.get('barangay').then(items => {
       let filtereditems = items.filter(
         i => i.parentid === municipality
@@ -99,7 +113,19 @@ export class FarmlocationdetailPage {
         );
         this.farmlocation = farmlocation;
         this.farmer = item;
-        console.log(item);
+
+        this.farmerLocationForm.patchValue({
+          province :
+          {objid : '059'}
+        });
+        this.storage.get('barangay').then(items => {
+          let brgy = items.find(o => o.objid == farmlocation.barangay.objid);
+          this.farmerLocationForm.patchValue({
+            municipality :
+            {objid : brgy.parentid}
+          });
+        });
+        
         this.farmerLocationForm.patchValue(farmlocation);
       }
     });

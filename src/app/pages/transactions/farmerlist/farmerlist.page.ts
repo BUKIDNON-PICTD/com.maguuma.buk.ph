@@ -23,7 +23,6 @@ export class FarmerlistPage implements OnInit {
       this.pagesize = 25;
       this.pagenumber = 1;
       this.loadFarmers(null);
-      
     });
   }
 

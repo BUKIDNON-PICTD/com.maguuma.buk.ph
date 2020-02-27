@@ -78,6 +78,18 @@ export class FarmerdetailPage {
           Validators.required
         ])
       ],
+      isIP: [
+        false,
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      isFarmerAssociationMember: [
+        false,
+        Validators.compose([
+          Validators.required
+        ])
+      ],
       farmer: formBuilder.group({
         civilstatus: [
           "",
@@ -196,6 +208,9 @@ export class FarmerdetailPage {
           pin: [''],
           modeofacquisition: [''],
           objid: [''],
+          barangay: {
+            objid : ['']
+          },
           location: {
             text: [''],
           }

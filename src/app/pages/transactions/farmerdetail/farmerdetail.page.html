@@ -11,7 +11,7 @@
   <form [formGroup]="farmerPersonalProfileForm">
     {{farmerPersonalProfileForm.value | json}}
     <ion-toolbar color="primary">
-      <ion-title>Farmer Details</ion-title>
+      <ion-title>Personal Information</ion-title>
     </ion-toolbar>
     <div formGroupName="farmer">
       <ion-item>
@@ -92,7 +92,7 @@
       </ng-container>
     </div>
     <ion-toolbar color="primary">
-      <ion-title>Farmer Details</ion-title>
+      <ion-title>Details</ion-title>
     </ion-toolbar>
     <div formGroupName='farmer'>
       <ion-item>
@@ -144,6 +144,25 @@
           <small class="error-message">{{ validation.message }}</small>
       </ng-container>
     </div>
+     <ion-item>
+      <ion-label >IP Member</ion-label>
+      <ion-toggle formControlName="isIP"></ion-toggle>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.isIP">
+      <ng-container *ngIf="farmerPersonalProfileForm.get('isIP')?.hasError(validation.type) && (farmerPersonalProfileForm.get('isIP')?.dirty || farmerPersonalProfileForm.get('isIP')?.touched)">
+          <small class="error-message">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+     <ion-item>
+      <ion-label >Farmer Association Member</ion-label>
+      <ion-toggle formControlName="isFarmerAssociationMember"></ion-toggle>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.isFarmerAssociationMember">
+      <ng-container *ngIf="farmerPersonalProfileForm.get('isFarmerAssociationMember')?.hasError(validation.type) && (farmerPersonalProfileForm.get('isFarmerAssociationMember')?.dirty || farmerPersonalProfileForm.get('isFarmerAssociationMember')?.touched)">
+          <small class="error-message">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
     <ion-toolbar color="primary">
       <nav class="navbar navbar-expand navbar-primary navbar-dark">
         <ion-title>Farmer Details</ion-title>
