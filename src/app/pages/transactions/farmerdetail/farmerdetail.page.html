@@ -165,7 +165,7 @@
   </form>
   <ion-toolbar color="primary">
     <nav class="navbar navbar-expand navbar-primary navbar-dark">
-      <ion-title>Farmer Details</ion-title>
+      <ion-title>Farm Locations</ion-title>
       <a class="btn btn-primary btn-sm" href="#">
         <i class="fas fa-plus">
         </i>
@@ -175,7 +175,7 @@
   </ion-toolbar>
   <ion-list #farmerList>
     <ion-item-sliding *ngFor="let item of farmer?.farmlocations" #slidingItem>
-      <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{farmer?.objid}}/{{ item.objid }}">
+      <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{farmer?.objid}}/{{item.objid}}">
         <ion-label>
           <h3>{{item.location.text}}</h3>
           <p>
@@ -193,4 +193,75 @@
       </ion-item-options> -->
     </ion-item-sliding>
   </ion-list>
+  <ion-list-header [hidden]="farmer?.farmlocations?.length > 0">
+    No Livestock Found
+  </ion-list-header>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Farm Facilities</ion-title>
+      <a class="btn btn-primary btn-sm" href="#">
+        <i class="fas fa-plus">
+        </i>
+        Add
+      </a>
+    </nav>
+  </ion-toolbar>
+  <ion-list #farmerList>
+    <ion-item-sliding *ngFor="let item of farmer?.farmfacilities" #slidingItem>
+      <ion-item routerLink="/app/tabs/farmerlist/farmfacilitydetail/{{farmer?.objid}}/{{item.objid}}">
+        <ion-label>
+          <h3>{{item.facility.name}}</h3>
+          <p>
+            Quantity : {{item.quantity}} <br>
+            Mode of Acquisition : {{item.modeofacquisition}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <!-- <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+            <i class="fas fa-trash-alt"></i>
+            Delete
+          </a>
+       
+      </ion-item-options> -->
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list-header [hidden]="farmer?.farmfacilities?.length > 0">
+    No Livestock Found
+  </ion-list-header>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Farmer Assistances</ion-title>
+      <a class="btn btn-primary btn-sm" href="#">
+        <i class="fas fa-plus">
+        </i>
+        Add
+      </a>
+    </nav>
+  </ion-toolbar>
+  <ion-list #farmerList>
+    <ion-item-sliding *ngFor="let item of farmer?.farmerassistances" #slidingItem>
+      <ion-item routerLink="/app/tabs/farmerlist/farmerassistancedetail/{{farmer?.objid}}/{{item.objid}}">
+        <ion-label>
+          <h3>{{item.assistancetype.name}}</h3>
+          <p>
+            Unit of Measure : {{item.assistancetype.unitofmeasure}} <br>
+            Quantity : {{item.qty}} <br>
+            Transaction Date : {{item.txndate}} <br>
+            Survey Period : {{item.surveyperiod.name}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <!-- <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+            <i class="fas fa-trash-alt"></i>
+            Delete
+          </a>
+       
+      </ion-item-options> -->
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list-header [hidden]="farmer?.farmerassistances?.length > 0">
+    No Livestock Found
+  </ion-list-header>
 </ion-content>

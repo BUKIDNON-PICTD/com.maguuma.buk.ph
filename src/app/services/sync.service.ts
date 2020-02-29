@@ -23,7 +23,12 @@ import {
 export class SyncService {
 
   public tblmaster: any;
-  public tblfarmers: any;
+  _entityindividual: any;
+  _agri_farmerprofile: any;
+  _agri_farmerprofile_facility: any;
+  _agri_farmerprofile_location: any;
+  _agri_farmerprofile_location_commodity: any;
+  _agri_farmerprofile_location_livestock: any;
 
   constructor(
     private storage: Storage,
@@ -34,9 +39,28 @@ export class SyncService {
       storeName: '_tblmaster',
       driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
     });
-
-    this.tblfarmers = new Storage({
-      storeName: '_tblfarmers',
+    this._entityindividual = new Storage({
+      storeName: '_entityindividual',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+    this._agri_farmerprofile = new Storage({
+      storeName: '_agri_farmerprofile',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+    this._agri_farmerprofile_facility = new Storage({
+      storeName: '_agri_farmerprofile_facility',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+    this._agri_farmerprofile_location = new Storage({
+      storeName: '_agri_farmerprofile_location',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+    this._agri_farmerprofile_location_commodity = new Storage({
+      storeName: '_agri_farmerprofile_location_commodity',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+    this._agri_farmerprofile_location_livestock = new Storage({
+      storeName: '_agri_farmerprofile_location_livestock',
       driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
     });
   }
@@ -88,23 +112,23 @@ export class SyncService {
       );
   }
 
-  prepareFarmersToSync(clientid): Observable<any> {
-    var data = {
-      requesttype: "post",
-      servicename: "FarmerProfileService",
-      methodname: "pareparefarmerlocaltoserversync",
-      params: {
-        clientid: clientid
-      }
-    };
-    return this.http
-      .post(
-        `http://localhost:3000/api/serverrequest`,
-        JSON.stringify(data),
-        this.httpOptions
-      )
-      .pipe(retry(2), catchError(this.handleError));
-  }
+  // prepareFarmersToSync(clientid): Observable<any> {
+  //   var data = {
+  //     requesttype: "post",
+  //     servicename: "FarmerProfileService",
+  //     methodname: "pareparefarmerlocaltoserversync",
+  //     params: {
+  //       clientid: clientid
+  //     }
+  //   };
+  //   return this.http
+  //     .post(
+  //       `http://localhost:3000/api/serverrequest`,
+  //       JSON.stringify(data),
+  //       this.httpOptions
+  //     )
+  //     .pipe(retry(2), catchError(this.handleError));
+  // }
 
   syncFarmerData(settings): Observable<any> {
     var data = {
@@ -133,9 +157,27 @@ export class SyncService {
   confirmFarmerSync(farmers, synctype, settings): Observable<any> {
     if (typeof farmers === 'object' && farmers !== null && !farmers.totalforsync) {
       for (let farmer of farmers) {
-        this.tblfarmers.get(farmer.objid).then(item => {
+        this._agri_farmerprofile.get(farmer.objid).then(item => {
           if (!item) {
-            this.tblfarmers.set(farmer.objid, farmer).catch(error => console.log(error.message));
+            // this.tblfarmers.set(farmer.objid, farmer).catch(error => console.log(error.message));
+            this._agri_farmerprofile.set(farmer.objid, farmer);
+            this._entityindividual.set(farmer.farmer.objid, farmer.farmer);
+            if (farmer.spouse.objid) {
+              this._entityindividual.set(farmer.spouse.objid, farmer.spouse);
+            }
+
+            for(let ff of farmer.farmfacilities) {
+              this._agri_farmerprofile_facility.set(ff.objid, ff);
+            }
+            for(let fl of farmer.farmlocations) {
+              this._agri_farmerprofile_location.set(fl.objid, fl);
+              for(let c of fl.commodities) {
+                this._agri_farmerprofile_location_commodity.set(c.objid, c);
+              }
+              for(let s of fl.livestocks) {
+                this._agri_farmerprofile_location_livestock.set(s.objid, s);
+              }
+            }
             // console.log('Farmer added ' + farmer.objid);
           } else {
             console.log('Farmer already exists ' + farmer.objid);
@@ -170,6 +212,71 @@ export class SyncService {
         catchError(this.handleError)
       );
   }
+
+  // syncEntityData(settings): Observable<any> {
+  //   var data = {
+  //     requesttype: "post",
+  //     servicename: "FarmerProfileService",
+  //     methodname: "startentitylocaltoserversync",
+  //     params: {
+  //       clientid: settings.find(o => o.name === 'clientid').value,
+  //       lguid: settings.find(o => o.name === 'lguid').value,
+  //       synctype: 'entityindividual'
+  //     }
+  //   };
+  //   return this.http
+  //     .post<any>(
+  //       `http://localhost:3000/api/serverrequest`,
+  //       JSON.stringify(data),
+  //       this.httpOptions
+  //     )
+  //     .pipe(
+  //       retry(2),
+  //       switchMap(res => this.confirmFarmerSync(res.data, "farmer", settings)),
+  //       catchError(this.handleError)
+  //     );
+  // }
+
+  // confirmEntitySync(items, synctype, settings): Observable<any> {
+  //   if (typeof items === 'object' && items !== null && !items.totalforsync) {
+  //     for (let item of items) {
+  //       this._entityindividual.get(item.objid).then(i => {
+  //         if (!i) {
+  //           this._entityindividual.set(i.objid,i);
+  //           // console.log('Farmer added ' + farmer.objid);
+  //         } else {
+  //           console.log(i.objid + ' already exists');
+  //         }
+  //       }).catch(error => console.log(error.message));
+  //     }
+  //   }
+
+  //   var data = {
+  //     requesttype: "post",
+  //     servicename: "FarmerProfileService",
+  //     methodname: "confirmsync",
+  //     params: {
+  //       clientid: settings.find(o => o.name === 'clientid').value,
+  //       lguid: settings.find(o => o.name === 'lguid').value,
+  //       items: items.map(item => item.objid),
+  //       // item: farmer.objid,
+  //       synctype: synctype
+  //     }
+  //   };
+  //   return this.http
+  //     .post<any>(
+  //       `http://localhost:3000/api/serverrequest`,
+  //       JSON.stringify(data),
+  //       this.httpOptions
+  //     )
+  //     .pipe(
+  //       map(res => {
+  //         res.data.items = items;
+  //         return res;
+  //       }),
+  //       catchError(this.handleError)
+  //     );
+  // }
 
   // confirmFarmerSync(farmer, synctype, clientid): Observable<any> {
   //   if (typeof farmer === 'object' && farmer !== null) {
@@ -434,26 +541,26 @@ export class SyncService {
   //     .pipe(catchError(this.handleError));
   // }
 
-  async confirmsync(item, synctype, clientid): Promise<any> {
-    var data = {
-      requesttype: "post",
-      servicename: "FarmerProfileService",
-      methodname: "confirmsync",
-      params: {
-        clientid: clientid,
-        item: item,
-        synctype: synctype
-      }
-    };
-    return await this.http
-      .post(
-        `http://localhost:3000/api/serverrequest`,
-        JSON.stringify(data),
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError))
-      .toPromise();
-  }
+  // async confirmsync(item, synctype, clientid): Promise<any> {
+  //   var data = {
+  //     requesttype: "post",
+  //     servicename: "FarmerProfileService",
+  //     methodname: "confirmsync",
+  //     params: {
+  //       clientid: clientid,
+  //       item: item,
+  //       synctype: synctype
+  //     }
+  //   };
+  //   return await this.http
+  //     .post(
+  //       `http://localhost:3000/api/serverrequest`,
+  //       JSON.stringify(data),
+  //       this.httpOptions
+  //     )
+  //     .pipe(catchError(this.handleError))
+  //     .toPromise();
+  // }
 
   // private prepareentitysync() {
   //   this.parepareentitylocaltoserversync().subscribe(res => {

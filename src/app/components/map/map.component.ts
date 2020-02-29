@@ -14,6 +14,7 @@ import Polygon from "ol/geom/Polygon";
 import LineString from "ol/geom/LineString";
 import { Overlay } from 'ol';
 import OverlayPositioning from 'ol/OverlayPositioning';
+import { getArea } from 'ol/sphere';
 
 @Component({
   selector: "map",
@@ -37,13 +38,13 @@ export class MapComponent implements OnInit {
   enablemodify = true;
   enablesave = true;
   enableclear = true;
-  // sketch: any;
-  // helpTooltipElement: any;
-  // helpTooltip: any;
-  // measureTooltipElement: any;
-  // measureTooltip: any;
-  // continuePolygonMsg = "Click to continue drawing the polygon";
-  // continueLineMsg = "Click to continue drawing the line";
+  sketch: any;
+  helpTooltipElement: any;
+  helpTooltip: any;
+  measureTooltipElement: any;
+  measureTooltip: any;
+  continuePolygonMsg = "Click to continue drawing the polygon";
+  continueLineMsg = "Click to continue drawing the line";
 
   constructor(private farmerService: FarmerService) {}
 
@@ -52,28 +53,6 @@ export class MapComponent implements OnInit {
   }
 
   initMap() {
-
-    // var pointerMoveHandler = function(evt) {
-    //   if (evt.dragging) {
-    //     return;
-    //   }
-    //   var helpMsg = "Click to start drawing";
-
-    //   if (this.sketch) {
-    //     var geom = this.sketch.getGeometry();
-    //     if (geom instanceof Polygon) {
-    //       helpMsg = this.continuePolygonMsg;
-    //     } else if (geom instanceof LineString) {
-    //       helpMsg = this.continueLineMsg;
-    //     }
-    //   }
-
-    //   this.helpTooltipElement.innerHTML = helpMsg;
-    //   this.helpTooltip.setPosition(evt.coordinate);
-
-    //   this.helpTooltipElement.classList.remove("hidden");
-    // };
-
     this.geometryType = "Polygon";
     this.raster = new TileLayer({
       source: new OSM()
@@ -137,28 +116,20 @@ export class MapComponent implements OnInit {
       .getView()
       .fit([13784343.025655, 814368.207926, 14048821.648763, 978738.393527]);
 
-    // this.map.on("pointermove", pointerMoveHandler);
+    // this.createMeasureTooltip();
+    // this.createHelpTooltip();
+    // this.map.on("pointermove", this.pointerMoveHandler);
 
     // this.map.getViewport().addEventListener("mouseout", function() {
-    //   // this.helpTooltipElement.classList.add("hidden");
+    //   this.helpTooltipElement.classList.add("hidden");
     // });
 
-    // var formatArea = function(polygon) {
-    //   var area = this.getArea(polygon);
-    //   var output;
-    //   if (area > 10000) {
-    //     output =
-    //       Math.round((area / 1000000) * 100) / 100 + " " + "km<sup>2</sup>";
-    //   } else {
-    //     output = Math.round(area * 100) / 100 + " " + "m<sup>2</sup>";
-    //   }
-    //   return output;
-    // };
+   
 
     this.enablesave = false;
     this.enableclear = false;
     this.enablemodify = false;
-    if (this.farmlocation.geolocation) {
+    if (this.farmlocation?.geolocation) {
       this.source.addFeatures(
         new GeoJSON().readFeatures(this.farmlocation.geolocation)
       );
@@ -170,103 +141,131 @@ export class MapComponent implements OnInit {
     // this.addInteraction();
   }
 
-  // addInteraction() {
+pointerMoveHandler(evt) {
+    if (evt.dragging) {
+      return;
+    }
+    var helpMsg = "Click to start drawing";
 
-  //   this.draw = new Draw({
-  //     source: this.source,
-  //     type: this.geometryType,
-  //     style: new Style({
-  //       fill: new Fill({
-  //         color: "rgba(255, 255, 255, 0.2)"
-  //       }),
-  //       stroke: new Stroke({
-  //         color: "rgba(0, 0, 0, 0.5)",
-  //         lineDash: [10, 10],
-  //         width: 2
-  //       }),
-  //       image: new CircleStyle({
-  //         radius: 5,
-  //         stroke: new Stroke({
-  //           color: "rgba(0, 0, 0, 0.7)"
-  //         }),
-  //         fill: new Fill({
-  //           color: "rgba(255, 255, 255, 0.2)"
-  //         })
-  //       })
-  //     })
-  //   });
+    if (this.sketch) {
+      var geom = this.sketch.getGeometry();
+      if (geom instanceof Polygon) {
+        helpMsg = this.continuePolygonMsg;
+      } else if (geom instanceof LineString) {
+        helpMsg = this.continueLineMsg;
+      }
+    }
 
-  //   this.createMeasureTooltip();
-  //   this.createHelpTooltip();
+    this.helpTooltipElement = helpMsg;
+    
+    this.helpTooltip.setPosition(evt.coordinate);
 
-  //   var listener;
-  //   this.draw.on("drawstart", evt => {
-  //     // set sketch
-  //     this.sketch = evt.feature;
+    this.helpTooltipElement.classList.remove("hidden");
+  }
 
-  //     /** @type {import("../src/ol/coordinate.js").Coordinate|undefined} */
-  //     var tooltipCoord = evt.coordinate;
+//  formatArea(polygon) {
+//       var area = getArea(polygon);
+//       var output;
+//       if (area > 10000) {
+//         output =
+//           Math.round((area / 1000000) * 100) / 100 + " " + "km<sup>2</sup>";
+//       } else {
+//         output = Math.round(area * 100) / 100 + " " + "m<sup>2</sup>";
+//       }
+//       return output;
+//     }
 
-  //     listener = this.sketch.getGeometry().on("change", function(evt) {
-  //       var geom = evt.target;
-  //       var output;
-  //       if (geom instanceof Polygon) {
-  //         output = this.formatArea(geom);
-  //         tooltipCoord = geom.getInteriorPoint().getCoordinates();
-  //       } else if (geom instanceof LineString) {
-  //         output = this.formatLength(geom);
-  //         tooltipCoord = geom.getLastCoordinate();
-  //       }
-  //       this.measureTooltipElement.innerHTML = output;
-  //       this.measureTooltip.setPosition(tooltipCoord);
-  //     });
-  //   });
+//   addInteraction() {
 
-  //   this.draw.on("drawend", function() {
-  //     this.measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
-  //     this.measureTooltip.setOffset([0, -7]);
-  //     // unset sketch
-  //     this.sketch = null;
-  //     // unset tooltip so that a new one can be created
-  //     this.measureTooltipElement = null;
-  //     this.createMeasureTooltip();
-  //     this.unByKey(listener);
-  //   });
-  // }
+//     this.draw = new Draw({
+//       source: this.source,
+//       type: this.geometryType,
+//       style: new Style({
+//         fill: new Fill({
+//           color: "rgba(255, 255, 255, 0.2)"
+//         }),
+//         stroke: new Stroke({
+//           color: "rgba(0, 0, 0, 0.5)",
+//           lineDash: [10, 10],
+//           width: 2
+//         }),
+//         image: new CircleStyle({
+//           radius: 5,
+//           stroke: new Stroke({
+//             color: "rgba(0, 0, 0, 0.7)"
+//           }),
+//           fill: new Fill({
+//             color: "rgba(255, 255, 255, 0.2)"
+//           })
+//         })
+//       })
+//     });
 
-  // /**
-  //  * Creates a new help tooltip
-  //  */
-  // createHelpTooltip() {
-  //   if (this.helpTooltipElement) {
-  //     this.helpTooltipElement.parentNode.removeChild(this.helpTooltipElement);
-  //   }
-  //   this.helpTooltipElement = document.createElement("div");
-  //   this.helpTooltipElement.className = "ol-tooltip hidden";
-  //   this.helpTooltip = new Overlay({
-  //     element: this.helpTooltipElement,
-  //     offset: [15, 0],
-  //     positioning: OverlayPositioning.CENTER_LEFT
-  //   });
-  //   this.map.addOverlay(this.helpTooltip);
-  // }
+//     this.createMeasureTooltip();
+//     this.createHelpTooltip();
 
-  // /**
-  //  * Creates a new measure tooltip
-  //  */
-  // createMeasureTooltip() {
-  //   if (this.measureTooltipElement) {
-  //     this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement);
-  //   }
-  //   this.measureTooltipElement = document.createElement("div");
-  //   this.measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
-  //   this.measureTooltip = new Overlay({
-  //     element: this.measureTooltipElement,
-  //     offset: [0, -15],
-  //     positioning: OverlayPositioning.BOTTOM_CENTER
-  //   });
-  //   this.map.addOverlay(this.measureTooltip);
-  // }
+//     var listener;
+//     this.draw.on("drawstart", evt => {
+//       // set sketch
+//       this.sketch = evt.feature;
+
+//       /** @type {import("../src/ol/coordinate.js").Coordinate|undefined} */
+//       var tooltipCoord = evt.coordinate;
+
+//       listener = this.sketch.getGeometry().on("change", function(evt) {
+//         var geom = evt.target;
+//         var output;
+//         if (geom instanceof Polygon) {
+//           output = this.formatArea(geom);
+//           tooltipCoord = geom.getInteriorPoint().getCoordinates();
+//         } else if (geom instanceof LineString) {
+//           output = this.formatLength(geom);
+//           tooltipCoord = geom.getLastCoordinate();
+//         }
+//         this.measureTooltipElement.innerHTML = output;
+//         this.measureTooltip.setPosition(tooltipCoord);
+//       });
+//     });
+
+//     this.draw.on("drawend", function() {
+//       this.measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
+//       this.measureTooltip.setOffset([0, -7]);
+//       // unset sketch
+//       this.sketch = null;
+//       // unset tooltip so that a new one can be created
+//       this.measureTooltipElement = null;
+//       this.createMeasureTooltip();
+//       this.unByKey(listener);
+//     });
+//   }
+
+  createHelpTooltip() {
+    if (this.helpTooltipElement) {
+      this.helpTooltipElement.parentNode.removeChild(this.helpTooltipElement);
+    }
+    this.helpTooltipElement = document.createElement("div");
+    this.helpTooltipElement.className = "ol-tooltip hidden";
+    this.helpTooltip = new Overlay({
+      element: this.helpTooltipElement,
+      offset: [15, 0],
+      positioning: OverlayPositioning.CENTER_LEFT
+    });
+    this.map.addOverlay(this.helpTooltip);
+  }
+
+  createMeasureTooltip() {
+    if (this.measureTooltipElement) {
+      this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement);
+    }
+    this.measureTooltipElement = document.createElement("div");
+    this.measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
+    this.measureTooltip = new Overlay({
+      element: this.measureTooltipElement,
+      offset: [0, -15],
+      positioning: OverlayPositioning.BOTTOM_CENTER
+    });
+    this.map.addOverlay(this.measureTooltip);
+  }
 
   // addInteractions() {
   //   this.draw = new Draw({

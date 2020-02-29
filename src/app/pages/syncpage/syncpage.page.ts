@@ -9,6 +9,7 @@ import { Storage } from "@ionic/storage";
 import { SettingService } from "src/app/services/setting.service";
 import { empty, Subscription } from "rxjs";
 import { FarmerService } from "src/app/services/farmer.service";
+import { EntityService } from 'src/app/services/entity.service';
 
 @Component({
   selector: "app-syncpage",
@@ -40,7 +41,8 @@ export class SyncpagePage implements OnInit {
     private storage: Storage,
     private toastController: ToastController,
     private settingservice: SettingService,
-    private farmerService: FarmerService
+    private farmerService: FarmerService,
+    private entityService: EntityService
   ) {}
 
   ngOnInit() {
@@ -114,6 +116,7 @@ export class SyncpagePage implements OnInit {
             },
             () => {
               this.farmerService.makelist();
+              this.entityService.makelist();
               this.showToast("Farmer Sync Complete!");
               this.showProgressbarForFarmerSync = false;
               this.syncinprogress = false;
@@ -121,87 +124,7 @@ export class SyncpagePage implements OnInit {
           )
       );
     });
-    // this.showProgressbarForFarmerPreparation = true;
-    // this.showProgressbarForFarmerSync = true;
-    // this.settingservice.getItemByName("clientid").then(item => {
-    //   this.subscription.push(
-    //     this.syncService
-    //       .prepareFarmersToSync(item.value)
-    //       .pipe(
-    //         expand(response =>
-    //           response.data.forprep > 0
-    //             ? this.syncService.prepareFarmersToSync(item.value)
-    //             : empty()
-    //         )
-    //       )
-    //       .subscribe(
-    //         response => {
-    //           console.log(response.data.forprep);
-    //           if (typeof response.data === "object" && response.data !== null) {
-    //             let data = response.data;
-    //             if (data.forprep > 0) {
-    //               this.prepFarmerProgress = data.forsync / data.totalrecords;
-    //             } else {
-    //               this.prepFarmerProgress = 100;
-    //             }
-    //           }
-    //         },
-    //         err => {
-    //           this.showToast(err);
-    //         },
-    //         () => {
-    //           this.showToast("Farmer Sync Preparation Complete!");
-    //           this.showProgressbarForFarmerPreparation = false;
-    //           this.settingservice.getItemByName("clientid").then(item => {
-    //             this.subscription.push(
-    //               this.syncService
-    //                 .syncFarmerData(item.value)
-    //                 .pipe(
-    //                   expand(response =>
-    //                     response.data.totalforsync > 0
-    //                       ? this.syncService.syncFarmerData(item.value)
-    //                       : empty()
-    //                   )
-    //                 )
-    //                 .subscribe(
-    //                   response => {
-    //                     if (
-    //                       typeof response.data === "object" &&
-    //                       response.data !== null
-    //                     ) {
-    //                       let data = response.data;
-    //                       if (data.totalforsync > 0) {
-    //                         this.syncFarmerProgress =
-    //                           data.totalsynced / data.totalforsync;
-    //                         this.syncFarmerProgressText = data.totalsynced + ' /' + data.totalforsync;
-
-    //                         if (this.logs.length === 100) {
-    //                           this.logs = [];
-    //                         }
-    //                         for (let farmer of data.farmers) {
-    //                           this.logs.push({message: farmer.objid + ' ' + farmer.farmer.name + ' Synced.'});
-    //                         }
-    //                         this.loglist.scrollToBottom(300);
-    //                       } else {
-    //                         this.syncFarmerProgress = 100;
-    //                       }
-    //                     }
-    //                   },
-    //                   err => {
-    //                     this.showToast(err);
-    //                   },
-    //                   () => {
-    //                     this.showToast("Farmer Sync Complete!");
-    //                     this.showProgressbarForFarmerSync = false;
-    //                     this.syncinprogress = false;
-    //                   }
-    //                 )
-    //             );
-    //           });
-    //         }
-    //       )
-    //   );
-    // });
+    
   }
 
   stopSync() {

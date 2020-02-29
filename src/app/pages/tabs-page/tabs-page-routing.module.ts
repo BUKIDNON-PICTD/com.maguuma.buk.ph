@@ -1,23 +1,21 @@
-import { EntityindividualPage } from '../transactions/entityindividual/entityindividual.page';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { TabsPage } from './tabs-page';
-import { HomePage } from '../home/home.page';
-import { FarminventorylistPage } from '../transactions/farminventorylist/farminventorylist.page';
-import { FarmerlistPage } from '../transactions/farmerlist/farmerlist.page';
-import { CapturefarmerPage } from './../transactions/capturefarmer/capturefarmer.page';
+import { EntityindividualPage } from "../transactions/entityindividual/entityindividual.page";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { TabsPage } from "./tabs-page";
+import { HomePage } from "../home/home.page";
+import { FarmerlistPage } from "../transactions/farmerlist/farmerlist.page";
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: "tabs",
     component: TabsPage,
     children: [
       {
-        path: 'home',
+        path: "home",
         children: [
           {
-            path: '',
-            component: HomePage,
+            path: "",
+            component: HomePage
           }
           // ,
           // {
@@ -27,11 +25,11 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'entityindividual',
+        path: "entityindividual",
         children: [
           {
-            path: '',
-            component: EntityindividualPage,
+            path: "",
+            component: EntityindividualPage
           }
           // ,
           // {
@@ -41,26 +39,60 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'farmerlist',
+        path: "farmerlist",
         children: [
           {
-            path: '',
-            component: FarmerlistPage,
+            path: "",
+            component: FarmerlistPage
           },
           {
-            path: 'farmerdetail/:farmerid',
-            loadChildren: () => import('../transactions/farmerdetail/farmerdetail.module').then(m => m.FarmerdetailPageModule)
+            path: "farmerdetail/:farmerid",
+            loadChildren: () =>
+              import("../transactions/farmerdetail/farmerdetail.module").then(
+                m => m.FarmerdetailPageModule
+              )
           },
           {
-            path: 'farmlocationdetail/:farmerid/:locationid',
-            loadChildren: () => import('../transactions/farmlocationdetail/farmlocationdetail.module').then(m => m.FarmlocationdetailPageModule)
+            path: "farmlocationdetail/:farmerid/:locationid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmlocationdetail/farmlocationdetail.module"
+              ).then(m => m.FarmlocationdetailPageModule)
+          },
+          {
+            path: "farmlocationcommodity/:farmerid/:locationid/:commodityid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmlocationcommodity/farmlocationcommodity.module"
+              ).then(m => m.FarmlocationcommodityPageModule)
+          },
+          {
+            path: "farmlocationlivestock/:farmerid/:locationid/:livestockid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmlocationlivestock/farmlocationlivestock.module"
+              ).then(m => m.FarmlocationlivestockPageModule)
+          },
+          {
+            path: "farmfacilitydetail/:farmerid/:facilityid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmfacilitydetail/farmfacilitydetail.module"
+              ).then(m => m.FarmfacilitydetailPageModule)
+          },
+          {
+            path: "farmerassistancedetail/:farmerid/:assistanceid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmerassistancedetail/farmerassistancedetail.module"
+              ).then(m => m.FarmerassistancedetailPageModule)
           }
         ]
       },
       {
-        path: '',
-        redirectTo: '/app/tabs/home',
-        pathMatch: 'full'
+        path: "",
+        redirectTo: "/app/tabs/home",
+        pathMatch: "full"
       }
     ]
   }
@@ -70,5 +102,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule { }
-
+export class TabsPageRoutingModule {}

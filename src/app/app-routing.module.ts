@@ -49,19 +49,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/master/livestock/livestock.module').then( m => m.LivestockPageModule)
   },
   {
-    path: 'farmlocationdetail',
-    loadChildren: () => import('./pages/transactions/farmlocationdetail/farmlocationdetail.module').then( m => m.FarmlocationdetailPageModule)
-  },
-  {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
   },
   {
     path: 'syncpage',
     loadChildren: () => import('./pages/syncpage/syncpage.module').then( m => m.SyncpagePageModule)
-  },
-  
-
+  }
 ];
 
 @NgModule({

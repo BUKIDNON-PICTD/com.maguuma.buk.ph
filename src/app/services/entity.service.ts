@@ -4,57 +4,66 @@ import { Storage } from '@ionic/storage';
   providedIn: 'root'
 })
 export class EntityService {
+  _entityindividual: any;
+  _entityindividuallist: any;
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage) {
+    this._entityindividual = new Storage({
+      storeName: '_entityindividual',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
 
-  addEntity(entity: any): Promise<any> {
-    return this.storage.get('entity_individual').then( items => {
-      if (items) {
-        items.push(entity);
-        return this.storage.set('entity_individual', items);
-      } else {
-        return this.storage.set('entity_individual', [entity]);
+    this._entityindividuallist = new Storage({
+      storeName: '_entityindividuallist',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    });
+  }
+  
+ makelist() {
+    this.getRawItems().then(items => {
+      this._entityindividuallist.set('entityindividuallist', items);
+    });
+  }
+
+  addfarmer(farmer: any): Promise<any> {
+    return this._entityindividual.get(farmer.objid).then( item => {
+      if (!item) {
+        return this.storage.set(farmer.objid, farmer);
       }
     });
   }
 
   getItems(): Promise<any[]> {
-    return this.storage.get('entity_individual');
+    return this._entityindividuallist.get('entityindividuallist');
   }
 
-  updateEntity(entity: any): Promise<any> {
-    return this.storage.get('entity_individual').then( items => {
-      if (!items || items.length === 0) {
-        return null;
-      }
-      let newItems: any[] = [];
+  getRawItems(): Promise<any[]> {
+    return this._entityindividual.keys()
+    .then(keys => Promise.all(keys.map(k => this._entityindividual.get(k))));
+  }
 
-      for(let i of items) {
-        if (i.objid == entity.objid) {
-          newItems.push(entity);
-        } else {
-          newItems.push(i);
-        }
-      }
-
-      return this.storage.set('entity_individual', newItems);
+  getItem(objid): Promise<any> {
+    return this._entityindividual.get(objid).then(item => {
+      return item;
     });
   }
 
-  deleteEntity(objid:string): Promise<any> {
-    return this.storage.get('entity_individual').then( items => {
-      if (!items || items.length === 0) {
+  updatefarmer(farmer: any): Promise<any> {
+    return this._entityindividual.get(farmer.objid).then( item => {
+      if (!item) {
+        return null;
+      }
+      return this._entityindividual.set(farmer.objid, farmer);
+    });
+  }
+
+  deletefarmer(objid:string): Promise<any> {
+    return this._entityindividual.get(objid).then( item => {
+      if (!item) {
         return null;
       }
 
-      let toKeep: any[] = [];
-
-      for (let i of items) {
-        if (i.objid !== objid) {
-          toKeep.push(i);
-        }
-      }
-      return this.storage.set('entity_individual', toKeep);
+      return this._entityindividual.remove(objid);
     });
   }
 }

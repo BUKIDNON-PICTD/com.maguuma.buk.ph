@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router, NavigationExtras } from "@angular/router";
 import { FarmerService } from "src/app/services/farmer.service";
 import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
+import { FarmlocationService } from 'src/app/services/farmlocation.service';
 
 @Component({
   selector: "app-farmerdetail",
@@ -13,11 +14,14 @@ export class FarmerdetailPage {
   farmer: any;
   farmerPersonalProfileForm: FormGroup;
   validation_messages: any;
+  farmlocations: any;
 
   constructor(
     private farmerService: FarmerService,
+    private farmlocationService: FarmlocationService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.farmerPersonalProfileForm = this.formBuilder.group({
       postnametitle: [
@@ -479,5 +483,10 @@ export class FarmerdetailPage {
 
   ionViewDidEnter() {
     this.defaultHref = `/app/tabs/farmerlist`;
+  }
+
+  viewLocationDetail() {
+    
+    this.router.navigate(['/app/tabs/farmerlist/farmlocationdetail'],this.farmer);
   }
 }

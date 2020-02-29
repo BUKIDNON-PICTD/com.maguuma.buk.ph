@@ -6,12 +6,12 @@ import { Storage } from '@ionic/storage';
 })
 export class FarmerService {
 
-  public tblfarmers: any;
+  public _agri_farmerprofile: any;
   public tblfarmerlist: any;
 
   constructor(private storage: Storage) { 
-    this.tblfarmers = new Storage({
-      storeName: '_tblfarmers',
+    this._agri_farmerprofile = new Storage({
+      storeName: '_agri_farmerprofile',
       driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
     });
 
@@ -34,7 +34,7 @@ export class FarmerService {
   }
 
   addfarmer(farmer: any): Promise<any> {
-    return this.tblfarmers.get(farmer.objid).then( item => {
+    return this._agri_farmerprofile.get(farmer.objid).then( item => {
       if (!item) {
         return this.storage.set(farmer.objid, farmer);
       }
@@ -46,32 +46,32 @@ export class FarmerService {
   }
 
   getRawItems(): Promise<any[]>{
-    return this.tblfarmers.keys()
-    .then(keys => Promise.all(keys.map(k => this.tblfarmers.get(k))));
+    return this._agri_farmerprofile.keys()
+    .then(keys => Promise.all(keys.map(k => this._agri_farmerprofile.get(k))));
   }
 
   getItem(objid): Promise<any> {
-    return this.tblfarmers.get(objid).then(item => {
+    return this._agri_farmerprofile.get(objid).then(item => {
       return item;
     });
   }
 
   updatefarmer(farmer: any): Promise<any> {
-    return this.tblfarmers.get(farmer.objid).then( item => {
+    return this._agri_farmerprofile.get(farmer.objid).then( item => {
       if (!item) {
         return null;
       }
-      return this.tblfarmers.set(farmer.objid, farmer);
+      return this._agri_farmerprofile.set(farmer.objid, farmer);
     });
   }
 
   deletefarmer(objid:string): Promise<any> {
-    return this.tblfarmers.get(objid).then( item => {
+    return this._agri_farmerprofile.get(objid).then( item => {
       if (!item) {
         return null;
       }
 
-      return this.tblfarmers.remove(objid);
+      return this._agri_farmerprofile.remove(objid);
     });
   }
 }
