@@ -25,11 +25,11 @@ export class AppComponent {
       folderid: 'txn',
       title: 'Transaction',
       items: [
-        {
-          title: 'Individual Entity',
-          url: '/app/tabs/entityindividual',
-          icon: 'person-add'
-        },
+        // {
+        //   title: 'Individual Entity',
+        //   url: '/app/tabs/entityindividual',
+        //   icon: 'person-add'
+        // },
         // {
         //   title: 'Capture Farmer',
         //   url: '/app/tabs/capturefarmer',
