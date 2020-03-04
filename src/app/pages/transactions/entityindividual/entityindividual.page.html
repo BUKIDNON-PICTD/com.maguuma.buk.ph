@@ -27,8 +27,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="lastname"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.lastname">
-          <ng-container *ngIf="slidePersonalInformationForm.get('lastname')?.hasError(validation.type) && (slidePersonalInformationForm.get('lastname')?.dirty || slidePersonalInformationForm.get('lastname')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('lastname')?.hasError(validation.type) && (slidePersonalInformationForm.get('lastname')?.dirty || slidePersonalInformationForm.get('lastname')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -37,8 +38,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="firstname"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.firstname">
-          <ng-container *ngIf="slidePersonalInformationForm.get('firstname')?.hasError(validation.type) && (slidePersonalInformationForm.get('firstname')?.dirty || slidePersonalInformationForm.get('firstname')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('firstname')?.hasError(validation.type) && (slidePersonalInformationForm.get('firstname')?.dirty || slidePersonalInformationForm.get('firstname')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -47,8 +49,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="middlename"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.middlename">
-          <ng-container *ngIf="slidePersonalInformationForm.get('middlename')?.hasError(validation.type) && (slidePersonalInformationForm.get('middlename')?.dirty || slidePersonalInformationForm.get('middlename')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('middlename')?.hasError(validation.type) && (slidePersonalInformationForm.get('middlename')?.dirty || slidePersonalInformationForm.get('middlename')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -57,8 +60,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="maidenname"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.maidenname">
-          <ng-container *ngIf="slidePersonalInformationForm.get('maidenname')?.hasError(validation.type) && (slidePersonalInformationForm.get('maidenname')?.dirty || slidePersonalInformationForm.get('maidenname')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('maidenname')?.hasError(validation.type) && (slidePersonalInformationForm.get('maidenname')?.dirty || slidePersonalInformationForm.get('maidenname')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -67,8 +71,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="nameextension"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.nameextension">
-          <ng-container *ngIf="slidePersonalInformationForm.get('nameextension')?.hasError(validation.type) && (slidePersonalInformationForm.get('nameextension')?.dirty || slidePersonalInformationForm.get('nameextension')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('nameextension')?.hasError(validation.type) && (slidePersonalInformationForm.get('nameextension')?.dirty || slidePersonalInformationForm.get('nameextension')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -77,8 +82,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="prenametitle"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.prenametitle">
-          <ng-container *ngIf="slidePersonalInformationForm.get('prenametitle')?.hasError(validation.type) && (slidePersonalInformationForm.get('prenametitle')?.dirty || slidePersonalInformationForm.get('prenametitle')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('prenametitle')?.hasError(validation.type) && (slidePersonalInformationForm.get('prenametitle')?.dirty || slidePersonalInformationForm.get('prenametitle')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -87,8 +93,9 @@
           <ion-input autocapitalize inputmode="text" formControlName="postnametitle"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.postnametitle">
-          <ng-container *ngIf="slidePersonalInformationForm.get('postnametitle')?.hasError(validation.type) && (slidePersonalInformationForm.get('postnametitle')?.dirty || slidePersonalInformationForm.get('postnametitle')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('postnametitle')?.hasError(validation.type) && (slidePersonalInformationForm.get('postnametitle')?.dirty || slidePersonalInformationForm.get('postnametitle')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -98,8 +105,9 @@
           </ion-datetime>
         </ion-item>
         <div *ngFor="let validation of validation_messages.birthdate">
-          <ng-container *ngIf="slidePersonalInformationForm.get('birthdate')?.hasError(validation.type) && (slidePersonalInformationForm.get('birthdate')?.dirty || slidePersonalInformationForm.get('birthdate')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('birthdate')?.hasError(validation.type) && (slidePersonalInformationForm.get('birthdate')?.dirty || slidePersonalInformationForm.get('birthdate')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -111,112 +119,122 @@
           </ion-select>
         </ion-item>
         <div *ngFor="let validation of validation_messages.gender">
-          <ng-container *ngIf="slidePersonalInformationForm.get('gender')?.hasError(validation.type) && (slidePersonalInformationForm.get('gender')?.dirty || slidePersonalInformationForm.get('gender')?.touched)">
-              <small class="error-message">{{ validation.message }}</small>
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('gender')?.hasError(validation.type) && (slidePersonalInformationForm.get('gender')?.dirty || slidePersonalInformationForm.get('gender')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
           </ng-container>
         </div>
       </form>
     </ion-slide>
     <ion-slide>
       <form [formGroup]="slidePersonalInformationDetailForm">
-          <ion-item-divider>
-            <ion-label>Personal Information Detail</ion-label>
-          </ion-item-divider>
-          <ion-item>
-            <ion-label position="floating">Birth Place</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="birthplace"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.birthplace">
-            <ng-container *ngIf="slidePersonalInformationDetailForm.get('birthplace')?.hasError(validation.type) && (slidePersonalInformationDetailForm.get('birthplace')?.dirty || slidePersonalInformationDetailForm.get('birthplace')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item-divider>
+          <ion-label>Personal Information Detail</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Birth Place</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="birthplace"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.birthplace">
+          <ng-container
+            *ngIf="slidePersonalInformationDetailForm.get('birthplace')?.hasError(validation.type) && (slidePersonalInformationDetailForm.get('birthplace')?.dirty || slidePersonalInformationDetailForm.get('birthplace')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Citizenship</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="citizenship"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.citizenship">
-            <ng-container *ngIf="slidePersonalInformationDetailForm.get('citizenship')?.hasError(validation.type) && (slidePersonalInformationDetailForm.get('citizenship')?.dirty || slidePersonalInformationDetailForm.get('citizenship')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Citizenship</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="citizenship"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.citizenship">
+          <ng-container
+            *ngIf="slidePersonalInformationDetailForm.get('citizenship')?.hasError(validation.type) && (slidePersonalInformationDetailForm.get('citizenship')?.dirty || slidePersonalInformationDetailForm.get('citizenship')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Civil Status</ion-label>
-            <ion-select placeholder="Select One" formControlName="civilstatus">
-              <ion-select-option value="S">SINGLE</ion-select-option>
-              <ion-select-option value="M">MARRIED</ion-select-option>
-              <ion-select-option value="C">COUPLE</ion-select-option>
-              <ion-select-option value="SEP">SEPARATED</ion-select-option>
-              <ion-select-option value="WID">WIDOW/WIDOWER</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.civilstatus">
-            <ng-container *ngIf="slidePersonalInformationForm.get('civilstatus')?.hasError(validation.type) && (slidePersonalInformationForm.get('civilstatus')?.dirty || slidePersonalInformationForm.get('civilstatus')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Civil Status</ion-label>
+          <ion-select placeholder="Select One" formControlName="civilstatus">
+            <ion-select-option value="S">SINGLE</ion-select-option>
+            <ion-select-option value="M">MARRIED</ion-select-option>
+            <ion-select-option value="C">COUPLE</ion-select-option>
+            <ion-select-option value="SEP">SEPARATED</ion-select-option>
+            <ion-select-option value="WID">WIDOW/WIDOWER</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.civilstatus">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('civilstatus')?.hasError(validation.type) && (slidePersonalInformationForm.get('civilstatus')?.dirty || slidePersonalInformationForm.get('civilstatus')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Profession</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="profession"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.profession">
-            <ng-container *ngIf="slidePersonalInformationForm.get('profession')?.hasError(validation.type) && (slidePersonalInformationForm.get('profession')?.dirty || slidePersonalInformationForm.get('profession')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Profession</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="profession"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.profession">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('profession')?.hasError(validation.type) && (slidePersonalInformationForm.get('profession')?.dirty || slidePersonalInformationForm.get('profession')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Tin</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="tin"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.tin">
-            <ng-container *ngIf="slidePersonalInformationForm.get('tin')?.hasError(validation.type) && (slidePersonalInformationForm.get('tin')?.dirty || slidePersonalInformationForm.get('tin')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Tin</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="tin"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.tin">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('tin')?.hasError(validation.type) && (slidePersonalInformationForm.get('tin')?.dirty || slidePersonalInformationForm.get('tin')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">SSS</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="sss"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.sss">
-            <ng-container *ngIf="slidePersonalInformationForm.get('sss')?.hasError(validation.type) && (slidePersonalInformationForm.get('sss')?.dirty || slidePersonalInformationForm.get('sss')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">SSS</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="sss"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.sss">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('sss')?.hasError(validation.type) && (slidePersonalInformationForm.get('sss')?.dirty || slidePersonalInformationForm.get('sss')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Religion</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="religion"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.religion">
-            <ng-container *ngIf="slidePersonalInformationForm.get('religion')?.hasError(validation.type) && (slidePersonalInformationForm.get('religion')?.dirty || slidePersonalInformationForm.get('religion')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Religion</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="religion"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.religion">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('religion')?.hasError(validation.type) && (slidePersonalInformationForm.get('religion')?.dirty || slidePersonalInformationForm.get('religion')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Height (cm)</ion-label>
-            <ion-input autocapitalize type="number" formControlName="height"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.height">
-            <ng-container *ngIf="slidePersonalInformationForm.get('height')?.hasError(validation.type) && (slidePersonalInformationForm.get('height')?.dirty || slidePersonalInformationForm.get('height')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Height (cm)</ion-label>
+          <ion-input autocapitalize type="number" formControlName="height"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.height">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('height')?.hasError(validation.type) && (slidePersonalInformationForm.get('height')?.dirty || slidePersonalInformationForm.get('height')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Weight (kg)</ion-label>
-            <ion-input autocapitalize type="number" formControlName="weight"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.weight">
-            <ng-container *ngIf="slidePersonalInformationForm.get('weight')?.hasError(validation.type) && (slidePersonalInformationForm.get('weight')?.dirty || slidePersonalInformationForm.get('weight')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Weight (kg)</ion-label>
+          <ion-input autocapitalize type="number" formControlName="weight"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.weight">
+          <ng-container
+            *ngIf="slidePersonalInformationForm.get('weight')?.hasError(validation.type) && (slidePersonalInformationForm.get('weight')?.dirty || slidePersonalInformationForm.get('weight')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
 
       </form>
@@ -224,128 +242,139 @@
     <ion-slide>
       <form [formGroup]="slideContactInformationForm">
 
-          <ion-item-divider>
-            <ion-label>Contact Information</ion-label>
-          </ion-item-divider>
-          <ion-item>
-            <ion-label position="floating">Phone Number</ion-label>
-            <ion-input autocapitalize inputmode="tel" formControlName="phoneno"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.phoneno">
-            <ng-container *ngIf="slideContactInformationForm.get('phoneno')?.hasError(validation.type) && (slideContactInformationForm.get('phoneno')?.dirty || slideContactInformationForm.get('phoneno')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item-divider>
+          <ion-label>Contact Information</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Phone Number</ion-label>
+          <ion-input autocapitalize inputmode="tel" formControlName="phoneno"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.phoneno">
+          <ng-container
+            *ngIf="slideContactInformationForm.get('phoneno')?.hasError(validation.type) && (slideContactInformationForm.get('phoneno')?.dirty || slideContactInformationForm.get('phoneno')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Mobile Number</ion-label>
-            <ion-input autocapitalize inputmode="tel" formControlName="mobileno"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.mobileno">
-            <ng-container *ngIf="slideContactInformationForm.get('mobileno')?.hasError(validation.type) && (slideContactInformationForm.get('mobileno')?.dirty || slideContactInformationForm.get('mobileno')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Mobile Number</ion-label>
+          <ion-input autocapitalize inputmode="tel" formControlName="mobileno"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.mobileno">
+          <ng-container
+            *ngIf="slideContactInformationForm.get('mobileno')?.hasError(validation.type) && (slideContactInformationForm.get('mobileno')?.dirty || slideContactInformationForm.get('mobileno')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input autocapitalize inputmode="email" formControlName="email"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.email">
-            <ng-container *ngIf="slideContactInformationForm.get('email')?.hasError(validation.type) && (slideContactInformationForm.get('email')?.dirty || slideContactInformationForm.get('email')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input autocapitalize inputmode="email" formControlName="email"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.email">
+          <ng-container
+            *ngIf="slideContactInformationForm.get('email')?.hasError(validation.type) && (slideContactInformationForm.get('email')?.dirty || slideContactInformationForm.get('email')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
       </form>
     </ion-slide>
     <ion-slide>
       <form [formGroup]="slideAddressForm">
-          <ion-item-divider>
-            <ion-label>Address</ion-label>
-          </ion-item-divider>
-          <ion-item>
-            <ion-label position="floating">Address Type</ion-label>
-            <ion-select placeholder="Select One" formControlName="addresstype">
-              <ion-select-option value="local">Local</ion-select-option>
-              <ion-select-option value="nonlocals">Non Local</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.addresstype">
-            <ng-container *ngIf="slideAddressForm.get('addresstype')?.hasError(validation.type) && (slideAddressForm.get('addresstype')?.dirty || slideAddressForm.get('addresstype')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item-divider>
+          <ion-label>Address</ion-label>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label position="floating">Address Type</ion-label>
+          <ion-select placeholder="Select One" formControlName="addresstype">
+            <ion-select-option value="local">Local</ion-select-option>
+            <ion-select-option value="nonlocals">Non Local</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.addresstype">
+          <ng-container
+            *ngIf="slideAddressForm.get('addresstype')?.hasError(validation.type) && (slideAddressForm.get('addresstype')?.dirty || slideAddressForm.get('addresstype')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Province</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="province"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.province">
-            <ng-container *ngIf="slideAddressForm.get('province')?.hasError(validation.type) && (slideAddressForm.get('province')?.dirty || slideAddressForm.get('province')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Province</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="province"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.province">
+          <ng-container
+            *ngIf="slideAddressForm.get('province')?.hasError(validation.type) && (slideAddressForm.get('province')?.dirty || slideAddressForm.get('province')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Municipality/City</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="municipality"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.municipality">
-            <ng-container *ngIf="slideAddressForm.get('municipality')?.hasError(validation.type) && (slideAddressForm.get('municipality')?.dirty || slideAddressForm.get('municipality')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Municipality/City</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="municipality"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.municipality">
+          <ng-container
+            *ngIf="slideAddressForm.get('municipality')?.hasError(validation.type) && (slideAddressForm.get('municipality')?.dirty || slideAddressForm.get('municipality')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Building No.</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="bldgno"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.bldgno">
-            <ng-container *ngIf="slideAddressForm.get('bldgno')?.hasError(validation.type) && (slideAddressForm.get('bldgno')?.dirty || slideAddressForm.get('bldgno')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Building No.</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="bldgno"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.bldgno">
+          <ng-container
+            *ngIf="slideAddressForm.get('bldgno')?.hasError(validation.type) && (slideAddressForm.get('bldgno')?.dirty || slideAddressForm.get('bldgno')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Building Name</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="bldgname"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.bldgname">
-            <ng-container *ngIf="slideAddressForm.get('bldgname')?.hasError(validation.type) && (slideAddressForm.get('bldgname')?.dirty || slideAddressForm.get('bldgname')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Building Name</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="bldgname"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.bldgname">
+          <ng-container
+            *ngIf="slideAddressForm.get('bldgname')?.hasError(validation.type) && (slideAddressForm.get('bldgname')?.dirty || slideAddressForm.get('bldgname')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Unit No.</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="unitno"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.unitno">
-            <ng-container *ngIf="slideAddressForm.get('unitno')?.hasError(validation.type) && (slideAddressForm.get('unitno')?.dirty || slideAddressForm.get('unitno')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Unit No.</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="unitno"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.unitno">
+          <ng-container
+            *ngIf="slideAddressForm.get('unitno')?.hasError(validation.type) && (slideAddressForm.get('unitno')?.dirty || slideAddressForm.get('unitno')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Street</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="street"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.street">
-            <ng-container *ngIf="slideAddressForm.get('street')?.hasError(validation.type) && (slideAddressForm.get('street')?.dirty || slideAddressForm.get('street')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Street</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="street"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.street">
+          <ng-container
+            *ngIf="slideAddressForm.get('street')?.hasError(validation.type) && (slideAddressForm.get('street')?.dirty || slideAddressForm.get('street')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
-          <ion-item>
-            <ion-label position="floating">Subdivision</ion-label>
-            <ion-input autocapitalize inputmode="text" formControlName="subdivision"></ion-input>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.subdivision">
-            <ng-container *ngIf="slideAddressForm.get('subdivision')?.hasError(validation.type) && (slideAddressForm.get('subdivision')?.dirty || slideAddressForm.get('subdivision')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+        <ion-item>
+          <ion-label position="floating">Subdivision</ion-label>
+          <ion-input autocapitalize inputmode="text" formControlName="subdivision"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.subdivision">
+          <ng-container
+            *ngIf="slideAddressForm.get('subdivision')?.hasError(validation.type) && (slideAddressForm.get('subdivision')?.dirty || slideAddressForm.get('subdivision')?.touched)">
+            <small class="error-message">{{ validation.message }}</small>
+          </ng-container>
+        </div>
 
       </form>
     </ion-slide>

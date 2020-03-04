@@ -29,8 +29,6 @@ export class FarmlocationdetailPage {
     private farmerService: FarmerService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private storage: Storage,
-    private farmlocationService: FarmlocationService,
     private masterService: MasterService
   ) {
     this.farmerLocationForm = this.formBuilder.group({

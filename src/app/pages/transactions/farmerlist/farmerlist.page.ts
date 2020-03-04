@@ -33,17 +33,21 @@ export class FarmerlistPage implements OnInit {
       setTimeout(() => {
         console.log("Done");
         this.farmerService.getItems().then(items => {
-          this.pagenumber += 1;
-          items.forEach(farmer => {
-            this.filterFarmer(farmer, queryWords);
-          });
-          items = items.filter(i => i.hide === false);
-          const sorteditems = items.sort((a, b) =>
-            a.farmer.lastname > b.farmer.lastname ? 1 : -1
-          );
-          this.farmers = this.farmers.concat(
-            this.paginate(sorteditems, this.pagesize, this.pagenumber)
-          );
+          if (!items) {
+            this.farmerService.makelist();
+          } else {
+            this.pagenumber += 1;
+            items.forEach(farmer => {
+              this.filterFarmer(farmer, queryWords);
+            });
+            items = items.filter(i => i.hide === false);
+            const sorteditems = items.sort((a, b) =>
+              a.farmer.lastname > b.farmer.lastname ? 1 : -1
+            );
+            this.farmers = this.farmers.concat(
+              this.paginate(sorteditems, this.pagesize, this.pagenumber)
+            );
+          }
         });
         event.target.complete();
         if (this.farmers.length === 1000) {
@@ -52,18 +56,22 @@ export class FarmerlistPage implements OnInit {
       }, 500);
     } else {
       this.farmerService.getItems().then(items => {
-        items.forEach(farmer => {
-          this.filterFarmer(farmer, queryWords);
-        });
-        items = items.filter(i => i.hide === false);
-        const sorteditems = items.sort((a, b) =>
-          a.farmer.lastname > b.farmer.lastname ? 1 : -1
-        );
-        this.farmers = this.paginate(
-          sorteditems,
-          this.pagesize,
-          this.pagenumber
-        );
+        if (!items) {
+          this.farmerService.makelist();
+        } else {
+          items.forEach(farmer => {
+            this.filterFarmer(farmer, queryWords);
+          });
+          items = items.filter(i => i.hide === false);
+          const sorteditems = items.sort((a, b) =>
+            a.farmer.lastname > b.farmer.lastname ? 1 : -1
+          );
+          this.farmers = this.paginate(
+            sorteditems,
+            this.pagesize,
+            this.pagenumber
+          );
+        }
       });
     }
   }
@@ -109,7 +117,6 @@ export class FarmerlistPage implements OnInit {
   private paginate(array, page_size, page_number) {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
   }
-
   editFarmer() {}
 
   deleteFarmer() {}

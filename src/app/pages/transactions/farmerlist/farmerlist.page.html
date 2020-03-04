@@ -16,7 +16,7 @@
     <!-- todo add barangay filter -->
     <nav class="navbar navbar-expand navbar-primary navbar-dark">
       <ion-searchbar [(ngModel)]="queryText" (ionChange)="loadFarmers(null)" placeholder="Search"></ion-searchbar>
-      <a class="btn btn-primary btn-sm" href="#">
+      <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/capturefarmer">
         <i class="fas fa-plus">
         </i>
         Add

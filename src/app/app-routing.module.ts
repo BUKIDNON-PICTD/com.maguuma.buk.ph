@@ -55,7 +55,12 @@ const routes: Routes = [
   {
     path: 'syncpage',
     loadChildren: () => import('./pages/syncpage/syncpage.module').then( m => m.SyncpagePageModule)
+  },
+  {
+    path: 'capturefarmer',
+    loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule)
   }
+
 ];
 
 @NgModule({

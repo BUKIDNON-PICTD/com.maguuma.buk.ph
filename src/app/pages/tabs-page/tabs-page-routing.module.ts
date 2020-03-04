@@ -46,6 +46,27 @@ const routes: Routes = [
             component: FarmerlistPage
           },
           {
+            path: "capturefarmer",
+            loadChildren: () =>
+              import("../transactions/capturefarmer/capturefarmer.module").then(
+                m => m.CapturefarmerPageModule
+              )
+          },
+          {
+            path: "capturefarmer/:farmerid",
+            loadChildren: () =>
+              import("../transactions/capturefarmer/capturefarmer.module").then(
+                m => m.CapturefarmerPageModule
+              )
+          },
+          {
+            path: "capturefarmer/spouse/:spouseid",
+            loadChildren: () =>
+              import("../transactions/capturefarmer/capturefarmer.module").then(
+                m => m.CapturefarmerPageModule
+              )
+          },
+          {
             path: "farmerdetail/:farmerid",
             loadChildren: () =>
               import("../transactions/farmerdetail/farmerdetail.module").then(

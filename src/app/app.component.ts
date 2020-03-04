@@ -44,6 +44,11 @@ export class AppComponent {
           title: 'Farmer List',
           url: '/app/tabs/farmerlist',
           icon: 'people'
+        },
+        {
+          title: 'Capture Farmer',
+          url: '/capturefarmer',
+          icon: 'people'
         }
       ]
     },
@@ -127,8 +132,9 @@ export class AppComponent {
     //   ]
     // }
   ];
-  
 
+  dark = false;
+  
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -136,7 +142,7 @@ export class AppComponent {
     private offlineManager: OfflineManagerService,
     private networkService: NetworkService,
     private storage: Storage,
-    public socket: Socket
+    // public socket: Socket
   ) {
     this.initializeApp();
   }

@@ -7,161 +7,85 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="farmerPersonalProfileForm">
-    {{farmerPersonalProfileForm.value | json}}
-    <ion-toolbar color="primary">
+<ion-content class="ion-padding" *ngIf="farmer">
+
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
       <ion-title>Personal Information</ion-title>
-    </ion-toolbar>
-    <div formGroupName="farmer">
-      <ion-item>
-        <ion-label position="floating">Last Name</ion-label>
-        <ion-input autocapitalize inputmode="text" formControlName="lastname"></ion-input>
-      </ion-item>
+      <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/capturefarmer/{{farmer?.objid}}">
+        <i class="fas fa-edit">
+        </i>
+        Edit
+      </a>
+    </nav>
+  </ion-toolbar>
+  <div>
+    <ion-item>
+      <ion-label><strong>Farmer Name:</strong> {{farmer.farmer.name}}</ion-label>
+    </ion-item>
 
-      <div *ngFor="let validation of validation_messages.lastname">
-        <ng-container
-          *ngIf="farmerPersonalProfileForm.get('lastname')?.hasError(validation.type) && (farmerPersonalProfileForm.get('lastname')?.dirty || farmerPersonalProfileForm.get('lastname')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
+    <ion-item *ngIf="farmer.maidenname">
+      <ion-label><strong>Maiden Name:</strong> {{farmer.maidenname}}</ion-label>
+    </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">First Name</ion-label>
-        <ion-input autocapitalize inputmode="text" formControlName="firstname"></ion-input>
-      </ion-item>
+    <ion-item *ngIf="farmer.nameextension">
+      <ion-label><strong>Name Extension:</strong> {{farmer.nameextension}}</ion-label>
+    </ion-item>
 
-      <div *ngFor="let validation of validation_messages.firstname">
-        <ng-container
-          *ngIf="farmerPersonalProfileForm.get('firstname')?.hasError(validation.type) && (farmerPersonalProfileForm.get('firstname')?.dirty || farmerPersonalProfileForm.get('firstname')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
+    <ion-item *ngIf="farmer.prenametitle">
+      <ion-label><strong>Pre Name Title:</strong> {{farmer.prenametitle}}</ion-label>
+    </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Middle Name</ion-label>
-        <ion-input autocapitalize inputmode="text" formControlName="middlename"></ion-input>
-      </ion-item>
-
-      <div *ngFor="let validation of validation_messages.middlename">
-        <ng-container
-          *ngIf="farmerPersonalProfileForm.get('middlename')?.hasError(validation.type) && (farmerPersonalProfileForm.get('middlename')?.dirty || farmerPersonalProfileForm.get('middlename')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
-
-    </div>
+    <ion-item *ngIf="farmer.postnametitle">
+      <ion-label><strong>Post Name Title:</strong> {{farmer.postnametitle}}</ion-label>
+    </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Maiden Name</ion-label>
-      <ion-input autocapitalize inputmode="text" formControlName="maidenname"></ion-input>
+      <ion-label><strong>Gender:</strong> {{farmer.farmer.gender}}</ion-label>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.maidenname">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('maidenname')?.hasError(validation.type) && (farmerPersonalProfileForm.get('maidenname')?.dirty || farmerPersonalProfileForm.get('maidenname')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
 
     <ion-item>
-      <ion-label position="floating">Name Extension</ion-label>
-      <ion-input autocapitalize inputmode="text" formControlName="nameextension"></ion-input>
+      <ion-label><strong>Birth Date:</strong> {{farmer.farmer.birthdate | date: 'dd/MM/yyyy'}}</ion-label>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.nameextension">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('nameextension')?.hasError(validation.type) && (farmerPersonalProfileForm.get('nameextension')?.dirty || farmerPersonalProfileForm.get('nameextension')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
 
     <ion-item>
-      <ion-label position="floating">Pre Name Title</ion-label>
-      <ion-input autocapitalize inputmode="text" formControlName="prenametitle"></ion-input>
+      <ion-label><strong>Civil Status:</strong> {{farmer.farmer.civilstatus}}</ion-label>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.prenametitle">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('prenametitle')?.hasError(validation.type) && (farmerPersonalProfileForm.get('prenametitle')?.dirty || farmerPersonalProfileForm.get('prenametitle')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
 
     <ion-item>
-      <ion-label position="floating">Post Name Title</ion-label>
-      <ion-input autocapitalize inputmode="text" formControlName="postnametitle"></ion-input>
+      <ion-label><strong>Address:</strong> {{farmer.farmer.address.text}}</ion-label>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.postnametitle">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('postnametitle')?.hasError(validation.type) && (farmerPersonalProfileForm.get('postnametitle')?.dirty || farmerPersonalProfileForm.get('postnametitle')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
+
+    <ion-item>
+      <ion-label><strong>Spouse:</strong> {{farmer?.spouse?.name}}</ion-label>
+      <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/capturefarmer/spouse/{{farmer?.objid}}">
+        <i class="fas fa-edit">
+        </i>
+        Edit
+      </a>
+    </ion-item>
+  </div>
+
+
+  <form [formGroup]="farmerPersonalProfileForm">
     <ion-toolbar color="primary">
-      <ion-title>Details</ion-title>
+      <nav class="navbar navbar-expand navbar-primary navbar-dark">
+        <ion-title>Farmer Affiliation</ion-title>
+      </nav>
     </ion-toolbar>
-    <div formGroupName='farmer'>
-      <ion-item>
-        <ion-label position="floating">Birth Date</ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY" formControlName="birthdate" placeholder="Select Date">
-        </ion-datetime>
-      </ion-item>
-      <div *ngFor="let validation of validation_messages.birthdate">
-        <ng-container *ngIf="farmerPersonalProfileForm.get('birthdate')?.hasError(validation.type) && (farmerPersonalProfileForm.get('birthdate')?.dirty || farmerPersonalProfileForm.get('birthdate')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
-  
-      <ion-item>
-        <ion-label position="floating">Gender</ion-label>
-        <ion-select placeholder="Select One" formControlName="gender">
-          <ion-select-option value="F">Female</ion-select-option>
-          <ion-select-option value="M">Male</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <div *ngFor="let validation of validation_messages.gender">
-        <ng-container *ngIf="farmerPersonalProfileForm.get('gender')?.hasError(validation.type) && (farmerPersonalProfileForm.get('gender')?.dirty || farmerPersonalProfileForm.get('gender')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
-
-      <ion-item>
-        <ion-label position="floating">Civil Status</ion-label>
-        <ion-select placeholder="Select One" formControlName="civilstatus">
-          <ion-select-option value="SINGLE">SINGLE</ion-select-option>
-          <ion-select-option value="MARRIED">MARRIED</ion-select-option>
-          <ion-select-option value="COUPLE">COUPLE</ion-select-option>
-          <ion-select-option value="SEPARATED">SEPARATED</ion-select-option>
-          <ion-select-option value="WIDOW">WIDOW/WIDOWER</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <div *ngFor="let validation of validation_messages.civilstatus">
-        <ng-container *ngIf="farmerPersonalProfileForm.get('civilstatus')?.hasError(validation.type) && (farmerPersonalProfileForm.get('civilstatus')?.dirty || farmerPersonalProfileForm.get('civilstatus')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
-    </div>
+    {{farmerPersonalProfileForm.value | json}}
     <ion-item>
-      <ion-label >4P's Beneficiary</ion-label>
+      <ion-label>4P's Beneficiary</ion-label>
       <ion-toggle formControlName="is4ps"></ion-toggle>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.is4ps">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('is4ps')?.hasError(validation.type) && (farmerPersonalProfileForm.get('is4ps')?.dirty || farmerPersonalProfileForm.get('is4ps')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
-     <ion-item>
-      <ion-label >IP Member</ion-label>
+    <ion-item>
+      <ion-label>IP Member</ion-label>
       <ion-toggle formControlName="isIP"></ion-toggle>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.isIP">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('isIP')?.hasError(validation.type) && (farmerPersonalProfileForm.get('isIP')?.dirty || farmerPersonalProfileForm.get('isIP')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
-     <ion-item>
-      <ion-label >Farmer Association Member</ion-label>
+    <ion-item>
+      <ion-label>Farmer Association Member</ion-label>
       <ion-toggle formControlName="isFarmerAssociationMember"></ion-toggle>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.isFarmerAssociationMember">
-      <ng-container *ngIf="farmerPersonalProfileForm.get('isFarmerAssociationMember')?.hasError(validation.type) && (farmerPersonalProfileForm.get('isFarmerAssociationMember')?.dirty || farmerPersonalProfileForm.get('isFarmerAssociationMember')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-      </ng-container>
-    </div>
   </form>
   <ion-toolbar color="primary">
     <nav class="navbar navbar-expand navbar-primary navbar-dark">

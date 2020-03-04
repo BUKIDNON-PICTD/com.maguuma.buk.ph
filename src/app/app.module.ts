@@ -12,7 +12,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { Network } from '@ionic-native/network/ngx';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-const config: SocketIoConfig = { url: 'http://localhost:3001s', options: {options: { autoConnect : false } }};
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+const config: SocketIoConfig = { url: 'http://localhost:3001', options: {options: { autoConnect : false } }};
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,7 +25,12 @@ const config: SocketIoConfig = { url: 'http://localhost:3001s', options: {option
     }),
     HttpClientModule,
     AppRoutingModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    FormsModule,
+    ReactiveFormsModule,
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: environment.production
+    // })
   ],
   providers: [
     StatusBar,
