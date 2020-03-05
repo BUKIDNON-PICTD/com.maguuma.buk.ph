@@ -144,8 +144,9 @@ export class FarmlocationdetailPage {
 
         newfarmlocation = {...newfarmlocation, ...this.farmerLocationForm.value};
         newfarmlocation.location.text = newfarmlocation.farmlocation.text;
+        //kulang diri pag save
       } else {
-        
+
       }
     }
   }
