@@ -74,6 +74,13 @@ const routes: Routes = [
               )
           },
           {
+            path: "farmlocationdetail/:farmerid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmlocationdetail/farmlocationdetail.module"
+              ).then(m => m.FarmlocationdetailPageModule)
+          },
+          {
             path: "farmlocationdetail/:farmerid/:locationid",
             loadChildren: () =>
               import(

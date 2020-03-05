@@ -1,10 +1,11 @@
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { FarmerService } from "src/app/services/farmer.service";
 import { ActivatedRoute } from "@angular/router";
 import { Storage } from "@ionic/storage";
 import { FarmlocationService } from "src/app/services/farmlocation.service";
 import { MasterService } from 'src/app/services/master.service';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 @Component({
   selector: "app-farmlocationdetail",
   templateUrl: "./farmlocationdetail.page.html",
@@ -24,6 +25,9 @@ export class FarmlocationdetailPage {
   commodities: any[];
   livestocks: any;
   assistances: any;
+  mode: string;
+  viewEntered: boolean = false;
+  isSubmitted: boolean = false;
 
   constructor(
     private farmerService: FarmerService,
@@ -32,40 +36,45 @@ export class FarmlocationdetailPage {
     private masterService: MasterService
   ) {
     this.farmerLocationForm = this.formBuilder.group({
-      areasqm: [""],
+      areasqm: [
+        "",
+        Validators.compose([
+          Validators.required
+        ])
+      ],
       farmerprofileid: [""],
       pin: [""],
-      modeofacquisition: [""],
-      objid: [""],
-      location: formBuilder.group({
-        text: [""]
-      }),
+      modeofacquisition: ["", Validators.compose([Validators.required])],
       barangay: formBuilder.group({
-        objid: [""]
+        name: [""],
+        objid:  ["", Validators.compose([Validators.required])],
       }),
       province: formBuilder.group({
-        objid: [""]
+        name: [""],
+        objid:  ["", Validators.compose([Validators.required])],
       }),
       municipality: formBuilder.group({
-        objid: [""]
+        name: [""],
+        objid:  ["", Validators.compose([Validators.required])],
       }),
-      street: [""]
+      street: ["", Validators.compose([Validators.maxLength(100)])]
     });
 
     this.validation_messages = {
-      areasqm: [""],
-      farmerprofileid: [""],
-      pin: [""],
-      modeofacquisition: [""],
-      objid: [""],
-      location: {
-        text: [""]
-      },
-      barangay: [""],
-      city: [""],
-      province: [""],
-      municipality: [""],
-      street: [""]
+      areasqm: [
+        { type: "required", message: "Area is required." },
+        {
+          type: "number",
+          message: "Area must be a number."
+        }
+      ],
+      modeofacquisition: [{ type: "required", message: "Mode of acquisition is required." }],
+      barangay: [{ type: "required", message: "Barangay is required." }],
+      province: [{ type: "required", message: "Province is required." }],
+      municipality: [{ type: "required", message: "Municipality is required." }],
+      street: [
+        { type: "maxlength", message: "Street cannot be more than 100 characters long."},
+      ]
     };
 
     this.masterService.getMasterFile("province").then(items => {
@@ -79,6 +88,7 @@ export class FarmlocationdetailPage {
     this.masterService.getMasterFile("barangay").then(items => {
       this.barangays = items;
     });
+    this.mode = 'create';
   }
 
   onProvinceChange() {
@@ -97,33 +107,88 @@ export class FarmlocationdetailPage {
     });
   }
 
+  save() {
+    this.isSubmitted = true;
+    if (this.farmerLocationForm.valid) {
+      if (this.mode == 'create') {
+        let newfarmlocation = {
+          objid : this.create_UUID(),
+          commodities: [],
+          livestocks: [],
+          farmlocation : {
+            type: "local",
+            barangay : this.farmerLocationForm.controls.barangay.value,
+            municipality: this.farmerLocationForm.controls.municipality.value,
+            province: this.farmerLocationForm.controls.province.value,
+            street: this.farmerLocationForm.controls.street.value,
+            text : (this.farmerLocationForm.controls.street.value ? this.farmerLocationForm.controls.street.value + " " : "") +
+            " " +
+            this.barangays.find(
+              o => o.objid === this.farmerLocationForm.get('barangay.objid').value
+            ).name +
+            ", " +
+            this.municipalities.find(
+              o => o.objid === this.farmerLocationForm.get('municipality.objid').value
+            ).name +
+            " " +
+            this.provinces.find(
+              o => o.objid === this.farmerLocationForm.get('province.objid').value
+            ).name,
+          },
+          location: null,
+          barangay: this.barangays.find(
+            o => o.objid === this.farmerLocationForm.get('barangay.objid').value
+          )
+
+        };
+
+        newfarmlocation = {...newfarmlocation, ...this.farmerLocationForm.value};
+        newfarmlocation.location.text = newfarmlocation.farmlocation.text;
+      } else {
+        
+      }
+    }
+  }
+
+  create_UUID() {
+    var dt = new Date().getTime();
+    var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
+      c
+    ) {
+      var r = (dt + Math.random() * 16) % 16 | 0;
+      dt = Math.floor(dt / 16);
+      return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    });
+    return uuid;
+  }
+
   ionViewWillEnter() {
     this.farmerid = this.route.snapshot.paramMap.get("farmerid");
     this.locationid = this.route.snapshot.paramMap.get("locationid");
   }
 
   ionViewDidEnter() {
+    this.viewEntered = true;
     this.defaultHref = `/app/tabs/farmerlist/farmerdetail/` + this.farmerid;
     this.farmerService.getItem(this.farmerid).then(item => {
       if (item) {
         this.farmer = item;
-        this.farmlocation = item.farmlocations.find(o => o.objid === this.locationid);
-
         this.farmerLocationForm.patchValue({
           province: { objid: "059" }
         });
-        this.masterService.getMasterFile("barangay").then(items => {
-          let brgy = items.find(o => o.objid === this.farmlocation.barangay.objid);
-          this.farmerLocationForm.patchValue({
-            municipality: { objid: brgy.parentid }
+        if (this.locationid){
+          this.farmlocation = item.farmlocations.find(o => o.objid === this.locationid);
+          this.masterService.getMasterFile("barangay").then(async items => {
+            let brgy = items.find(o => o.objid === this.farmlocation.barangay.objid);
+            await this.farmerLocationForm.patchValue({
+              municipality: { objid: brgy.parentid }
+            });
           });
-        });
-        
-        this.farmerLocationForm.patchValue(this.farmlocation);
-        this.commodities = this.farmlocation.commodities;
-        this.livestocks = this.farmlocation.livestocks;
-       
-        
+          this.farmerLocationForm.patchValue(this.farmlocation);
+          this.commodities = this.farmlocation.commodities;
+          this.livestocks = this.farmlocation.livestocks;
+          this.mode = 'edit';
+        }
       }
     });
   }

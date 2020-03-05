@@ -9,7 +9,7 @@ export class FarmlocationcommodityService {
   constructor(private storage: Storage) {
     this._agri_farmerprofile_location_commodity = new Storage({
       storeName: '_agri_farmerprofile_location_commodity',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
    }
 

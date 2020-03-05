@@ -12,12 +12,12 @@ export class FarmerService {
   constructor(private storage: Storage) {
     this._agri_farmerprofile = new Storage({
       storeName: "_agri_farmerprofile",
-      driverOrder: ["sqlite", "indexeddb", "websql", "localstorage"]
+      driverOrder: ["indexeddb", "sqlite", "websql", "localstorage"]
     });
 
     this.tblfarmerlist = new Storage({
       storeName: "_tblfarmerlist",
-      driverOrder: ["sqlite", "indexeddb", "websql", "localstorage"]
+      driverOrder: ["indexeddb", "sqlite", "websql", "localstorage"]
     });
   }
 
@@ -68,15 +68,15 @@ export class FarmerService {
       if (!item) {
        
         await this._agri_farmerprofile.set(farmer.objid, farmer);
-        await this.getItems().then(items => {
+        await this.getItems().then( async items => {
           if (items) {
             items.push(farmer);
-            this.tblfarmerlist.set("farmerlist", items);
+            await this.tblfarmerlist.set("farmerlist", items);
           } else {
-            this.tblfarmerlist.set("farmerlist", [farmer]);
+            await this.tblfarmerlist.set("farmerlist", [farmer]);
           }
         });
-        return this.getItem(farmer.objid);
+        return await this.getItem(farmer.objid);
       }
     });
   }
@@ -99,29 +99,29 @@ export class FarmerService {
     });
   }
 
-  updatefarmer(farmer: any): Promise<any> {
+ updatefarmer(farmer: any): Promise<any> {
     return this._agri_farmerprofile.get(farmer.objid).then(async item => {
       if (!item) {
         return null;
       }
-      
+      console.log(farmer);
       await this._agri_farmerprofile.set(farmer.objid, farmer);
-      await this.getItems().then(items => {
+      await this.getItems().then(async items => {
         if (!items || items.length === 0) {
           return null;
         }
         let newItems: any[] = [];
   
         for (let i of items) {
-          if (i.objid == item.objid) {
-            newItems.push(item);
+          if (i.objid == farmer.objid) {
+            newItems.push(farmer);
           } else {
             newItems.push(i);
           }
         }
-        this.tblfarmerlist.set('farmerlist', newItems);
+        await this.tblfarmerlist.set('farmerlist', newItems);
       });
-      return this.getItem(farmer.objid);
+      return await this.getItem(farmer.objid);
     });
   }
 

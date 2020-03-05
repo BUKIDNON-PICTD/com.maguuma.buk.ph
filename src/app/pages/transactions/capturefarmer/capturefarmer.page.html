@@ -28,77 +28,84 @@
         </ion-toolbar>
         <ion-item>
           <ion-label position="floating">Last Name</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="lastname"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="lastname"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.lastname">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('lastname')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('lastname')?.hasError(validation.type) && (farmerPersonalInformationForm.get('lastname')?.dirty || farmerPersonalInformationForm.get('lastname')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
         <ion-item>
           <ion-label position="floating">First Name</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="firstname"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="firstname"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.firstname">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('firstname')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('firstname')?.hasError(validation.type) && (farmerPersonalInformationForm.get('firstname')?.dirty || farmerPersonalInformationForm.get('firstname')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Middle Name</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="middlename"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="middlename"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.middlename">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('middlename')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('middlename')?.hasError(validation.type) && (farmerPersonalInformationForm.get('middlename')?.dirty || farmerPersonalInformationForm.get('middlename')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Maiden Name</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="maidenname"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="maidenname"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.maidenname">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('maidenname')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('maidenname')?.hasError(validation.type) && (farmerPersonalInformationForm.get('maidenname')?.dirty || farmerPersonalInformationForm.get('maidenname')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Name Extension</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="nameextension"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="nameextension"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.nameextension">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('nameextension')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('nameextension')?.hasError(validation.type) && (farmerPersonalInformationForm.get('nameextension')?.dirty || farmerPersonalInformationForm.get('nameextension')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Pre Name Title</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="prenametitle"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="prenametitle"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.prenametitle">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('prenametitle')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('prenametitle')?.hasError(validation.type) && (farmerPersonalInformationForm.get('prenametitle')?.dirty || farmerPersonalInformationForm.get('prenametitle')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Post Name Title</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="postnametitle"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="postnametitle"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.postnametitle">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('postnametitle')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('postnametitle')?.hasError(validation.type) && (farmerPersonalInformationForm.get('postnametitle')?.dirty || farmerPersonalInformationForm.get('postnametitle')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -110,7 +117,7 @@
         <div *ngFor="let validation of validation_messages.birthdate">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('birthdate')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('birthdate')?.hasError(validation.type) && (farmerPersonalInformationForm.get('birthdate')?.dirty || farmerPersonalInformationForm.get('birthdate')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -124,7 +131,7 @@
         <div *ngFor="let validation of validation_messages.gender">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('gender')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('gender')?.hasError(validation.type) && (farmerPersonalInformationForm.get('gender')?.dirty || farmerPersonalInformationForm.get('gender')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
       </form>
@@ -138,10 +145,16 @@
         </ion-toolbar>
         <ion-list>
           <ion-list-header *ngIf="matches[0]?.match < 100">
-            The system found {{matches.length}} profile(s) that matches {{farmerPersonalInformationForm.get('lastname').value}}, {{farmerPersonalInformationForm.get('firstname').value}} {{farmerPersonalInformationForm.get('middlename')?.value}}. If this entity is not related to the list items you can proceed to the next form.
+            The system found {{matches.length}} profile(s) that matches
+            {{farmerPersonalInformationForm.get('lastname').value}},
+            {{farmerPersonalInformationForm.get('firstname').value}}
+            {{farmerPersonalInformationForm.get('middlename')?.value}}. If this entity is not related to the list items
+            you can proceed to the next form.
           </ion-list-header>
           <ion-list-header *ngIf="matches[0]?.match == 100">
-            Their is a profile that exactly matches {{farmerPersonalInformationForm.get('lastname').value}}, {{farmerPersonalInformationForm.get('firstname').value}} {{farmerPersonalInformationForm.get('middlename')?.value}}. This means that the entity already exist.
+            Their is a profile that exactly matches {{farmerPersonalInformationForm.get('lastname').value}},
+            {{farmerPersonalInformationForm.get('firstname').value}}
+            {{farmerPersonalInformationForm.get('middlename')?.value}}. This means that the entity already exist.
           </ion-list-header>
           <ion-item-sliding *ngFor="let item of matches" #slidingItem>
             <ion-item>
@@ -151,7 +164,7 @@
                   {{item.fno}} <br>
                   {{item.farmer.address.text}} <br>
                 </p>
-               
+
               </ion-label>
               <ion-note slot="end" color="primary">
                 {{item.match | number : '.2-2'}}
@@ -171,23 +184,25 @@
         </ion-toolbar>
         <ion-item>
           <ion-label position="floating">Birth Place</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="birthplace"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="birthplace"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.birthplace">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('birthplace')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('birthplace')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('birthplace')?.dirty || farmerPersonalInformationDetailForm.get('birthplace')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Citizenship</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="citizenship"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="citizenship"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.citizenship">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('citizenship')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('citizenship')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('citizenship')?.dirty || farmerPersonalInformationDetailForm.get('citizenship')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -204,51 +219,55 @@
         <div *ngFor="let validation of validation_messages.civilstatus">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('civilstatus')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('civilstatus')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('civilstatus')?.dirty || farmerPersonalInformationDetailForm.get('civilstatus')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Profession</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="profession"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="profession"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.profession">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('profession')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('profession')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('profession')?.dirty || farmerPersonalInformationDetailForm.get('profession')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Tin</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="tin"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="tin"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.tin">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('tin')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('tin')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('tin')?.dirty || farmerPersonalInformationDetailForm.get('tin')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">SSS</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="sss"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="sss"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.sss">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('sss')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('sss')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('sss')?.dirty || farmerPersonalInformationDetailForm.get('sss')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Religion</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="religion"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="religion"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.religion">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationDetailForm.get('religion')?.hasError(validation.type)) || (farmerPersonalInformationDetailForm.get('religion')?.hasError(validation.type) && (farmerPersonalInformationDetailForm.get('religion')?.dirty || farmerPersonalInformationDetailForm.get('religion')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -259,7 +278,7 @@
         <div *ngFor="let validation of validation_messages.height">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('height')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('height')?.hasError(validation.type) && (farmerPersonalInformationForm.get('height')?.dirty || farmerPersonalInformationForm.get('height')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -270,7 +289,7 @@
         <div *ngFor="let validation of validation_messages.weight">
           <ng-container
             *ngIf="(isSubmitted && farmerPersonalInformationForm.get('weight')?.hasError(validation.type)) || (farmerPersonalInformationForm.get('weight')?.hasError(validation.type) && (farmerPersonalInformationForm.get('weight')?.dirty || farmerPersonalInformationForm.get('weight')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div> -->
       </form>
@@ -285,23 +304,25 @@
         </ion-toolbar>
         <ion-item>
           <ion-label position="floating">Phone Number</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="tel" formControlName="phoneno"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="tel"
+            formControlName="phoneno"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.phoneno">
           <ng-container
             *ngIf="(isSubmitted && farmerContactInformationForm.get('phoneno')?.hasError(validation.type)) || (farmerContactInformationForm.get('phoneno')?.hasError(validation.type) && (farmerContactInformationForm.get('phoneno')?.dirty || farmerContactInformationForm.get('phoneno')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
         <ion-item>
           <ion-label position="floating">Mobile Number</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="tel" formControlName="mobileno"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="tel"
+            formControlName="mobileno"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.mobileno">
           <ng-container
             *ngIf="(isSubmitted && farmerContactInformationForm.get('mobileno')?.hasError(validation.type)) || (farmerContactInformationForm.get('mobileno')?.hasError(validation.type) && (farmerContactInformationForm.get('mobileno')?.dirty || farmerContactInformationForm.get('mobileno')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
 
@@ -312,7 +333,7 @@
         <div *ngFor="let validation of validation_messages.email">
           <ng-container
             *ngIf="(isSubmitted && farmerContactInformationForm.get('email')?.hasError(validation.type)) || (farmerContactInformationForm.get('email')?.hasError(validation.type) && (farmerContactInformationForm.get('email')?.dirty || farmerContactInformationForm.get('email')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
       </form>
@@ -335,8 +356,8 @@
           </ion-item>
           <div *ngFor="let validation of validation_messages.province">
             <ng-container
-              *ngIf="(isSubmitted && farmerAddressForm.get('province')?.hasError(validation.type)) || (farmerAddressForm.get('province')?.hasError(validation.type) && (farmerAddressForm.get('province')?.dirty || farmerAddressForm.get('province')?.touched))">
-              <small class="error-message">{{ validation.message }}</small>
+              *ngIf="(isSubmitted && farmerAddressForm.get('province.objid')?.hasError(validation.type)) || (farmerAddressForm.get('province.objid')?.hasError(validation.type) && (farmerAddressForm.get('province.objid')?.dirty || farmerAddressForm.get('province.objid')?.touched))">
+              <small class="text-danger">{{ validation.message }}</small>
             </ng-container>
           </div>
         </div>
@@ -350,8 +371,8 @@
           </ion-item>
           <div *ngFor="let validation of validation_messages.municipality">
             <ng-container
-              *ngIf="(isSubmitted && farmerAddressForm.get('municipality')?.hasError(validation.type)) || (farmerAddressForm.get('municipality')?.hasError(validation.type) && (farmerAddressForm.get('municipality')?.dirty || farmerAddressForm.get('municipality')?.touched))">
-              <small class="error-message">{{ validation.message }}</small>
+              *ngIf="(isSubmitted && farmerAddressForm.get('municipality.objid')?.hasError(validation.type)) || (farmerAddressForm.get('municipality.objid')?.hasError(validation.type) && (farmerAddressForm.get('municipality.objid')?.dirty || farmerAddressForm.get('municipality.objid')?.touched))">
+              <small class="text-danger">{{ validation.message }}</small>
             </ng-container>
           </div>
         </div>
@@ -365,22 +386,48 @@
           </ion-item>
           <div *ngFor="let validation of validation_messages.barangay">
             <ng-container
-              *ngIf="(isSubmitted && farmerAddressForm.get('barangay')?.hasError(validation.type)) || (farmerAddressForm.get('barangay')?.hasError(validation.type) && (farmerAddressForm.get('barangay')?.dirty || farmerAddressForm.get('barangay')?.touched))">
-              <small class="error-message">{{ validation.message }}</small>
+              *ngIf="(isSubmitted && farmerAddressForm.get('barangay.objid')?.hasError(validation.type)) || (farmerAddressForm.get('barangay.objid')?.hasError(validation.type) && (farmerAddressForm.get('barangay.objid')?.dirty || farmerAddressForm.get('barangay.objid')?.touched))">
+              <small class="text-danger">{{ validation.message }}</small>
             </ng-container>
           </div>
         </div>
         <ion-item>
           <ion-label position="floating">Street</ion-label>
-          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="street"></ion-input>
+          <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+            formControlName="street"></ion-input>
         </ion-item>
         <div *ngFor="let validation of validation_messages.street">
           <ng-container
             *ngIf="(isSubmitted && farmerAddressForm.get('street')?.hasError(validation.type)) || (farmerAddressForm.get('street')?.hasError(validation.type) && (farmerAddressForm.get('street')?.dirty || farmerAddressForm.get('street')?.touched))">
-            <small class="error-message">{{ validation.message }}</small>
+            <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>
       </form>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <ion-toolbar color="primary">
+          <nav class="navbar navbar-expand navbar-primary navbar-dark">
+            <ion-title>Farmer Photo</ion-title>
+            <ion-button fill="clear" expand="full" color="light" (click)="selectImage()">
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Capture Photo
+            </ion-button>
+          </nav>
+        </ion-toolbar>
+        <ion-list>
+          <ion-item>
+            <img [src]="photo" />
+          </ion-item>
+        </ion-list>
+        
+      </div>
+
+      <!-- <img [src]="photo"/>
+      <h2>Ready to Play?</h2>
+      <ion-button fill="clear" expand="full" color="light" (click)="selectImage()">
+        <ion-icon slot="start" name="camera"></ion-icon>
+        Capture Photo</ion-button> -->
     </ion-slide>
   </ion-slides>
 </ion-content>

@@ -7,22 +7,31 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-toolbar color='primary'>
-    <ion-title>{{farmlocation?.location?.text}}</ion-title>
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Farm Location</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
   </ion-toolbar>
   <form [formGroup]="farmerLocationForm">
-    {{farmerLocationForm.value | json}}
+    <!-- {{farmerLocationForm.value | json}} -->
     <div formGroupName="province">
       <ion-item>
         <ion-label position="floating">Province</ion-label>
         <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onProvinceChange()">
-          <ion-select-option *ngFor="let province of provinces" value="{{province.objid}}">{{province.name}}</ion-select-option>
+          <ion-select-option *ngFor="let province of provinces" value="{{province.objid}}">{{province.name}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <div *ngFor="let validation of validation_messages.province">
-        <ng-container *ngIf="farmerLocationForm.get('province')?.hasError(validation.type) && (farmerLocationForm.get('province')?.dirty || farmerLocationForm.get('province')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
+        <ng-container
+          *ngIf="(isSubmitted && farmerLocationForm.get('province.objid')?.hasError(validation.type)) || (farmerLocationForm.get('province.objid')?.hasError(validation.type) && (farmerLocationForm.get('province.objid')?.dirty || farmerLocationForm.get('province.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
@@ -30,133 +39,142 @@
       <ion-item>
         <ion-label position="floating">Municipality/City</ion-label>
         <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onMunicipalityChange()">
-          <ion-select-option *ngFor="let municipality of municipalities" value="{{municipality.objid}}">{{municipality.name}}</ion-select-option>
+          <ion-select-option *ngFor="let municipality of municipalities" value="{{municipality.objid}}">
+            {{municipality.name}}</ion-select-option>
         </ion-select>
       </ion-item>
       <div *ngFor="let validation of validation_messages.municipality">
-        <ng-container *ngIf="farmerLocationForm.get('municipality')?.hasError(validation.type) && (farmerLocationForm.get('municipality')?.dirty || farmerLocationForm.get('municipality')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
+        <ng-container
+          *ngIf="(isSubmitted && farmerLocationForm.get('municipality.objid')?.hasError(validation.type)) || (farmerLocationForm.get('municipality.objid')?.hasError(validation.type) && (farmerLocationForm.get('municipality.objid')?.dirty || farmerLocationForm.get('municipality.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
     <div formGroupName="barangay">
       <ion-item>
         <ion-label position="floating">Barangay</ion-label>
-        <ion-select placeholder="Select One" formControlName="objid" >
-          <ion-select-option *ngFor="let barangay of barangays" value="{{barangay.objid}}">{{barangay.name}}</ion-select-option>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let barangay of barangays" value="{{barangay.objid}}">{{barangay.name}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <div *ngFor="let validation of validation_messages.barangay">
-        <ng-container *ngIf="farmerLocationForm.get('barangay')?.hasError(validation.type) && (farmerLocationForm.get('barangay')?.dirty || farmerLocationForm.get('barangay')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
+        <ng-container
+          *ngIf="(isSubmitted && farmerLocationForm.get('barangay.objid')?.hasError(validation.type)) || (farmerLocationForm.get('barangay.objid')?.hasError(validation.type) && (farmerLocationForm.get('barangay.objid')?.dirty || farmerLocationForm.get('barangay.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
-    <div formGroupName="location">
-      <ion-item>
-        <ion-label position="floating">Street</ion-label>
-        <ion-input autocapitalize inputmode="text" formControlName="text"></ion-input>
-      </ion-item>
-      <div *ngFor="let validation of validation_messages.street">
-        <ng-container *ngIf="farmerLocationForm.get('street')?.hasError(validation.type) && (farmerLocationForm.get('street')?.dirty || farmerLocationForm.get('street')?.touched)">
-            <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
+    <ion-item>
+      <ion-label position="floating">Street</ion-label>
+      <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text" formControlName="street"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.street">
+      <ng-container
+        *ngIf="(isSubmitted && farmerLocationForm.get('street')?.hasError(validation.type)) || (farmerLocationForm.get('street')?.hasError(validation.type) && (farmerLocationForm.get('street')?.dirty || farmerLocationForm.get('street')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
     </div>
 
     <ion-item>
       <ion-label position="floating">Area (sqm)</ion-label>
-      <ion-input autocapitalize type="number" formControlName="areasqm"></ion-input>
+      <ion-input type="number" formControlName="areasqm"></ion-input>
     </ion-item>
     <div *ngFor="let validation of validation_messages.areasqm">
-      <ng-container *ngIf="farmerLocationForm.get('areasqm')?.hasError(validation.type) && (farmerLocationForm.get('areasqm')?.dirty || farmerLocationForm.get('areasqm')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+      <ng-container
+        *ngIf="(isSubmitted && farmerLocationForm.get('areasqm')?.hasError(validation.type)) || (farmerLocationForm.get('areasqm')?.hasError(validation.type) && (farmerLocationForm.get('areasqm')?.dirty || farmerLocationForm.get('areasqm')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
       </ng-container>
     </div>
     <ion-item>
-            <ion-label position="floating">Mode of Acquisition</ion-label>
-            <ion-select placeholder="Select One" formControlName="modeofacquisition">
-              <ion-select-option value="OWNED">OWNED</ion-select-option>
-              <ion-select-option value="RENTED">RENTED</ion-select-option>
-              <ion-select-option value="LEASED">LEASED</ion-select-option>
-              <ion-select-option value="TENANT">TENANT</ion-select-option>
-              <ion-select-option value="OTHERS">OTHERS</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <div *ngFor="let validation of validation_messages.modeofacquisition">
-            <ng-container *ngIf="farmerLocationForm.get('modeofacquisition')?.hasError(validation.type) && (farmerLocationForm.get('modeofacquisition')?.dirty || farmerLocationForm.get('modeofacquisition')?.touched)">
-                <small class="error-message">{{ validation.message }}</small>
-            </ng-container>
-          </div>
+      <ion-label position="floating">Mode of Acquisition</ion-label>
+      <ion-select placeholder="Select One" formControlName="modeofacquisition">
+        <ion-select-option value="OWNED">OWNED</ion-select-option>
+        <ion-select-option value="RENTED">RENTED</ion-select-option>
+        <ion-select-option value="LEASED">LEASED</ion-select-option>
+        <ion-select-option value="TENANT">TENANT</ion-select-option>
+        <ion-select-option value="OTHERS">OTHERS</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.modeofacquisition">
+      <ng-container
+        *ngIf="(isSubmitted && farmerLocationForm.get('modeofacquisition')?.hasError(validation.type)) || (farmerLocationForm.get('modeofacquisition')?.hasError(validation.type) && (farmerLocationForm.get('modeofacquisition')?.dirty || farmerLocationForm.get('modeofacquisition')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
   </form>
-  <map [farmlocation]='farmlocation' [farmerid]='farmerid'></map>
-  <ion-toolbar color="primary">
-    <nav class="navbar navbar-expand navbar-primary navbar-dark">
-      <ion-title>Farm Commodity</ion-title>
-      <a class="btn btn-primary btn-sm" href="#">
-        <i class="fas fa-plus">
-        </i>
-        Add
-      </a>
-    </nav>
-  </ion-toolbar>
-  <ion-list #farmerList>
-    <ion-item-sliding *ngFor="let item of commodities" #slidingItem>
-      <ion-item routerLink="/app/tabs/farmerlist/farmlocationcommodity/{{farmer.objid}}/{{farmlocation.objid}}/{{item.objid}}">
-        <ion-label>
-          <h3>{{item.variety.commoditytype.commodity.name}}</h3>
-          <p>
-            Area(sqm) : {{item.areasqm}} <br>
-            Commodity Type : {{item.variety.commoditytype.name}} <br>
-            Variety : {{item.variety.name}}
-          </p>
-        </ion-label>
-      </ion-item>
-      <!-- <ion-item-options>
+  <div *ngIf="farmlocation">
+    <map [farmlocation]='farmlocation' [farmerid]='farmerid'></map>
+    <ion-toolbar color="primary">
+      <nav class="navbar navbar-expand navbar-primary navbar-dark">
+        <ion-title>Farm Commodity</ion-title>
+        <a class="btn btn-primary btn-sm" href="#">
+          <i class="fas fa-plus">
+          </i>
+          Add
+        </a>
+      </nav>
+    </ion-toolbar>
+    <ion-list #farmerList>
+      <ion-item-sliding *ngFor="let item of commodities" #slidingItem>
+        <ion-item
+          routerLink="/app/tabs/farmerlist/farmlocationcommodity/{{farmer.objid}}/{{farmlocation.objid}}/{{item.objid}}">
+          <ion-label>
+            <h3>{{item.variety.commoditytype.commodity.name}}</h3>
+            <p>
+              Area(sqm) : {{item.areasqm}} <br>
+              Commodity Type : {{item.variety.commoditytype.name}} <br>
+              Variety : {{item.variety.name}}
+            </p>
+          </ion-label>
+        </ion-item>
+        <!-- <ion-item-options>
           <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
        
       </ion-item-options> -->
-    </ion-item-sliding>
-  </ion-list>
-  <ion-list-header [hidden]="commodities?.length > 0">
-    No Commodity Found
-  </ion-list-header>
-  <ion-toolbar color="primary">
-    <nav class="navbar navbar-expand navbar-primary navbar-dark">
-      <ion-title>Farm Livestock</ion-title>
-      <a class="btn btn-primary btn-sm" href="#">
-        <i class="fas fa-plus">
-        </i>
-        Add
-      </a>
-    </nav>
-  </ion-toolbar>
-  <ion-list #farmerList>
-    <ion-item-sliding *ngFor="let item of livestocks" #slidingItem>
-      <ion-item routerLink="/app/tabs/farmerlist/farmlocationlivestock/{{farmer.objid}}/{{farmlocation.objid}}/{{item.objid}}">
-        <ion-label>
-          <h3>{{item.breed.species.name}}</h3>
-          <p>
-            Harvesting qty. : {{item.breed.name}}<br>
-            Seeding qty. : {{item.seedingqty}} <br>
-            Harvesting qty. : {{item.harvestingqty}} 
-            
-          </p>
-        </ion-label>
-      </ion-item>
-      <!-- <ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-list-header [hidden]="commodities?.length > 0">
+      No Commodity Found
+    </ion-list-header>
+    <ion-toolbar color="primary">
+      <nav class="navbar navbar-expand navbar-primary navbar-dark">
+        <ion-title>Farm Livestock</ion-title>
+        <a class="btn btn-primary btn-sm" href="#">
+          <i class="fas fa-plus">
+          </i>
+          Add
+        </a>
+      </nav>
+    </ion-toolbar>
+    <ion-list #farmerList>
+      <ion-item-sliding *ngFor="let item of livestocks" #slidingItem>
+        <ion-item
+          routerLink="/app/tabs/farmerlist/farmlocationlivestock/{{farmer.objid}}/{{farmlocation.objid}}/{{item.objid}}">
+          <ion-label>
+            <h3>{{item.breed.species.name}}</h3>
+            <p>
+              Harvesting qty. : {{item.breed.name}}<br>
+              Seeding qty. : {{item.seedingqty}} <br>
+              Harvesting qty. : {{item.harvestingqty}}
+
+            </p>
+          </ion-label>
+        </ion-item>
+        <!-- <ion-item-options>
           <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
        
       </ion-item-options> -->
-    </ion-item-sliding>
-  </ion-list>
-  <ion-list-header [hidden]="livestocks?.length > 0">
-    No Livestock Found
-  </ion-list-header>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-list-header [hidden]="livestocks?.length > 0">
+      No Livestock Found
+    </ion-list-header>
+  </div>
 </ion-content>

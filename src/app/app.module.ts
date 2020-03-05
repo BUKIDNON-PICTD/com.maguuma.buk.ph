@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -14,6 +14,20 @@ import { Network } from '@ionic-native/network/ngx';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {options: { autoConnect : false } }};
+
+import { Camera } from '@ionic-native/Camera/ngx';
+import { File } from '@ionic-native/File/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+
+// @Injectable()
+// class CameraMock extends Camera {
+//   getPicture(options) {
+//     return new Promise((resolve, reject) => {
+//       resolve("BASE_64_ENCODED_DATA_GOES_HERE");
+//     })
+//   }
+// }
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -21,22 +35,23 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {options
     BrowserModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot({
-      driverOrder: ['sqlite', 'indexeddb', 'websql']
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
     HttpClientModule,
     AppRoutingModule,
     SocketIoModule.forRoot(config),
     FormsModule,
-    ReactiveFormsModule,
-    // ServiceWorkerModule.register('ngsw-worker.js', {
-    //   enabled: environment.production
-    // })
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Network
+    Network,
+    Camera,
+    File,
+    WebView,
+    FilePath
   ],
   bootstrap: [AppComponent]
 })

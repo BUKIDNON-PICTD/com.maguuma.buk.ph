@@ -8,7 +8,7 @@ export class FarmlocationService {
   constructor(private storage: Storage) {
     this._agri_farmerprofile_location = new Storage({
       storeName: '_agri_farmerprofile_location',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
    }
 

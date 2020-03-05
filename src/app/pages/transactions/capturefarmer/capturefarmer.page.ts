@@ -1,4 +1,10 @@
-import { ToastController, IonSlides } from "@ionic/angular";
+import {
+  ToastController,
+  IonSlides,
+  ActionSheetController,
+  Platform,
+  LoadingController
+} from "@ionic/angular";
 import {
   Component,
   OnInit,
@@ -11,6 +17,17 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { MasterService } from "src/app/services/master.service";
 import { FarmerService } from "src/app/services/farmer.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { File, FileEntry } from "@ionic-native/File/ngx";
+import { HttpClient } from "@angular/common/http";
+import { WebView } from "@ionic-native/ionic-webview/ngx";
+import { FilePath } from "@ionic-native/file-path/ngx";
+import { finalize } from "rxjs/operators";
+import {
+  Camera,
+  CameraOptions,
+  PictureSourceType
+} from "@ionic-native/Camera/ngx";
+import { Storage } from '@ionic/storage';
 @Component({
   selector: "capturefarmer",
   templateUrl: "./capturefarmer.page.html",
@@ -51,6 +68,9 @@ export class CapturefarmerPage implements OnInit {
   viewEntered: boolean = false;
   isspouse: boolean = false;
   isSubmitted: boolean = false;
+  images = [];
+  photo: any;
+  currentslide: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,7 +79,16 @@ export class CapturefarmerPage implements OnInit {
     private toastController: ToastController,
     private router: Router,
     private route: ActivatedRoute,
-    private zone: NgZone
+    private camera: Camera,
+    private file: File,
+    private http: HttpClient,
+    private webview: WebView,
+    private actionSheetController: ActionSheetController,
+    private storage: Storage,
+    private platform: Platform,
+    private loadingController: LoadingController,
+    private ref: ChangeDetectorRef,
+    private filePath: FilePath
   ) {
     this.farmerPersonalInformationForm = this.formBuilder.group({
       lastname: [
@@ -202,150 +231,10 @@ export class CapturefarmerPage implements OnInit {
         name: [""],
         objid: ["", Validators.compose([Validators.required])]
       }),
-      street: [
-        "",
-        Validators.compose([
-          Validators.maxLength(100)
-        ])
-      ]
+      street: ["", Validators.compose([Validators.maxLength(100)])]
     });
 
-    // this.slidePersonalInformationForm = formBuilder.group({
-    //   lastname: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*"),
-    //       Validators.required
-    //     ])
-    //   ],
-    //   firstname: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*"),
-    //       Validators.required
-    //     ])
-    //   ],
-    //   middlename: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   maidenname: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   nameextension: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   prenametitle: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   postnametitle: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   gender: ["", Validators.compose([Validators.required])],
-    //   birthdate: ["", Validators.compose([Validators.required])]
-    // });
-    // this.slidePersonalInformationDetailForm = formBuilder.group({
-    //   birthplace: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   citizenship: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   civilstatus: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   profession: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   religion: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.maxLength(100),
-    //       Validators.pattern("[a-zA-Z ]*")
-    //     ])
-    //   ],
-    //   tin: ["", Validators.compose([Validators.maxLength(100)])],
-    //   sss: ["", Validators.compose([Validators.maxLength(100)])],
-    //   height: [""],
-    //   weight: [""]
-    // });
-    // this.slideContactInformationForm = formBuilder.group({
-    //   phoneno: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.pattern("^[0-9]*$"),
-    //       Validators.maxLength(10)
-    //     ])
-    //   ],
-    //   mobileno: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.pattern("^[0-9]*$"),
-    //       Validators.maxLength(11)
-    //     ])
-    //   ],
-    //   email: [
-    //     "",
-    //     Validators.compose([
-    //       Validators.required,
-    //       Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
-    //     ])
-    //   ]
-    // });
-
-    // this.slideAddressForm = formBuilder.group({
-    //   addresstype: [""],
-    //   barangay_objid: [""],
-    //   barangay_name: [""],
-    //   city: [""],
-    //   province: [""],
-    //   municipality: [""],
-    //   bldgno: [""],
-    //   bldgname: [""],
-    //   unitno: [""],
-    //   street: [""],
-    //   subdivision: [""]
-    // });
-
     this.validation_messages = {
-      //personal info
       lastname: [
         { type: "required", message: "Last Name is required." },
         {
@@ -520,9 +409,21 @@ export class CapturefarmerPage implements OnInit {
           type: "pattern",
           message: "Email must be valid."
         }
+      ],
+      province: [
+        { type: "required", message: "Province is required." },
+      ],
+      municipality: [
+        { type: "required", message: "Municipality is required." },
+      ],
+      barangay: [
+        { type: "required", message: "Barangay is required." },
+      ],
+      street: [
+        { type: "maxlength", message: "Street cannot be more than 100 characters long."},
       ]
     };
-
+    
     this.masterService.getMasterFile("province").then(items => {
       this.provinces = items;
     });
@@ -542,21 +443,31 @@ export class CapturefarmerPage implements OnInit {
 
   next() {
     this.isSubmitted = true;
-    if (this.farmerPersonalInformationForm.valid) {
-      if (this.mode === "create") {
-        console.log("Verifing entity name.");
-        this.verifyfarmername();
+    this.farmProfileSlider.getActiveIndex().then( index => {
+      if (this.farmerPersonalInformationForm.valid && index === 0) {
+        if (this.mode === "create") {
+          this.verifyfarmername();
+        }
+        this.lockswipe();
+      } else if (this.farmerPersonalInformationDetailForm.valid && index === 1) {
+        this.lockswipe();
+      } else if (this.farmerContactInformationForm.valid && index === 2) {
+        this.lockswipe();
+      } else if (this.farmerAddressForm.valid && index === 3) {
+        this.lockswipe();
+      } else {
+        this.showToast("Form validation error.");
       }
-      this.farmProfileSlider.lockSwipes(false);
-      this.farmProfileSlider.slideNext();
-      this.farmProfileSlider.lockSwipes(true);
-      this.farmProfileSlider.lockSwipeToNext(true);
-      this.farmProfileSlider.lockSwipeToPrev(false);
-    } else {
-      this.showToast("Form validation error.");
-    }
+    });
   }
 
+  lockswipe() {
+    this.farmProfileSlider.lockSwipes(false);
+    this.farmProfileSlider.slideNext();
+    this.farmProfileSlider.lockSwipes(true);
+    this.farmProfileSlider.lockSwipeToNext(true);
+    this.farmProfileSlider.lockSwipeToPrev(false);
+  }
   prev() {
     this.farmProfileSlider.slidePrev();
   }
@@ -658,6 +569,7 @@ export class CapturefarmerPage implements OnInit {
         this.farmerContactInformationForm.patchValue(item.farmer);
         this.farmerAddressForm.patchValue(item.farmer.address);
         this.farmer = item;
+        this.photo = this.farmer.farmer.photo;
       });
     } else if (spouseid) {
       this.mode = "edit";
@@ -670,19 +582,21 @@ export class CapturefarmerPage implements OnInit {
           this.farmerAddressForm.patchValue(item.spouse.address);
         }
         this.farmer = item;
+        this.photo = this.farmer.spouse.photo;
+      });
+      await this.masterService.getMasterFile("barangay").then(items => {
+        let brgy = items.find(
+          o => o.objid === this.farmerAddressForm.get("barangay.objid").value
+        );
+        this.farmerAddressForm.patchValue({
+          municipality: { objid: brgy.parentid }
+        });
       });
     }
     this.farmerAddressForm.patchValue({
       province: { objid: "059" }
     });
-    this.masterService.getMasterFile("barangay").then(items => {
-      let brgy = items.find(
-        o => o.objid === this.farmerAddressForm.get("barangay.objid").value
-      );
-      this.farmerAddressForm.patchValue({
-        municipality: { objid: brgy.parentid }
-      });
-    });
+    
   }
 
   createentity() {
@@ -718,7 +632,7 @@ export class CapturefarmerPage implements OnInit {
         (newfarmer.postnametitle ? " " + newfarmer.farmer.postnametitle : "");
 
       newfarmer.farmer.address.text =
-        newfarmer.farmer.address.street +
+      (newfarmer.farmer.address.street ? newfarmer.farmer.address.street + " " : "") +
         " " +
         this.barangays.find(
           o => o.objid === newfarmer.farmer.address.barangay.objid
@@ -731,8 +645,9 @@ export class CapturefarmerPage implements OnInit {
         this.provinces.find(
           o => o.objid === newfarmer.farmer.address.province.objid
         ).name;
-
-      this.farmerService.addfarmer(newfarmer).then(item => {
+      this.farmer = newfarmer;
+      this.farmer.farmer.photo = this.photo;
+      this.farmerService.addfarmer(this.farmer).then(item => {
         this.showToast("Farmer Profile Saved");
         this.router.navigate([
           "/app/tabs/farmerlist/farmerdetail/" + item.objid
@@ -754,7 +669,7 @@ export class CapturefarmerPage implements OnInit {
         };
         farmerupdate.address = this.farmerAddressForm.value;
         farmerupdate.address.text =
-          farmerupdate.address.street +
+          (farmerupdate.address.street ? farmerupdate.address.street + " " : "") +
           " " +
           this.barangays.find(
             o => o.objid === farmerupdate.address.barangay.objid
@@ -778,12 +693,13 @@ export class CapturefarmerPage implements OnInit {
 
         farmerupdate.objid = this.farmer.objid;
         this.farmer.farmer = farmerupdate;
+        this.farmer.farmer.photo = this.photo;
         this.farmer.postnametitle = farmerupdate.postnametitle;
         this.farmer.prenametitle = farmerupdate.prenametitle;
         this.farmer.nameextension = farmerupdate.nameextension;
         this.farmer.maidenname = farmerupdate.maidenname;
       }
-      console.log(this.farmer);
+      
       this.farmerService.updatefarmer(this.farmer).then(item => {
         this.showToast("Farmer Profile Updated.");
         this.router.navigate([
@@ -809,18 +725,14 @@ export class CapturefarmerPage implements OnInit {
         objid: this.create_UUID()
       };
     }
-    this.farmer.spouse = {...this.farmer.spouse, ...spouseformdata};
+    this.farmer.spouse = { ...this.farmer.spouse, ...spouseformdata };
     this.farmer.spouse.name =
       (spouseformdata.prenametitle ? spouseformdata.prenametitle + " " : "") +
       spouseformdata.lastname +
       ", " +
       spouseformdata.firstname +
-      (spouseformdata.middlename
-        ? " " + spouseformdata.middlename
-        : "") +
-      (spouseformdata.postnametitle
-        ? " " + spouseformdata.postnametitle
-        : "");
+      (spouseformdata.middlename ? " " + spouseformdata.middlename : "") +
+      (spouseformdata.postnametitle ? " " + spouseformdata.postnametitle : "");
 
     this.farmer.spouse.address.text =
       spouseformdata.address.street +
@@ -836,6 +748,7 @@ export class CapturefarmerPage implements OnInit {
       this.provinces.find(
         o => o.objid === spouseformdata.address.province.objid
       ).name;
+      this.farmer.spouse.photo = this.photo;
   }
 
   create_UUID() {
@@ -849,4 +762,114 @@ export class CapturefarmerPage implements OnInit {
     });
     return uuid;
   }
+
+  //image
+
+  pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      let converted = this.webview.convertFileSrc(img);
+      return converted;
+    }
+  }
+
+  async selectImage() {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Select Image source",
+      buttons: [
+        {
+          text: "Load from Library",
+          handler: () => {
+            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+          }
+        },
+        {
+          text: "Use Camera",
+          handler: () => {
+            this.takePicture(this.camera.PictureSourceType.CAMERA);
+          }
+        },
+        {
+          text: "Cancel",
+          role: "cancel"
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
+
+  takePicture(sourceType: PictureSourceType) {
+    var options: CameraOptions = {
+      quality: 100,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      correctOrientation: true
+    };
+
+    this.camera.getPicture(options).then(imagePath => {
+      if (
+        this.platform.is("android") &&
+        sourceType === this.camera.PictureSourceType.PHOTOLIBRARY
+      ) {
+        this.filePath.resolveNativePath(imagePath).then(filePath => {
+          let correctPath = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+          let currentName = imagePath.substring(
+            imagePath.lastIndexOf("/") + 1,
+            imagePath.lastIndexOf("?")
+          );
+          // this.copyFileToLocalDir(
+          //   correctPath,
+          //   currentName,
+          //   this.createFileName()
+          // );
+        });
+      } else {
+        var currentName = imagePath.substr(imagePath.lastIndexOf("/") + 1);
+        var correctPath = imagePath.substr(0, imagePath.lastIndexOf("/") + 1);
+        
+        // console.log(this.farmer.farmer); 
+        // this.copyFileToLocalDir(
+        //   correctPath,
+        //   currentName,
+        //   this.createFileName()
+        // );
+      }
+      this.photo = 'data:image/jpg;base64,' + imagePath;
+    });
+  }
+  // createFileName() {
+  //   var d = new Date(),
+  //     n = d.getTime(),
+  //     newFileName = n + ".jpg";
+  //   return newFileName;
+  // }
+
+  // copyFileToLocalDir(namePath, currentName, newFileName) {
+  //   // console.log(this.file.dataDirectory);
+  //   // this.file
+  //   //   .copyFile(namePath, currentName, this.file.dataDirectory, newFileName)
+  //   //   .then(
+  //   //     success => {
+  //   //       this.updateStoredImages(newFileName);
+  //   //     },
+  //   //     error => {
+  //   //       this.showToast("Error while storing file.");
+  //   //     }
+  //   //   );
+  // }
+  // updateStoredImages(name) {
+  //   this.farmer.farmer.photo = name;
+  //   let filePath = this.file.dataDirectory + name;
+  //   let resPath = this.pathForImage(filePath);
+
+  //   let newEntry = {
+  //     name: name,
+  //     path: resPath,
+  //     filePath: filePath
+  //   };
+
+  //   this.image = newEntry;
+  //   this.ref.detectChanges(); // trigger change detection cycle
+  // }
 }

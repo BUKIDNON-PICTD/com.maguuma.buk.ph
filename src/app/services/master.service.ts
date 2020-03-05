@@ -9,7 +9,7 @@ export class MasterService {
   constructor(private storage: Storage) {
     this.tblmaster = new Storage({
       storeName: '_tblmaster',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
    }
 

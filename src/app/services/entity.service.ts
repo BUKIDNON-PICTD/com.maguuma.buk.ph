@@ -10,12 +10,12 @@ export class EntityService {
   constructor(private storage: Storage) {
     this._entityindividual = new Storage({
       storeName: '_entityindividual',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
 
     this._entityindividuallist = new Storage({
       storeName: '_entityindividuallist',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
   }
   

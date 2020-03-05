@@ -31,16 +31,16 @@ export class FarmerdetailPage {
         Validators.compose([Validators.required])
       ]
     });
+    this.farmerPersonalProfileForm.valueChanges.subscribe(value => {
+      this.farmer = {...this.farmer, ...value};
+      this.farmerService.updatefarmer(this.farmer);
+    });
   }
   ionViewWillEnter() {
     const farmerid = this.route.snapshot.paramMap.get("farmerid");
     this.farmerService.getItem(farmerid).then(item => {
-      this.farmerPersonalProfileForm.patchValue(item);
       this.farmer = item;
-      this.farmerPersonalProfileForm.valueChanges.subscribe(value => {
-        this.farmer = {...this.farmer, ...value};
-        this.farmerService.updatefarmer(this.farmer);
-      });
+      this.farmerPersonalProfileForm.patchValue(item, {emitEvent: false});
     });
   }
 

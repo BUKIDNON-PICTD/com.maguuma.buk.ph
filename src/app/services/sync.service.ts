@@ -37,31 +37,31 @@ export class SyncService {
   ) {
     this.tblmaster = new Storage({
       storeName: '_tblmaster',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this._entityindividual = new Storage({
       storeName: '_entityindividual',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this._agri_farmerprofile = new Storage({
       storeName: '_agri_farmerprofile',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this._agri_farmerprofile_facility = new Storage({
       storeName: '_agri_farmerprofile_facility',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this._agri_farmerprofile_location = new Storage({
       storeName: '_agri_farmerprofile_location',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this._agri_farmerprofile_location_commodity = new Storage({
       storeName: '_agri_farmerprofile_location_commodity',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this._agri_farmerprofile_location_livestock = new Storage({
       storeName: '_agri_farmerprofile_location_livestock',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
   }
   // Http Options
