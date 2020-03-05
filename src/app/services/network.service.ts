@@ -46,6 +46,11 @@ export class NetworkService {
           this.socket.connect();
         }
       });
+
+      this.socket.on("connect", () => {
+        console.log("connection established");
+        this.syncserverstatus.next(ConnectionStatus.Online);
+      });
       this.socket.on("disconnect", () => {
         console.log("you have been disconnected");
         this.syncserverstatus.next(ConnectionStatus.Offline);

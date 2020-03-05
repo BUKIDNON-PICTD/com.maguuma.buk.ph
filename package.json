@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~9.0.0",
     "@angular/platform-browser-dynamic": "~9.0.0",
     "@angular/router": "~9.0.0",
+    "@ionic-native/base64": "^5.22.0",
     "@ionic-native/camera": "^5.22.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/file": "^5.22.0",
@@ -31,6 +32,7 @@
     "@ionic/storage": "^2.2.0",
     "@types/ol": "^6.1.0",
     "admin-lte": "^3.0.2",
+    "com-badrit-base64": "^0.2.0",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.1.1",
@@ -95,7 +97,8 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-plugin-file": {},
-      "cordova-plugin-filepath": {}
+      "cordova-plugin-filepath": {},
+      "com-badrit-base64": {}
     },
     "platforms": [
       "browser",

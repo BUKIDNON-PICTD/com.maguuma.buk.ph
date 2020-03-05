@@ -27,7 +27,8 @@ import {
   CameraOptions,
   PictureSourceType
 } from "@ionic-native/Camera/ngx";
-import { Storage } from '@ionic/storage';
+import { Storage } from "@ionic/storage";
+import { Base64 } from "@ionic-native/base64/ngx";
 @Component({
   selector: "capturefarmer",
   templateUrl: "./capturefarmer.page.html",
@@ -71,7 +72,7 @@ export class CapturefarmerPage implements OnInit {
   images = [];
   photo: any;
   currentslide: number;
-
+  private win: any = window;
   constructor(
     private formBuilder: FormBuilder,
     private masterService: MasterService,
@@ -88,7 +89,8 @@ export class CapturefarmerPage implements OnInit {
     private platform: Platform,
     private loadingController: LoadingController,
     private ref: ChangeDetectorRef,
-    private filePath: FilePath
+    private filePath: FilePath,
+    private base64: Base64
   ) {
     this.farmerPersonalInformationForm = this.formBuilder.group({
       lastname: [
@@ -410,20 +412,19 @@ export class CapturefarmerPage implements OnInit {
           message: "Email must be valid."
         }
       ],
-      province: [
-        { type: "required", message: "Province is required." },
-      ],
+      province: [{ type: "required", message: "Province is required." }],
       municipality: [
-        { type: "required", message: "Municipality is required." },
+        { type: "required", message: "Municipality is required." }
       ],
-      barangay: [
-        { type: "required", message: "Barangay is required." },
-      ],
+      barangay: [{ type: "required", message: "Barangay is required." }],
       street: [
-        { type: "maxlength", message: "Street cannot be more than 100 characters long."},
+        {
+          type: "maxlength",
+          message: "Street cannot be more than 100 characters long."
+        }
       ]
     };
-    
+
     this.masterService.getMasterFile("province").then(items => {
       this.provinces = items;
     });
@@ -443,13 +444,16 @@ export class CapturefarmerPage implements OnInit {
 
   next() {
     this.isSubmitted = true;
-    this.farmProfileSlider.getActiveIndex().then( index => {
+    this.farmProfileSlider.getActiveIndex().then(index => {
       if (this.farmerPersonalInformationForm.valid && index === 0) {
         if (this.mode === "create") {
           this.verifyfarmername();
         }
         this.lockswipe();
-      } else if (this.farmerPersonalInformationDetailForm.valid && index === 1) {
+      } else if (
+        this.farmerPersonalInformationDetailForm.valid &&
+        index === 1
+      ) {
         this.lockswipe();
       } else if (this.farmerContactInformationForm.valid && index === 2) {
         this.lockswipe();
@@ -596,7 +600,6 @@ export class CapturefarmerPage implements OnInit {
     this.farmerAddressForm.patchValue({
       province: { objid: "059" }
     });
-    
   }
 
   createentity() {
@@ -632,7 +635,9 @@ export class CapturefarmerPage implements OnInit {
         (newfarmer.postnametitle ? " " + newfarmer.farmer.postnametitle : "");
 
       newfarmer.farmer.address.text =
-      (newfarmer.farmer.address.street ? newfarmer.farmer.address.street + " " : "") +
+        (newfarmer.farmer.address.street
+          ? newfarmer.farmer.address.street + " "
+          : "") +
         " " +
         this.barangays.find(
           o => o.objid === newfarmer.farmer.address.barangay.objid
@@ -669,7 +674,9 @@ export class CapturefarmerPage implements OnInit {
         };
         farmerupdate.address = this.farmerAddressForm.value;
         farmerupdate.address.text =
-          (farmerupdate.address.street ? farmerupdate.address.street + " " : "") +
+          (farmerupdate.address.street
+            ? farmerupdate.address.street + " "
+            : "") +
           " " +
           this.barangays.find(
             o => o.objid === farmerupdate.address.barangay.objid
@@ -699,7 +706,7 @@ export class CapturefarmerPage implements OnInit {
         this.farmer.nameextension = farmerupdate.nameextension;
         this.farmer.maidenname = farmerupdate.maidenname;
       }
-      
+
       this.farmerService.updatefarmer(this.farmer).then(item => {
         this.showToast("Farmer Profile Updated.");
         this.router.navigate([
@@ -748,7 +755,7 @@ export class CapturefarmerPage implements OnInit {
       this.provinces.find(
         o => o.objid === spouseformdata.address.province.objid
       ).name;
-      this.farmer.spouse.photo = this.photo;
+    this.farmer.spouse.photo = this.photo;
   }
 
   create_UUID() {
@@ -767,7 +774,7 @@ export class CapturefarmerPage implements OnInit {
 
   pathForImage(img) {
     if (img === null) {
-      return '';
+      return "";
     } else {
       let converted = this.webview.convertFileSrc(img);
       return converted;
@@ -802,7 +809,9 @@ export class CapturefarmerPage implements OnInit {
   takePicture(sourceType: PictureSourceType) {
     var options: CameraOptions = {
       quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: sourceType,
+      encodingType: this.camera.EncodingType.JPEG,
       saveToPhotoAlbum: false,
       correctOrientation: true
     };
@@ -812,32 +821,70 @@ export class CapturefarmerPage implements OnInit {
         this.platform.is("android") &&
         sourceType === this.camera.PictureSourceType.PHOTOLIBRARY
       ) {
-        this.filePath.resolveNativePath(imagePath).then(filePath => {
-          let correctPath = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-          let currentName = imagePath.substring(
-            imagePath.lastIndexOf("/") + 1,
-            imagePath.lastIndexOf("?")
-          );
-          // this.copyFileToLocalDir(
-          //   correctPath,
-          //   currentName,
-          //   this.createFileName()
+        // this.filePath.resolveNativePath(imagePath).then(filePath => {
+        //   let correctPath = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+        //   let currentName = imagePath.substring(
+        //     imagePath.lastIndexOf("/") + 1,
+        //     imagePath.lastIndexOf("?")
+        //   );
+          // this.base64.encodeFile(correctPath + "/" + currentName).then(
+          //   (base64File: string) => {
+          //     this.photo = base64File;
+          //   },
+          //   err => {
+          //     console.log(err);
+          //   }
           // );
-        });
+          // this.readFile(imagePath);
+          // this.photo = this.win.Ionic.WebView.convertFileSrc(correctPath + "/" + currentName);
+          console.log(imagePath);
+          this.photo = "data:image/jpg;base64," + imagePath;
+        // });
+      } else if (this.platform.is("android")) {
+        // this.base64.encodeFile(imagePath).then(
+        //   (base64File: string) => {
+        //     this.photo = base64File;
+        //   },
+        //   err => {
+        //     console.log(err);
+        //   }
+        // );
+        var currentName = imagePath.substr(imagePath.lastIndexOf("/") + 1);
+        var correctPath = imagePath.substr(0, imagePath.lastIndexOf("/") + 1);
+        this.photo = "data:image/jpg;base64," + imagePath;
       } else {
         var currentName = imagePath.substr(imagePath.lastIndexOf("/") + 1);
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf("/") + 1);
-        
-        // console.log(this.farmer.farmer); 
-        // this.copyFileToLocalDir(
-        //   correctPath,
-        //   currentName,
-        //   this.createFileName()
-        // );
+        this.photo = "data:image/jpg;base64," + imagePath;
       }
-      this.photo = 'data:image/jpg;base64,' + imagePath;
     });
   }
+
+  // startUpload(imagePath) {
+  //   this.file
+  //     .resolveLocalFilesystemUrl(imagePath)
+  //     .then(entry => {
+  //       console.log((<FileEntry> entry).file(file => this.readFile(file)));
+  //     })
+  //     .catch(err => {
+  //       this.showToast("Error while reading file.");
+  //     });
+  // }
+
+  // readFile(file: any) {
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     // const formData = new FormData();
+  //     const imgBlob = new Blob([reader.result], {
+  //       type: file.type
+  //     });
+  //     // formData.append("file", imgBlob, file.name);
+  //     // this.uploadImageData(formData);
+      
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
+
   // createFileName() {
   //   var d = new Date(),
   //     n = d.getTime(),

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="!isspouse">Capture Farmer</ion-title>
-    <ion-title *ngIf="isspouse">Capture Farmer (Spouse)</ion-title>
+    <ion-title *ngIf="!isspouse">Capture Farmer {{farmerPersonalInformationForm.get('lastname').value + ', ' + farmerPersonalInformationForm.get('firstname').value + ' ' + farmerPersonalInformationForm.get('middlename').value}}</ion-title>
+    <ion-title *ngIf="isspouse">Capture Farmer (Spouse) {{farmerPersonalInformationForm.get('lastname').value + ', ' + farmerPersonalInformationForm.get('firstname').value + ' ' + farmerPersonalInformationForm.get('middlename').value}}</ion-title>
     <ion-buttons slot="start">
       <ion-button *ngIf="!isbeginning" (click)="prev()">
         <ion-icon slot="start" name="arrow-back"></ion-icon> Prev

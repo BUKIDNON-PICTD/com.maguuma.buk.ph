@@ -19,6 +19,7 @@ import { Camera } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 // @Injectable()
 // class CameraMock extends Camera {
@@ -51,7 +52,8 @@ import { FilePath } from '@ionic-native/file-path/ngx';
     Camera,
     File,
     WebView,
-    FilePath
+    FilePath,
+    Base64 
   ],
   bootstrap: [AppComponent]
 })

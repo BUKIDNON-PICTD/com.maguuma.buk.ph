@@ -16,7 +16,7 @@ import {
   flatMap,
   switchMap
 } from "rxjs/operators";
-
+import { SettingService } from './setting.service';
 @Injectable({
   providedIn: "root"
 })
@@ -29,11 +29,13 @@ export class SyncService {
   _agri_farmerprofile_location: any;
   _agri_farmerprofile_location_commodity: any;
   _agri_farmerprofile_location_livestock: any;
+  syncserver: any;
 
   constructor(
     private storage: Storage,
     private http: HttpClient,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private settingservice : SettingService
   ) {
     this.tblmaster = new Storage({
       storeName: '_tblmaster',
@@ -62,6 +64,10 @@ export class SyncService {
     this._agri_farmerprofile_location_livestock = new Storage({
       storeName: '_agri_farmerprofile_location_livestock',
       driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
+    });
+
+    this.settingservice.getItemByName('syncserver').then(item => {
+      this.syncserver = item.value;
     });
   }
   // Http Options
@@ -95,7 +101,7 @@ export class SyncService {
 
     return this.http
       .post<any>(
-        `http://localhost:3000/api/serverrequest`,
+        this.syncserver + `/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -143,7 +149,7 @@ export class SyncService {
     };
     return this.http
       .post<any>(
-        `http://localhost:3000/api/serverrequest`,
+        this.syncserver + `/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -200,7 +206,7 @@ export class SyncService {
     };
     return this.http
       .post<any>(
-        `http://localhost:3000/api/serverrequest`,
+        this.syncserver + `/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
