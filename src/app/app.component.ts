@@ -41,6 +41,11 @@ export class AppComponent {
         //   icon: 'map'
         // },
         {
+          title: 'Home',
+          url: 'home',
+          icon: 'map'
+        },
+        {
           title: 'Farmer List',
           url: '/app/tabs/farmerlist',
           icon: 'people'
@@ -48,7 +53,7 @@ export class AppComponent {
         {
           title: 'Capture Farmer',
           url: '/capturefarmer',
-          icon: 'people'
+          icon: 'person-add'
         }
       ]
     },

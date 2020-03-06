@@ -813,7 +813,10 @@ export class CapturefarmerPage implements OnInit {
       sourceType: sourceType,
       encodingType: this.camera.EncodingType.JPEG,
       saveToPhotoAlbum: false,
-      correctOrientation: true
+      correctOrientation: true,
+      targetWidth: 320,
+      targetHeight: 320,
+      allowEdit:true
     };
 
     this.camera.getPicture(options).then(imagePath => {

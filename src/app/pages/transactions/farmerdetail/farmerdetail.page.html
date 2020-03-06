@@ -22,7 +22,7 @@
   <div>
     <ion-item>
       <ion-label><strong>Farmer Name:</strong> {{farmer.farmer.name}}</ion-label>
-      <ion-thumbnail slot="end" *ngIf="farmer.spouse.photo">
+      <ion-thumbnail slot="end" *ngIf="farmer.farmer.photo">
         <img [src]="farmer.farmer.photo"/>
       </ion-thumbnail>
     </ion-item>

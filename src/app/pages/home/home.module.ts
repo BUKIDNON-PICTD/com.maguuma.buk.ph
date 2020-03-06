@@ -1,3 +1,4 @@
+import { CachemapComponent } from './../../components/cachemap/cachemap.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,6 @@ import { HomePage } from './home.page';
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, CachemapComponent]
 })
 export class HomePageModule {}

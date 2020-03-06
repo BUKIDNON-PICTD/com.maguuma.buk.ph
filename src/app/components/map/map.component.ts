@@ -5,7 +5,7 @@ import { Draw, Modify, Snap } from "ol/interaction";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import { ZoomSlider, OverviewMap } from "ol/control";
 import { OSM, Vector as VectorSource, XYZ } from "ol/source";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+import { Circle as CircleStyle, Fill, Stroke, Style,Text } from "ol/style";
 import GeometryType from "ol/geom/GeometryType";
 import Projection from "ol/proj/Projection";
 import GeoJSON from "ol/format/GeoJSON";
@@ -15,6 +15,12 @@ import LineString from "ol/geom/LineString";
 import { Overlay } from 'ol';
 import OverlayPositioning from 'ol/OverlayPositioning';
 import { getArea } from 'ol/sphere';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "map",
@@ -28,6 +34,8 @@ export class MapComponent implements OnInit {
   raster: TileLayer;
   source: VectorSource;
   vector: VectorLayer;
+  barangaysource: VectorSource;
+  barangayvector: VectorLayer;
   modify: Modify;
   projection: Projection;
   basemap: TileLayer;
@@ -46,13 +54,38 @@ export class MapComponent implements OnInit {
   continuePolygonMsg = "Click to continue drawing the polygon";
   continueLineMsg = "Click to continue drawing the line";
 
-  constructor(private farmerService: FarmerService) {}
+  constructor(private farmerService: FarmerService, private httpClient: HttpClient) {}
 
   ngOnInit() {
     setTimeout(_ => this.initMap(), 2000);
   }
 
   initMap() {
+
+    var labelStyle = new Style({
+      text: new Text({
+        font: '12px Calibri,sans-serif',
+        overflow: true,
+        fill: new Fill({
+          color: '#000'
+        }),
+        stroke: new Stroke({
+          color: '#fff',
+          width: 3
+        })
+      })
+    });
+    var countryStyle = new Style({
+      // fill: new Fill({
+      //   color: 'rgba(255, 255, 255, 0.6)'
+      // }),
+      stroke: new Stroke({
+        color: '#319FD3',
+        width: 1
+      })
+    });
+    var style = [countryStyle, labelStyle];
+
     this.geometryType = "Polygon";
     this.raster = new TileLayer({
       source: new OSM()
@@ -90,17 +123,24 @@ export class MapComponent implements OnInit {
         })
       })
     });
-
-    this.projection = new Projection({
-      code: "EPSG:3125",
-      units: "m",
-      global: false
+    this.barangaysource = new VectorSource({
+      format: new GeoJSON(),
     });
+    
+    this.barangayvector = new VectorLayer({
+      declutter: true,
+      source: this.barangaysource,
+      style: function(feature) {
+        labelStyle.getText().setText(feature.get('brgyname'));
+        return style;
+      }
+    });
+
     this.map = new Map({
-      layers: [this.basemap, this.vector],
+      layers: [this.basemap, this.barangayvector, this.vector],
       target: "map",
       view: new View({
-        // projection: this.projection,
+  
         // center: [13910469.0295, 903791.4224],
         zoom: 15,
         maxZoom: 20
@@ -124,7 +164,14 @@ export class MapComponent implements OnInit {
     //   this.helpTooltipElement.classList.add("hidden");
     // });
 
-   
+    this.getMuniBoundaries().subscribe(result => {
+      this.barangaysource.addFeatures(
+        new GeoJSON().readFeatures(result,{
+          dataProjection: "EPSG:4326",
+          featureProjection: "EPSG:3857"
+        })
+      );
+    });
 
     this.enablesave = false;
     this.enableclear = false;
@@ -137,6 +184,11 @@ export class MapComponent implements OnInit {
       this.enablemodify = true;
       this.enableclear = true;
     }
+
+    
+    var extent = this.vector.getSource().getExtent();
+    this.map.getView().fit(extent);
+ 
 
     // this.addInteraction();
   }
@@ -331,5 +383,9 @@ pointerMoveHandler(evt) {
     this.enablemodify = false;
     this.enablesave = false;
     this.enableclear = false;
+  }
+
+  private getMuniBoundaries(): Observable<any[]> {
+    return this.httpClient.get<any[]>("assets/barangay.json");
   }
 }
