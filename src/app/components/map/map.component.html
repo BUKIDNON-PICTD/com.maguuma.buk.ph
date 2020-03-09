@@ -1,4 +1,9 @@
-<ion-toolbar color="primary" *ngIf="map">
+<ion-toolbar color="primary" *ngIf="!mapsloaded">
+  <nav class="navbar navbar-expand navbar-primary navbar-dark">
+    <ion-title>Loading Maps..please wait..<ion-spinner name="bubbles"></ion-spinner></ion-title>
+  </nav>
+</ion-toolbar>
+<ion-toolbar color="primary" *ngIf="map && mapsloaded">
     <nav class="navbar navbar-expand navbar-primary navbar-dark">
       <ion-title>Map View</ion-title>
       <a class="btn btn-primary btn-lg" (click)="startDraw()" *ngIf="enabledraw">
@@ -22,8 +27,8 @@
         Clear Drawing
       </a>
     </nav>
-    
 </ion-toolbar>
 <div id="map" class="map"></div>
-<!-- <div [innerHTML]="helpTooltipElement"></div> -->
+<!-- <div #helpTooltipElement class="ol-tooltip hidden">Click to continue drawing the polygon</div> -->
+
 

@@ -5,7 +5,7 @@ import { Draw, Modify, Snap } from "ol/interaction";
 import { Tile as TileLayer, Vector as VectorLayer, Tile } from "ol/layer";
 import { ZoomSlider, OverviewMap } from "ol/control";
 import { OSM, Vector as VectorSource, XYZ } from "ol/source";
-import { Circle as CircleStyle, Fill, Stroke, Style,Text } from "ol/style";
+import { Circle as CircleStyle, Fill, Stroke, Style, Text } from "ol/style";
 import GeometryType from "ol/geom/GeometryType";
 import Projection from "ol/proj/Projection";
 import GeoJSON from "ol/format/GeoJSON";
@@ -36,6 +36,8 @@ export class CachemapComponent implements OnInit {
   raster: TileLayer;
   source: VectorSource;
   vector: VectorLayer;
+  barangaysource: VectorSource;
+  barangayvector: VectorLayer;
   modify: Modify;
   projection: Projection;
   basemap: TileLayer;
@@ -57,7 +59,7 @@ export class CachemapComponent implements OnInit {
 
   constructor(
     private farmerService: FarmerService,
-    protected httpClient: HttpClient
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit() {
@@ -80,8 +82,38 @@ export class CachemapComponent implements OnInit {
     //   978738.393527
     // ];
     // this.projection.setExtent(this.extent);
+    var farmsLabelStyle = new Style({
+      text: new Text({
+        font: "12px Calibri,sans-serif",
+        overflow: false,
+        fill: new Fill({
+          color: "#000"
+        }),
+        backgroundFill : new Fill({
+          color: "#ffcc33"
+        }),
+        padding: [4, 8, 4, 8]
+      })
+    });
 
+    var farmsFillStyle = new Style({
+      fill: new Fill({
+        color: "rgba(255, 255, 255, 0.2)"
+      }),
+      stroke: new Stroke({
+        color: "#fc2803",
+        width: 2
+      }),
+      image: new CircleStyle({
+        radius: 7,
+        fill: new Fill({
+          color: "#fc2803"
+        })
+      })
+    });
 
+    var farmsstyle = [farmsFillStyle, farmsLabelStyle];
+    
     this.geometryType = "Polygon";
     this.raster = new TileLayer({
       source: new OSM()
@@ -104,45 +136,69 @@ export class CachemapComponent implements OnInit {
       //     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
       // })
     });
-    this.source = new VectorSource({
-      format: new GeoJSON(),
-    });
-  
-  var labelStyle = new Style({
-    text: new Text({
-      font: '12px Calibri,sans-serif',
-      overflow: true,
-      fill: new Fill({
-        color: '#000'
-      }),
-      stroke: new Stroke({
-        color: '#fff',
-        width: 3
-      })
-    })
-  });
-  var countryStyle = new Style({
-    // fill: new Fill({
-    //   color: 'rgba(255, 255, 255, 0.6)'
-    // }),
-    stroke: new Stroke({
-      color: '#319FD3',
-      width: 1
-    })
-  });
-  var style = [countryStyle, labelStyle];
+   
 
+    var labelStyle = new Style({
+      text: new Text({
+        font: "12px Calibri,sans-serif",
+        overflow: true,
+        fill: new Fill({
+          color: "#000"
+        }),
+        stroke: new Stroke({
+          color: "#fff",
+          width: 3
+        })
+      })
+    });
+    var countryStyle = new Style({
+      // fill: new Fill({
+      //   color: 'rgba(255, 255, 255, 0.6)'
+      // }),
+      stroke: new Stroke({
+        color: "#319FD3",
+        width: 1
+      })
+    });
+    var style = [countryStyle, labelStyle];
+
+    this.source = new VectorSource({
+      format: new GeoJSON()
+    });
     this.vector = new VectorLayer({
-      declutter: true,
       source: this.source,
+      style: new Style({
+        fill: new Fill({
+          color: "rgba(255, 255, 255, 0.2)"
+        }),
+        stroke: new Stroke({
+          color: "#ffcc33",
+          width: 2
+        }),
+        image: new CircleStyle({
+          radius: 7,
+          fill: new Fill({
+            color: "#ffcc33"
+          })
+        })
+      })
+    });
+
+    this.barangaysource = new VectorSource({
+      format: new GeoJSON()
+    });
+
+    this.barangayvector = new VectorLayer({
+      declutter: true,
+      source: this.barangaysource,
       style: function(feature) {
-        labelStyle.getText().setText(feature.get('brgyname'));
+        labelStyle.getText().setText(feature.get("brgyname"));
         return style;
       }
     });
- 
+
     this.map = new Map({
-      layers: [this.basemap, this.vector],
+      layers: [this.basemap, this.barangayvector, this.vector],
       target: "map",
       view: new View({
         // projection : new Projection("EPSG:3125"),
@@ -161,33 +217,71 @@ export class CachemapComponent implements OnInit {
       .getView()
       .fit([13784343.025655, 814368.207926, 14048821.648763, 978738.393527]);
 
-    // this.createMeasureTooltip();
-    // this.createHelpTooltip();
-    // this.map.on("pointermove", this.pointerMoveHandler);
-
-    // this.map.getViewport().addEventListener("mouseout", function() {
-    //   this.helpTooltipElement.classList.add("hidden");
-    // });
-
     this.getMuniBoundaries().subscribe(result => {
-      this.source.addFeatures(
-        new GeoJSON().readFeatures(result,{
+      this.barangaysource.addFeatures(
+        new GeoJSON().readFeatures(result, {
           dataProjection: "EPSG:4326",
           featureProjection: "EPSG:3857"
         })
       );
     });
-   
-    // this.source.addFeatures(
-    //   new GeoJSON().readFeatures(this.farmlocation.geolocation);
-    // );
 
-    // this.addInteraction();
+    this.farmerService.getRawItems().then(async items => {
+      let x = await items
+        .filter(farmer => {
+          return farmer.farmlocations?.find(
+            farmlocation => farmlocation.geolocation
+          );
+        })
+        .map(filteredfarmer => {
+          return {
+            objid: filteredfarmer.objid,
+            fno: filteredfarmer.fno,
+            features: filteredfarmer.farmlocations
+              .filter(farmlocation => farmlocation.geolocation)
+              .map(farmlocation => {
+                return farmlocation.geolocation.features;
+              })
+          };
+        });
+      let geojson = {
+        type: "FeatureCollection",
+        features: []
+      };
+      await x.forEach(farmer => {
+        farmer.features.forEach(feature => {
+          geojson.features.push(feature[0]);
+        });
+      });
+      this.source.addFeatures(
+        new GeoJSON().readFeatures(geojson)
+      );
+
+      this.vector.setStyle( (feature, resolution) => {
+        let geom = feature.getGeometry();
+        var output;
+        if (geom instanceof Polygon){
+          output = this.formatArea(geom);
+        }
+        farmsLabelStyle.getText().setText(output);
+        return farmsstyle;
+      });
+    });
   }
-
+  formatArea (polygon){
+    var area = getArea(polygon);
+    var output;
+    // if (area > 10000) {
+    //   output =
+    //     Math.round((area / 1000000) * 100) / 100 + " " + "km<sup>2</sup>";
+    // } else {
+    //   output = Math.round(area * 100) / 100 + " " + "m<sup>2</sup>";
+    // }
+    output = Math.round(area * 100) / 100;
+    output = output.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " " + "sqm";
+    return output;
+  }
   private getMuniBoundaries(): Observable<any[]> {
     return this.httpClient.get<any[]>("assets/barangay.json");
   }
-
-  
 }
