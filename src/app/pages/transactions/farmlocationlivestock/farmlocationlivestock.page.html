@@ -3,31 +3,23 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
     </ion-buttons>
-    <ion-title>Farm Livestock</ion-title>
+    <ion-title>Farm Location Livestock</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-toolbar color='primary'>
-    <!-- <ion-title>{{carm?.location?.text}}</ion-title> -->
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Livestock Detail</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
   </ion-toolbar>
   <form [formGroup]="livestockForm">
-    {{livestockForm.value | json}}
-    <div formGroupName="breed">
-      <ion-item>
-        <ion-label position="floating">Breed</ion-label>
-        <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onBreedChange()">
-          <ion-select-option *ngFor="let item of livestockbreeds" value="{{item.objid}}">{{item.name}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
-        <ng-container
-          *ngIf="livestockForm.get('province')?.hasError(validation.type) && (livestockForm.get('province')?.dirty || livestockForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
-        </ng-container>
-      </div>
-    </div>
+    <!-- {{livestockForm.value | json}} -->
     <div formGroupName="species">
       <ion-item>
         <ion-label position="floating">Specie</ion-label>
@@ -36,21 +28,38 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
+      <div *ngFor="let validation of validation_messages.species">
         <ng-container
-          *ngIf="livestockForm.get('province')?.hasError(validation.type) && (livestockForm.get('province')?.dirty || livestockForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+          *ngIf="(isSubmitted && livestockForm.get('species.objid')?.hasError(validation.type)) || (livestockForm.get('species.objid')?.hasError(validation.type) && (livestockForm.get('species.objid')?.dirty || livestockForm.get('species.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
-   <ion-item>
+
+    <div formGroupName="breed">
+      <ion-item>
+        <ion-label position="floating">Breed</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let item of livestockbreeds" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.breed">
+        <ng-container
+          *ngIf="(isSubmitted && livestockForm.get('breed.objid')?.hasError(validation.type)) || (livestockForm.get('breed.objid')?.hasError(validation.type) && (livestockForm.get('breed.objid')?.dirty || livestockForm.get('breed.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+
+    <ion-item>
       <ion-label position="floating">Seeding Qty</ion-label>
       <ion-input autocapitalize type="number" formControlName="seedingqty"></ion-input>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.areasqm">
+    <div *ngFor="let validation of validation_messages.seedingqty">
       <ng-container
-        *ngIf="livestockForm.get('areasqm')?.hasError(validation.type) && (livestockForm.get('areasqm')?.dirty || livestockForm.get('areasqm')?.touched)">
-        <small class="error-message">{{ validation.message }}</small>
+        *ngIf="(isSubmitted && livestockForm.get('seedingqty')?.hasError(validation.type)) || (livestockForm.get('seedingqty')?.hasError(validation.type) && (livestockForm.get('seedingqty')?.dirty || livestockForm.get('seedingqty')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
       </ng-container>
     </div>
     <ion-item>
@@ -58,19 +67,20 @@
       <ion-datetime displayFormat="MM/DD/YYYY" formControlName="seedingdate" placeholder="Select Date">
       </ion-datetime>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.birthdate">
-      <ng-container *ngIf="livestockForm.get('birthdate')?.hasError(validation.type) && (livestockForm.get('birthdate')?.dirty || livestockForm.get('birthdate')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+    <div *ngFor="let validation of validation_messages.seedingdate">
+      <ng-container
+        *ngIf="(isSubmitted && livestockForm.get('seedingdate')?.hasError(validation.type)) || (livestockForm.get('seedingdate')?.hasError(validation.type) && (livestockForm.get('seedingdate')?.dirty || livestockForm.get('seedingdate')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
       </ng-container>
     </div>
     <ion-item>
       <ion-label position="floating">Harvesting Qty</ion-label>
       <ion-input autocapitalize type="number" formControlName="harvestingqty"></ion-input>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.areasqm">
+    <div *ngFor="let validation of validation_messages.harvestingqty">
       <ng-container
-        *ngIf="livestockForm.get('areasqm')?.hasError(validation.type) && (livestockForm.get('areasqm')?.dirty || livestockForm.get('areasqm')?.touched)">
-        <small class="error-message">{{ validation.message }}</small>
+      *ngIf="(isSubmitted && livestockForm.get('harvestingqty')?.hasError(validation.type)) || (livestockForm.get('harvestingqty')?.hasError(validation.type) && (livestockForm.get('harvestingqty')?.dirty || livestockForm.get('harvestingqty')?.touched))">
+      <small class="text-danger">{{ validation.message }}</small>
       </ng-container>
     </div>
     <ion-item>
@@ -78,11 +88,24 @@
       <ion-datetime displayFormat="MM/DD/YYYY" formControlName="harvestingdate" placeholder="Select Date">
       </ion-datetime>
     </ion-item>
-    <div *ngFor="let validation of validation_messages.birthdate">
-      <ng-container *ngIf="livestockForm.get('birthdate')?.hasError(validation.type) && (livestockForm.get('birthdate')?.dirty || livestockForm.get('birthdate')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+    <div *ngFor="let validation of validation_messages.harvestingdate">
+      <ng-container
+      *ngIf="(isSubmitted && livestockForm.get('harvestingdate')?.hasError(validation.type)) || (livestockForm.get('harvestingdate')?.hasError(validation.type) && (livestockForm.get('harvestingdate')?.dirty || livestockForm.get('harvestingdate')?.touched))">
+      <small class="text-danger">{{ validation.message }}</small>
       </ng-container>
     </div>
+
+    <ion-item>
+      <ion-label position="floating">Remarks</ion-label>
+      <ion-textarea placeholder="Enter more information here..." formControlName="remarks"></ion-textarea>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.remarks">
+      <ng-container
+      *ngIf="(isSubmitted && livestockForm.get('remarks')?.hasError(validation.type)) || (livestockForm.get('remarks')?.hasError(validation.type) && (livestockForm.get('remarks')?.dirty || livestockForm.get('remarks')?.touched))">
+      <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
     <div formGroupName="surveyperiod">
       <ion-item>
         <ion-label position="floating">Survey Period</ion-label>
@@ -91,10 +114,10 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
+      <div *ngFor="let validation of validation_messages.surveyperiod">
         <ng-container
-          *ngIf="commodityForm.get('province')?.hasError(validation.type) && (commodityForm.get('province')?.dirty || commodityForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+        *ngIf="(isSubmitted && livestockForm.get('surveyperiod.objid')?.hasError(validation.type)) || (livestockForm.get('surveyperiod.objid')?.hasError(validation.type) && (livestockForm.get('surveyperiod.objid')?.dirty || livestockForm.get('surveyperiod.objid')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>

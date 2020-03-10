@@ -102,6 +102,13 @@ const routes: Routes = [
               ).then(m => m.FarmlocationcommodityPageModule)
           },
           {
+            path: "farmlocationlivestock/:farmerid/:locationid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmlocationlivestock/farmlocationlivestock.module"
+              ).then(m => m.FarmlocationlivestockPageModule)
+          },
+          {
             path: "farmlocationlivestock/:farmerid/:locationid/:livestockid",
             loadChildren: () =>
               import(

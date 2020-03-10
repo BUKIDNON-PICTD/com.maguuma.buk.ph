@@ -1,14 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { FarmerService } from "src/app/services/farmer.service";
-import { ActivatedRoute } from "@angular/router";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MasterService } from "src/app/services/master.service";
 import { Storage } from "@ionic/storage";
+import { ToastController } from "@ionic/angular";
+import { SettingService } from "src/app/services/setting.service";
 
 @Component({
-  selector: 'app-farmlocationlivestock',
-  templateUrl: './farmlocationlivestock.page.html',
-  styleUrls: ['./farmlocationlivestock.page.scss'],
+  selector: "app-farmlocationlivestock",
+  templateUrl: "./farmlocationlivestock.page.html",
+  styleUrls: ["./farmlocationlivestock.page.scss"]
 })
 export class FarmlocationlivestockPage {
   farmerid: any;
@@ -23,72 +25,51 @@ export class FarmlocationlivestockPage {
   livestockbreeds: any[];
   livestockspecies: any[];
   surveyperiods: any[];
-  
+  viewEntered: boolean = false;
+  isSubmitted: boolean = false;
+  mode: string;
+
   constructor(
     private farmerService: FarmerService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private storage: Storage,
-    private masterService: MasterService
+    private masterService: MasterService,
+    private toastController: ToastController,
+    private settingService: SettingService,
+    private router: Router
   ) {
     this.livestockForm = this.formBuilder.group({
-      harvestingdate: [''],
-      remark: [''],
-      seedingqty: [''],
-      locationid: [''],
-      seedingdate: [''],
-      objid: [''],
-      harvestingqty: [''],
+      remarks: [""],
+      seedingqty: ["", Validators.compose([Validators.required])],
+      seedingdate: ["", Validators.compose([Validators.required])],
+      harvestingqty: [""],
+      harvestingdate: [""],
       breed: this.formBuilder.group({
-        name: [''],
-        code: [''],
-        objid: [''],
-        description: [''],
-        species: this.formBuilder.group({
-          objid: [''],
-          description: [''],
-          unit: [''],
-          code: [''],
-          name: [''],
-        }),
+        objid: ["", Validators.compose([Validators.required])]
       }),
       species: this.formBuilder.group({
-        objid: "CTYP1902cfc:158a9366fde:-7925"
+        objid: ["", Validators.compose([Validators.required])]
       }),
       surveyperiod: this.formBuilder.group({
-        code: [''],
-        end: [''],
-        objid: [''],
-        description: [''],
-        name: [''],
-        start: ['']
+        objid: ["", Validators.compose([Validators.required])]
       })
     });
 
     this.validation_messages = {
-      areasqm: [""],
-      locationid: [""],
-      objid: [""],
-      variety: {
-        name: [""],
-        commoditytype: [""],
-        description: [""],
-        objid: [""],
-        code: [""]
-      },
-      surveyperiod: {
-        code: [""],
-        end: [""],
-        objid: [""],
-        description: [""],
-        name: [""]
-      },
-      commoditytype: {
-        objid: [""]
-      },
-      commodity: {
-        objid: ['']
-      }
+      species: [{ type: "required", message: "Species is required." }],
+      breed: [{ type: "required", message: "Breed is required." }],
+      surveyperiod: [
+        { type: "required", message: "Survey Period is required." }
+      ],
+      seedingqty: [
+        { type: "required", message: "Seeding Qty is required." },
+        {
+          type: "number",
+          message: "Seeding Qty must be a number."
+        }
+      ],
+      seedingdate: [{ type: "required", message: "Survey Period is required." }]
     };
 
     this.masterService.getMasterFile("master_livestock_breed").then(items => {
@@ -100,16 +81,103 @@ export class FarmlocationlivestockPage {
     this.masterService.getMasterFile("master_surveyperiod").then(items => {
       this.surveyperiods = items;
     });
-  }
 
-  onBreedChange() {
-
+    this.mode = "create";
   }
 
   onSpecieChange() {
-
+    let objid = this.livestockForm.get("species.objid").value;
+    this.masterService.getMasterFile("master_livestock_breed").then(items => {
+      let filtereditems = items.filter(i => i.parentid === objid);
+      this.livestockbreeds = filtereditems;
+    });
   }
 
+  save() {
+    this.isSubmitted = true;
+    if (this.livestockForm.valid) {
+      if (this.mode === "create") {
+        let newitem = {
+          objid: this.farmerService.create_UUID(),
+          species: {},
+          breed: {},
+          surveyperiod: {}
+        };
+        newitem = {
+          ...newitem,
+          ...this.livestockForm.value
+        };
+
+        newitem.species = this.livestockspecies.find(
+          o => o.objid === this.livestockForm.get("species.objid").value
+        );
+        newitem.breed = this.livestockbreeds.find(
+          o => o.objid === this.livestockForm.get("breed.objid").value
+        );
+        newitem.surveyperiod = this.surveyperiods.find(
+          o => o.objid === this.livestockForm.get("surveyperiod.objid").value
+        );
+
+        this.farmlocation.livestocks.push(newitem);
+
+        this.farmer.farmlocations = this.farmer.farmlocations.map(
+          farmlocation =>
+            farmlocation.objid === this.farmlocation.objid
+              ? (farmlocation = this.farmlocation)
+              : farmlocation
+        );
+
+        this.farmerService.updatefarmer(this.farmer).then(item => {
+          this.showToast("Livestock Created.");
+          this.router.navigate([
+            "/app/tabs/farmerlist/farmlocationdetail/" +
+              item.objid +
+              "/" +
+              this.farmlocation.objid
+          ]);
+        });
+      } else {
+        let updateditem = {
+          ...this.livestock,
+          ...this.livestockForm.value
+        };
+        updateditem.species = this.livestockspecies.find(
+          o => o.objid === this.livestockForm.get("species.objid").value
+        );
+        updateditem.breed = this.livestockbreeds.find(
+          o => o.objid === this.livestockForm.get("breed.objid").value
+        );
+        updateditem.surveyperiod = this.surveyperiods.find(
+          o => o.objid === this.livestockForm.get("surveyperiod.objid").value
+        );
+
+        this.farmlocation.commodities = this.farmlocation.commodities.map(
+          livestock =>
+          livestock.objid === this.livestock.objid
+              ? (livestock = updateditem)
+              : livestock
+        );
+
+        this.farmer.farmlocations = this.farmer.farmlocations.map(
+          farmlocation =>
+            farmlocation.objid === this.farmlocation.objid
+              ? (farmlocation = this.farmlocation)
+              : farmlocation
+        );
+
+        this.farmerService.updatefarmer(this.farmer).then(item => {
+          this.showToast("Livestock Updated.");
+          this.router.navigate([
+            "/app/tabs/farmerlist/farmlocationdetail/" +
+              item.objid +
+              "/" +
+              this.farmlocation.objid
+          ]);
+        });
+      }
+    }
+  }
+  
   ionViewWillEnter() {
     this.farmerid = this.route.snapshot.paramMap.get("farmerid");
     this.locationid = this.route.snapshot.paramMap.get("locationid");
@@ -117,6 +185,7 @@ export class FarmlocationlivestockPage {
   }
 
   ionViewDidEnter() {
+    this.viewEntered = true;
     this.defaultHref =
       `/app/tabs/farmerlist/farmlocationdetail/` +
       this.farmerid +
@@ -125,15 +194,38 @@ export class FarmlocationlivestockPage {
     this.farmerService.getItem(this.farmerid).then(item => {
       if (item) {
         this.farmer = item;
+
+        this.settingService.getItemByName("surveyperiod").then(item => {
+          if (item) {
+            let surveyperiod = this.surveyperiods.find(
+              o => o.name === item.value
+            );
+            this.livestockForm.patchValue({
+              surveyperiod: { objid: surveyperiod.objid }
+            });
+          }
+        });
+
         this.farmlocation = item.farmlocations.find(
           i => i.objid === this.locationid
         );
-        this.livestock = this.farmlocation.livestocks.find(
-          i => i.objid === this.livestockid
-        );
-        this.livestockForm.patchValue(this.livestock);
+
+        if (this.livestockid) {
+          this.livestock = this.farmlocation.livestocks.find(
+            i => i.objid === this.livestockid
+          );
+          this.livestockForm.patchValue(this.livestock);
+          this.mode = 'edit';
+        }
       }
     });
   }
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
 
+    toast.present();
+  }
 }

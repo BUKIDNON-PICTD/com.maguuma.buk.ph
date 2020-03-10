@@ -25,9 +25,9 @@ export class FarmlocationcommodityPage {
   commodities: any[];
   commoditytypes: any[];
   surveyperiods: any[];
-  viewEntered: boolean;
+  viewEntered: boolean = false;
   mode: string;
-  isSubmitted: boolean;
+  isSubmitted: boolean = false;
   varieties: any[];
 
   constructor(
