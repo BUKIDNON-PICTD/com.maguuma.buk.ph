@@ -102,11 +102,25 @@ const routes: Routes = [
               ).then(m => m.FarmlocationlivestockPageModule)
           },
           {
+            path: "farmfacilitydetail/:farmerid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmfacilitydetail/farmfacilitydetail.module"
+              ).then(m => m.FarmfacilitydetailPageModule)
+          },
+          {
             path: "farmfacilitydetail/:farmerid/:facilityid",
             loadChildren: () =>
               import(
                 "../transactions/farmfacilitydetail/farmfacilitydetail.module"
               ).then(m => m.FarmfacilitydetailPageModule)
+          },
+          {
+            path: "farmerassistancedetail/:farmerid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmerassistancedetail/farmerassistancedetail.module"
+              ).then(m => m.FarmerassistancedetailPageModule)
           },
           {
             path: "farmerassistancedetail/:farmerid/:assistanceid",

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, NavigationExtras } from "@angular/router";
 import { FarmerService } from "src/app/services/farmer.service";
 import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
 import { FarmlocationService } from "src/app/services/farmlocation.service";
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: "app-farmerdetail",
@@ -21,7 +22,8 @@ export class FarmerdetailPage {
     private farmlocationService: FarmlocationService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController,
   ) {
     this.farmerPersonalProfileForm = this.formBuilder.group({
       is4ps: [false, Validators.compose([Validators.required])],
@@ -46,5 +48,28 @@ export class FarmerdetailPage {
 
   ionViewDidEnter() {
     this.defaultHref = `/app/tabs/farmerlist`;
+  }
+
+  deleteFarmFacility(item) {
+    this.farmer.farmfacilities = this.farmer.farmfacilities.filter(o => o.objid !== item.objid);
+    this.farmerService.updatefarmer(this.farmer).then(item => {
+      this.showToast("Facility removed.");
+    });
+  }
+
+  deleteAssistanceHistory(item) {
+    this.farmer.farmerassistances = this.farmer.farmerassistances.filter(o => o.objid !== item.objid);
+    this.farmerService.updatefarmer(this.farmer).then(item => {
+      this.showToast("Assistance history removed.");
+    });
+  }
+
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+
+    toast.present();
   }
 }

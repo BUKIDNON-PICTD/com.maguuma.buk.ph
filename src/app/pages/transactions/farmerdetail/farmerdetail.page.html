@@ -129,7 +129,7 @@
   <ion-toolbar color="primary">
     <nav class="navbar navbar-expand navbar-primary navbar-dark">
       <ion-title>Farm Facilities</ion-title>
-      <a class="btn btn-primary btn-sm" href="#">
+      <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmfacilitydetail/{{farmer?.objid}}">
         <i class="fas fa-plus">
         </i>
         Add
@@ -147,13 +147,12 @@
           </p>
         </ion-label>
       </ion-item>
-      <!-- <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+      <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmFacility(item)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
-       
-      </ion-item-options> -->
+      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
   <ion-list-header [hidden]="farmer?.farmfacilities?.length > 0">
@@ -161,8 +160,8 @@
   </ion-list-header>
   <ion-toolbar color="primary">
     <nav class="navbar navbar-expand navbar-primary navbar-dark">
-      <ion-title>Farmer Assistances</ion-title>
-      <a class="btn btn-primary btn-sm" href="#">
+      <ion-title>Farmer Assistance History</ion-title>
+      <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmerassistancedetail/{{farmer?.objid}}">
         <i class="fas fa-plus">
         </i>
         Add
@@ -182,13 +181,12 @@
           </p>
         </ion-label>
       </ion-item>
-      <!-- <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+      <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteAssistanceHistory(item)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
-       
-      </ion-item-options> -->
+      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
   <ion-list-header [hidden]="farmer?.farmerassistances?.length > 0">

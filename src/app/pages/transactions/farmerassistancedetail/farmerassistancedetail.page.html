@@ -1,9 +1,107 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>farmerassistancedetail</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Farmer Assistance Detail</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Farmer Assistance Detai</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
+  </ion-toolbar>
+  <form [formGroup]="farmerAssistanceForm">
+    <!-- {{farmerAssistanceForm.value | json}} -->
+    <div formGroupName="assistanceclassification">
+      <ion-item>
+        <ion-label position="floating">Assistance Classification</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onAssistanceClassificationChange()">
+          <ion-select-option *ngFor="let item of assistanceclassifications" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.assistanceclassification">
+        <ng-container
+          *ngIf="(isSubmitted && farmerAssistanceForm.get('assistanceclassification.objid')?.hasError(validation.type)) || (farmerAssistanceForm.get('assistanceclassification.objid')?.hasError(validation.type) && (farmerAssistanceForm.get('assistanceclassification.objid')?.dirty || farmerAssistanceForm.get('assistanceclassification.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+
+    <div formGroupName="assistancetype">
+      <ion-item>
+        <ion-label position="floating">Assistance Type</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let item of assistancetypes" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.assistancetype">
+        <ng-container
+          *ngIf="(isSubmitted && farmerAssistanceForm.get('assistancetype.objid')?.hasError(validation.type)) || (farmerAssistanceForm.get('assistancetype.objid')?.hasError(validation.type) && (farmerAssistanceForm.get('assistancetype.objid')?.dirty || farmerAssistanceForm.get('assistancetype.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Quantity</ion-label>
+      <ion-input type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.qty">
+      <ng-container
+        *ngIf="(isSubmitted && farmerAssistanceForm.get('qty')?.hasError(validation.type)) || (farmerAssistanceForm.get('qty')?.hasError(validation.type) && (farmerAssistanceForm.get('qty')?.dirty || farmerAssistanceForm.get('qty')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Transaction Date</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" formControlName="txndate" placeholder="Select Date">
+      </ion-datetime>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.txndate">
+      <ng-container
+        *ngIf="(isSubmitted && farmerAssistanceForm.get('txndate')?.hasError(validation.type)) || (farmerAssistanceForm.get('txndate')?.hasError(validation.type) && (farmerAssistanceForm.get('txndate')?.dirty || farmerAssistanceForm.get('txndate')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Remarks</ion-label>
+      <ion-textarea placeholder="Enter more information here..." formControlName="remarks"></ion-textarea>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.remarks">
+      <ng-container
+        *ngIf="(isSubmitted && farmerAssistanceForm.get('remarks')?.hasError(validation.type)) || (farmerAssistanceForm.get('remarks')?.hasError(validation.type) && (farmerAssistanceForm.get('remarks')?.dirty || farmerAssistanceForm.get('remarks')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <div formGroupName="surveyperiod">
+      <ion-item>
+        <ion-label position="floating">Survey Period</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let item of surveyperiods" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.province">
+        <ng-container
+          *ngIf="(isSubmitted && farmerAssistanceForm.get('surveyperiod.objid')?.hasError(validation.type)) || (farmerAssistanceForm.get('surveyperiod.objid')?.hasError(validation.type) && (farmerAssistanceForm.get('surveyperiod.objid')?.dirty || farmerAssistanceForm.get('surveyperiod.objid')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+   
+  </form>
 </ion-content>

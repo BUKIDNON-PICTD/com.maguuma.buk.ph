@@ -1,7 +1,8 @@
+import { ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { FarmerService } from "src/app/services/farmer.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Storage } from "@ionic/storage";
 import { FarmlocationService } from "src/app/services/farmlocation.service";
 import { MasterService } from 'src/app/services/master.service';
@@ -33,7 +34,9 @@ export class FarmlocationdetailPage {
     private farmerService: FarmerService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private masterService: MasterService
+    private masterService: MasterService,
+    private toastController: ToastController,
+    private router: Router
   ) {
     this.farmerLocationForm = this.formBuilder.group({
       areasqm: [
@@ -110,9 +113,9 @@ export class FarmlocationdetailPage {
   save() {
     this.isSubmitted = true;
     if (this.farmerLocationForm.valid) {
-      if (this.mode == 'create') {
+      if (this.mode === 'create') {
         let newfarmlocation = {
-          objid : this.create_UUID(),
+          objid : this.farmerService.create_UUID(),
           commodities: [],
           livestocks: [],
           farmlocation : {
@@ -135,7 +138,9 @@ export class FarmlocationdetailPage {
               o => o.objid === this.farmerLocationForm.get('province.objid').value
             ).name,
           },
-          location: null,
+          location: {
+            text : ""
+          },
           barangay: this.barangays.find(
             o => o.objid === this.farmerLocationForm.get('barangay.objid').value
           )
@@ -144,23 +149,63 @@ export class FarmlocationdetailPage {
 
         newfarmlocation = {...newfarmlocation, ...this.farmerLocationForm.value};
         newfarmlocation.location.text = newfarmlocation.farmlocation.text;
-        //kulang diri pag save
+        this.farmer.farmlocations.push(newfarmlocation);
+
+        this.farmerService.updatefarmer(this.farmer).then(item => {
+          this.showToast("Farm Location Created.");
+          this.router.navigate([
+            "/app/tabs/farmerlist/farmlocationdetail/" + item.objid + "/" + newfarmlocation.objid
+          ]);
+        });
       } else {
 
+
+        let updatedfarmlocation = {
+          farmlocation : {
+            type: "local",
+            barangay : this.farmerLocationForm.controls.barangay.value,
+            municipality: this.farmerLocationForm.controls.municipality.value,
+            province: this.farmerLocationForm.controls.province.value,
+            street: this.farmerLocationForm.controls.street.value,
+            text : (this.farmerLocationForm.controls.street.value ? this.farmerLocationForm.controls.street.value + " " : "") +
+            " " +
+            this.barangays.find(
+              o => o.objid === this.farmerLocationForm.get('barangay.objid').value
+            ).name +
+            ", " +
+            this.municipalities.find(
+              o => o.objid === this.farmerLocationForm.get('municipality.objid').value
+            ).name +
+            " " +
+            this.provinces.find(
+              o => o.objid === this.farmerLocationForm.get('province.objid').value
+            ).name,
+          },
+          location: {
+            text : ""
+          },
+          barangay: this.barangays.find(
+            o => o.objid === this.farmerLocationForm.get('barangay.objid').value
+          )
+        };
+
+        updatedfarmlocation = {...this.farmlocation, ...updatedfarmlocation, ...this.farmerLocationForm.value};
+        updatedfarmlocation.location.text = updatedfarmlocation.farmlocation.text;
+     
+        this.farmer.farmlocations = this.farmer.farmlocations.map(farmlocation =>
+          farmlocation.objid === this.farmlocation.objid
+            ? farmlocation = updatedfarmlocation
+            : farmlocation
+        );
+
+        this.farmerService.updatefarmer(this.farmer).then(item => {
+          this.showToast("Farm Location Updated.");
+          this.router.navigate([
+            "/app/tabs/farmerlist/farmlocationdetail/" + item.objid + "/" + this.farmlocation.objid
+          ]);
+        });
       }
     }
-  }
-
-  create_UUID() {
-    var dt = new Date().getTime();
-    var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
-      c
-    ) {
-      var r = (dt + Math.random() * 16) % 16 | 0;
-      dt = Math.floor(dt / 16);
-      return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
-    });
-    return uuid;
   }
 
   ionViewWillEnter() {
@@ -171,26 +216,35 @@ export class FarmlocationdetailPage {
   ionViewDidEnter() {
     this.viewEntered = true;
     this.defaultHref = `/app/tabs/farmerlist/farmerdetail/` + this.farmerid;
-    this.farmerService.getItem(this.farmerid).then(item => {
+    this.farmerService.getItem(this.farmerid).then(async item => {
       if (item) {
         this.farmer = item;
         this.farmerLocationForm.patchValue({
           province: { objid: "059" }
         });
-        if (this.locationid){
+        if (this.locationid) {
           this.farmlocation = item.farmlocations.find(o => o.objid === this.locationid);
-          this.masterService.getMasterFile("barangay").then(async items => {
+          await this.masterService.getMasterFile("barangay").then(async items => {
             let brgy = items.find(o => o.objid === this.farmlocation.barangay.objid);
             await this.farmerLocationForm.patchValue({
               municipality: { objid: brgy.parentid }
             });
           });
-          this.farmerLocationForm.patchValue(this.farmlocation);
+          await this.farmerLocationForm.patchValue(this.farmlocation);
           this.commodities = this.farmlocation.commodities;
           this.livestocks = this.farmlocation.livestocks;
           this.mode = 'edit';
         }
       }
     });
+  }
+
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+
+    toast.present();
   }
 }
