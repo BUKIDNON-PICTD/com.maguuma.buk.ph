@@ -7,12 +7,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-toolbar color='primary'>
-    <!-- <ion-title>{{carm?.location?.text}}</ion-title> -->
+
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Commodity Detail</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
   </ion-toolbar>
   <form [formGroup]="commodityForm">
-    {{commodityForm.value | json}}
+    <!-- {{commodityForm.value | json}} -->
     <div formGroupName="commodity">
       <ion-item>
         <ion-label position="floating">Commodity</ion-label>
@@ -21,10 +29,10 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
+      <div *ngFor="let validation of validation_messages.commodity">
         <ng-container
-          *ngIf="commodityForm.get('province')?.hasError(validation.type) && (commodityForm.get('province')?.dirty || commodityForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+        *ngIf="(isSubmitted && commodityForm.get('commodity.objid')?.hasError(validation.type)) || (commodityForm.get('commodity.objid')?.hasError(validation.type) && (commodityForm.get('commodity.objid')?.dirty || commodityForm.get('commodity.objid')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
@@ -36,25 +44,25 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
+      <div *ngFor="let validation of validation_messages.commoditytype">
         <ng-container
-          *ngIf="commodityForm.get('province')?.hasError(validation.type) && (commodityForm.get('province')?.dirty || commodityForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+        *ngIf="(isSubmitted && commodityForm.get('commoditytype.objid')?.hasError(validation.type)) || (commodityForm.get('commoditytype.objid')?.hasError(validation.type) && (commodityForm.get('commoditytype.objid')?.dirty || commodityForm.get('commoditytype.objid')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
     <div formGroupName="variety">
       <ion-item>
         <ion-label position="floating">Variety</ion-label>
-        <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onVarietyChange()">
-          <ion-select-option *ngFor="let item of commodityvarieties" value="{{item.objid}}">{{item.name}}
+        <ion-select placeholder="Select One" formControlName="objid" >
+          <ion-select-option *ngFor="let item of varieties" value="{{item.objid}}">{{item.name}}
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
+      <div *ngFor="let validation of validation_messages.variety">
         <ng-container
-          *ngIf="commodityForm.get('province')?.hasError(validation.type) && (commodityForm.get('province')?.dirty || commodityForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+        *ngIf="(isSubmitted && commodityForm.get('variety.objid')?.hasError(validation.type)) || (commodityForm.get('variety.objid')?.hasError(validation.type) && (commodityForm.get('variety.objid')?.dirty || commodityForm.get('variety.objid')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>
@@ -64,8 +72,8 @@
     </ion-item>
     <div *ngFor="let validation of validation_messages.areasqm">
       <ng-container
-        *ngIf="commodityForm.get('areasqm')?.hasError(validation.type) && (commodityForm.get('areasqm')?.dirty || commodityForm.get('areasqm')?.touched)">
-        <small class="error-message">{{ validation.message }}</small>
+      *ngIf="(isSubmitted && commodityForm.get('areasqm')?.hasError(validation.type)) || (commodityForm.get('areasqm')?.hasError(validation.type) && (commodityForm.get('areasqm')?.dirty || commodityForm.get('areasqm')?.touched))">
+      <small class="text-danger">{{ validation.message }}</small>
       </ng-container>
     </div>
     <div formGroupName="surveyperiod">
@@ -76,10 +84,10 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div *ngFor="let validation of validation_messages.province">
+      <div *ngFor="let validation of validation_messages.surveyperiod">
         <ng-container
-          *ngIf="commodityForm.get('province')?.hasError(validation.type) && (commodityForm.get('province')?.dirty || commodityForm.get('province')?.touched)">
-          <small class="error-message">{{ validation.message }}</small>
+        *ngIf="(isSubmitted && commodityForm.get('surveyperiod')?.hasError(validation.type)) || (commodityForm.get('surveyperiod')?.hasError(validation.type) && (commodityForm.get('surveyperiod')?.dirty || commodityForm.get('surveyperiod')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
         </ng-container>
       </div>
     </div>

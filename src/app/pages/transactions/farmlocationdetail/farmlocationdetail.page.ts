@@ -23,8 +23,6 @@ export class FarmlocationdetailPage {
   provinces: any[];
   municipalities: any[];
   barangays: any[];
-  commodities: any[];
-  livestocks: any;
   assistances: any;
   mode: string;
   viewEntered: boolean = false;
@@ -231,11 +229,36 @@ export class FarmlocationdetailPage {
             });
           });
           await this.farmerLocationForm.patchValue(this.farmlocation);
-          this.commodities = this.farmlocation.commodities;
-          this.livestocks = this.farmlocation.livestocks;
+       
           this.mode = 'edit';
         }
       }
+    });
+  }
+
+  deleteFarmCommodity(item) {
+    this.farmlocation.commodities = this.farmlocation.commodities.filter( o => o.objid !== item.objid);
+    this.farmer.farmlocations = this.farmer.farmlocations.map(
+      farmlocation =>
+      farmlocation.objid === this.farmlocation.objid
+          ? (farmlocation = this.farmlocation)
+          : farmlocation
+    );
+    this.farmerService.updatefarmer(this.farmer).then(item => {
+      this.showToast("Commodity removed.");
+    });
+  }
+
+  deleteFarmLivestock(item) {
+    this.farmlocation.livestocks = this.farmlocation.livestocks.filter( o => o.objid !== item.objid);
+    this.farmer.farmlocations = this.farmer.farmlocations.map(
+      farmlocation =>
+      farmlocation.objid === this.farmlocation.objid
+          ? (farmlocation = this.farmlocation)
+          : farmlocation
+    );
+    this.farmerService.updatefarmer(this.farmer).then(item => {
+      this.showToast("Livestock removed.");
     });
   }
 

@@ -108,7 +108,7 @@
     <ion-toolbar color="primary">
       <nav class="navbar navbar-expand navbar-primary navbar-dark">
         <ion-title>Farm Commodity</ion-title>
-        <a class="btn btn-primary btn-sm" href="#">
+        <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmlocationcommodity/{{farmer.objid}}/{{farmlocation.objid}}">
           <i class="fas fa-plus">
           </i>
           Add
@@ -116,7 +116,7 @@
       </nav>
     </ion-toolbar>
     <ion-list #farmerList>
-      <ion-item-sliding *ngFor="let item of commodities" #slidingItem>
+      <ion-item-sliding *ngFor="let item of farmlocation.commodities" #slidingItem>
         <ion-item
           routerLink="/app/tabs/farmerlist/farmlocationcommodity/{{farmer.objid}}/{{farmlocation.objid}}/{{item.objid}}">
           <ion-label>
@@ -128,16 +128,15 @@
             </p>
           </ion-label>
         </ion-item>
-        <!-- <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+        <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmCommodity(item)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
-       
-      </ion-item-options> -->
+      </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-    <ion-list-header [hidden]="commodities?.length > 0">
+    <ion-list-header [hidden]="farmlocation.commodities?.length > 0">
       No Commodity Found
     </ion-list-header>
     <ion-toolbar color="primary">
@@ -151,7 +150,7 @@
       </nav>
     </ion-toolbar>
     <ion-list #farmerList>
-      <ion-item-sliding *ngFor="let item of livestocks" #slidingItem>
+      <ion-item-sliding *ngFor="let item of farmlocation.livestocks" #slidingItem>
         <ion-item
           routerLink="/app/tabs/farmerlist/farmlocationlivestock/{{farmer.objid}}/{{farmlocation.objid}}/{{item.objid}}">
           <ion-label>
@@ -164,16 +163,15 @@
             </p>
           </ion-label>
         </ion-item>
-        <!-- <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+        <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmLivestock(item)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
-       
-      </ion-item-options> -->
+      </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-    <ion-list-header [hidden]="livestocks?.length > 0">
+    <ion-list-header [hidden]="farmlocation.livestocks?.length > 0">
       No Livestock Found
     </ion-list-header>
   </div>

@@ -1,3 +1,4 @@
+import { SettingService } from 'src/app/services/setting.service';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from "@angular/core";
@@ -32,7 +33,8 @@ export class FarmerassistancedetailPage {
     private formBuilder: FormBuilder,
     private masterService: MasterService,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private settingService: SettingService,
   ) {
     this.farmerAssistanceForm = this.formBuilder.group({
       assistanceclassification : formBuilder.group({
@@ -161,6 +163,15 @@ export class FarmerassistancedetailPage {
     this.farmerService.getItem(this.farmerid).then(async item => {
       if (item) {
         this.farmer = item;
+
+        this.settingService.getItemByName('surveyperiod').then( item => {
+          if (item) {
+            let surveyperiod = this.surveyperiods.find(o => o.name === item.value);
+            this.farmerAssistanceForm.patchValue({
+              surveyperiod: { objid: surveyperiod.objid }
+            });
+          }
+        });
 
         if (this.assistanceid) {
           this.farmerassistance = item.farmerassistances.find(

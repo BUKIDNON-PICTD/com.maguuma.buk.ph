@@ -88,6 +88,13 @@ const routes: Routes = [
               ).then(m => m.FarmlocationdetailPageModule)
           },
           {
+            path: "farmlocationcommodity/:farmerid/:locationid",
+            loadChildren: () =>
+              import(
+                "../transactions/farmlocationcommodity/farmlocationcommodity.module"
+              ).then(m => m.FarmlocationcommodityPageModule)
+          },
+          {
             path: "farmlocationcommodity/:farmerid/:locationid/:commodityid",
             loadChildren: () =>
               import(
