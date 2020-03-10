@@ -37,7 +37,7 @@ import { unByKey } from "ol/Observable";
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"]
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements OnInit {
   @Input() farmlocation;
   @Input() farmerid;
   map: Map;
@@ -93,13 +93,9 @@ export class MapComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    
-  }
-
-  ngAfterViewInit() {
     setTimeout(_ => this.initMap(), 2000);
-    
   }
+  
   initMap() {
     
     var drawLabelStyle = new Style({

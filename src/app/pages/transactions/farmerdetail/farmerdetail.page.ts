@@ -50,6 +50,13 @@ export class FarmerdetailPage {
     this.defaultHref = `/app/tabs/farmerlist`;
   }
 
+  deleteFarmLocation(item) {
+    this.farmer.farmlocations = this.farmer.farmlocations.filter(o => o.objid !== item.objid);
+    this.farmerService.updatefarmer(this.farmer).then(item => {
+      this.showToast("Assistance history removed.");
+    });
+  }
+
   deleteFarmFacility(item) {
     this.farmer.farmfacilities = this.farmer.farmfacilities.filter(o => o.objid !== item.objid);
     this.farmerService.updatefarmer(this.farmer).then(item => {

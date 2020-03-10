@@ -1,3 +1,4 @@
+import { PreviewmapComponent } from './../../../components/previewmap/previewmap.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +17,6 @@ import { FarmerdetailPage } from './farmerdetail.page';
     FarmerdetailPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [FarmerdetailPage]
+  declarations: [FarmerdetailPage, PreviewmapComponent]
 })
 export class FarmerdetailPageModule {}

@@ -113,14 +113,15 @@
             Mode of Acquisition : {{item.modeofacquisition}}
           </p>
         </ion-label>
+        <app-previewmap *ngIf='item.geolocation' slot="end" [farmlocation]='item' [farmerid]='farmer.objid'></app-previewmap>
+        <ion-label *ngIf='!item.geolocation' slot="end" >No Map Available</ion-label>
       </ion-item>
-      <!-- <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
-            <i class="fas fa-trash-alt"></i>
-            Delete
-          </a>
-       
-      </ion-item-options> -->
+      <ion-item-options>
+        <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmLocation(item)">
+          <i class="fas fa-trash-alt"></i>
+          Delete
+        </a>
+    </ion-item-options>
     </ion-item-sliding>
   </ion-list>
   <ion-list-header [hidden]="farmer?.farmlocations?.length > 0">
