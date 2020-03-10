@@ -53,9 +53,12 @@
             {{item.farmer.address.text}}
           </p>
         </ion-label>
+        <ion-thumbnail slot="end" *ngIf="item.farmer.photo">
+          <img [src]="item.farmer.photo"/>
+        </ion-thumbnail>
       </ion-item>
       <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(slidingItem, item, 'Delete Farmer')">
+          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmer(item)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>

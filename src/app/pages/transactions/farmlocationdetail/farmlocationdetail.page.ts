@@ -1,4 +1,4 @@
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { FarmerService } from "src/app/services/farmer.service";
@@ -34,7 +34,8 @@ export class FarmlocationdetailPage {
     private formBuilder: FormBuilder,
     private masterService: MasterService,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController,
   ) {
     this.farmerLocationForm = this.formBuilder.group({
       areasqm: [
@@ -236,29 +237,29 @@ export class FarmlocationdetailPage {
     });
   }
 
-  deleteFarmCommodity(item) {
-    this.farmlocation.commodities = this.farmlocation.commodities.filter( o => o.objid !== item.objid);
-    this.farmer.farmlocations = this.farmer.farmlocations.map(
+  deleteFarmCommodity(x,item) {
+    x.farmlocation.commodities = x.farmlocation.commodities.filter( o => o.objid !== item.objid);
+    x.farmer.farmlocations = x.farmer.farmlocations.map(
       farmlocation =>
-      farmlocation.objid === this.farmlocation.objid
-          ? (farmlocation = this.farmlocation)
+      farmlocation.objid === x.farmlocation.objid
+          ? (farmlocation = x.farmlocation)
           : farmlocation
     );
-    this.farmerService.updatefarmer(this.farmer).then(item => {
-      this.showToast("Commodity removed.");
+    x.farmerService.updatefarmer(x.farmer).then(item => {
+      x.showToast("Commodity removed.");
     });
   }
 
-  deleteFarmLivestock(item) {
-    this.farmlocation.livestocks = this.farmlocation.livestocks.filter( o => o.objid !== item.objid);
-    this.farmer.farmlocations = this.farmer.farmlocations.map(
+  deleteFarmLivestock(x,item) {
+    x.farmlocation.livestocks = x.farmlocation.livestocks.filter( o => o.objid !== item.objid);
+    x.farmer.farmlocations = x.farmer.farmlocations.map(
       farmlocation =>
-      farmlocation.objid === this.farmlocation.objid
-          ? (farmlocation = this.farmlocation)
+      farmlocation.objid === x.farmlocation.objid
+          ? (farmlocation = x.farmlocation)
           : farmlocation
     );
-    this.farmerService.updatefarmer(this.farmer).then(item => {
-      this.showToast("Livestock removed.");
+    x.farmerService.updatefarmer(x.farmer).then(item => {
+      x.showToast("Livestock removed.");
     });
   }
 
@@ -269,5 +270,30 @@ export class FarmlocationdetailPage {
     });
 
     toast.present();
+  }
+
+  async presentAlertConfirm(item, method) {
+    const alert = await this.alertController.create({
+      header: 'Confirm Delete!',
+      message: 'Are you sure you want to delete this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+            method(this,item);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

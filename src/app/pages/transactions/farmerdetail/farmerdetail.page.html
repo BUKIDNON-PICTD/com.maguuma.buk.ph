@@ -117,7 +117,7 @@
         <ion-label *ngIf='!item.geolocation' slot="end" >No Map Available</ion-label>
       </ion-item>
       <ion-item-options>
-        <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmLocation(item)">
+        <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmLocation)">
           <i class="fas fa-trash-alt"></i>
           Delete
         </a>
@@ -149,7 +149,7 @@
         </ion-label>
       </ion-item>
       <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmFacility(item)">
+          <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmFacility)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
@@ -183,7 +183,7 @@
         </ion-label>
       </ion-item>
       <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteAssistanceHistory(item)">
+          <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteAssistanceHistory)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>

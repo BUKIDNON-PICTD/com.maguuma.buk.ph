@@ -129,7 +129,7 @@
           </ion-label>
         </ion-item>
         <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmCommodity(item)">
+          <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmCommodity)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>
@@ -164,7 +164,7 @@
           </ion-label>
         </ion-item>
         <ion-item-options>
-          <a class="btn btn-app btn-danger btn-sm" (click)="deleteFarmLivestock(item)">
+          <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmLivestock)">
             <i class="fas fa-trash-alt"></i>
             Delete
           </a>

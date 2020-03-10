@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationExtras } from "@angular/router";
 import { FarmerService } from "src/app/services/farmer.service";
 import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
 import { FarmlocationService } from "src/app/services/farmlocation.service";
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: "app-farmerdetail",
@@ -24,6 +24,7 @@ export class FarmerdetailPage {
     private formBuilder: FormBuilder,
     private router: Router,
     private toastController: ToastController,
+    private alertController: AlertController
   ) {
     this.farmerPersonalProfileForm = this.formBuilder.group({
       is4ps: [false, Validators.compose([Validators.required])],
@@ -50,24 +51,24 @@ export class FarmerdetailPage {
     this.defaultHref = `/app/tabs/farmerlist`;
   }
 
-  deleteFarmLocation(item) {
-    this.farmer.farmlocations = this.farmer.farmlocations.filter(o => o.objid !== item.objid);
-    this.farmerService.updatefarmer(this.farmer).then(item => {
-      this.showToast("Assistance history removed.");
+  deleteFarmLocation(x,item) {
+    x.farmer.farmlocations = x.farmer.farmlocations.filter(o => o.objid !== item.objid);
+    x.farmerService.updatefarmer(x.farmer).then(item => {
+      x.showToast("Farm location removed.");
     });
   }
 
-  deleteFarmFacility(item) {
-    this.farmer.farmfacilities = this.farmer.farmfacilities.filter(o => o.objid !== item.objid);
-    this.farmerService.updatefarmer(this.farmer).then(item => {
-      this.showToast("Facility removed.");
+  deleteFarmFacility(x,item) {
+    x.farmer.farmfacilities = x.farmer.farmfacilities.filter(o => o.objid !== item.objid);
+    x.farmerService.updatefarmer(x.farmer).then(item => {
+      x.showToast("Facility removed.");
     });
   }
 
-  deleteAssistanceHistory(item) {
-    this.farmer.farmerassistances = this.farmer.farmerassistances.filter(o => o.objid !== item.objid);
-    this.farmerService.updatefarmer(this.farmer).then(item => {
-      this.showToast("Assistance history removed.");
+  deleteAssistanceHistory(x,item) {
+    x.farmer.farmerassistances = x.farmer.farmerassistances.filter(o => o.objid !== item.objid);
+    x.farmerService.updatefarmer(x.farmer).then(item => {
+      x.showToast("Assistance history removed.");
     });
   }
 
@@ -78,5 +79,30 @@ export class FarmerdetailPage {
     });
 
     toast.present();
+  }
+
+  async presentAlertConfirm(item, method) {
+    const alert = await this.alertController.create({
+      header: 'Confirm Delete!',
+      message: 'Are you sure you want to delete this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+            method(this,item);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
