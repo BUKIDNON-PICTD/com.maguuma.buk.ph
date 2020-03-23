@@ -1,0 +1,94 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color='primary' (click)="startApp()" [hidden]="!showSkip">Skip</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-slides #slides (ionSlideWillChange)="onSlideChangeStart($event)" pager="false">
+    <ion-slide>
+      <img src="assets/img/intro/maguumaintro1.png" class="slide-image" />
+      <h2 class="slide-title">
+        Welcome to
+        <b>Maguuma 2.0</b>
+      </h2>
+      <p>
+        The
+        <b>Maguuma App</b>. A Farmers Profile Information System for the Province of Bukidnon.
+      </p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/img/intro/maguumaintro2.png" class="slide-image" />
+      <h2 class="slide-title">What is Maguuma?</h2>
+      <p>
+        <b>Maguuma App</b> is a free solution that enables the Provincial and Municipal Agriculture Office to leverage the use of web and mobile technologies to gather relevant farmer and farm data, used in critical decision-making activities.</p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/img/intro/maguumaintro3.png" class="slide-image" />
+      <h2 class="slide-title">Farmer's profile + GIS?</h2>
+      <p>
+        The app comes with a mapping feature which utilizes <b>Geographic Information Systems (GIS)</b> as a powerful tool to provide better understanding and analysis of the data gathered by the app.</p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image" />
+      <h2 class="slide-title">To start some settings must be set first.</h2>
+      <p>Please complete the form in the next page to continue.</p>
+    </ion-slide>
+    <ion-slide>
+      <form [formGroup]="settingsForm">
+        <ion-toolbar color="primary">
+          <nav class="navbar navbar-expand navbar-primary navbar-dark">
+            <ion-title>Settings</ion-title>
+          </nav>
+        </ion-toolbar>
+        <ion-item>
+          <ion-label position="floating">Municipality/City</ion-label>
+          <ion-select placeholder="Select One" formControlName="lguid" >
+            <ion-select-option *ngFor="let municipality of municipalities" value="{{municipality.objid}}">
+              {{municipality.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.municipality">
+          <ng-container
+            *ngIf="(isSubmitted && settingsForm.get('lguid')?.hasError(validation.type)) || (settingsForm.get('lguid')?.hasError(validation.type) && (settingsForm.get('lguid')?.dirty || settingsForm.get('lguid')?.touched))">
+            <small class="text-danger">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+        <ion-item>
+          <ion-label position="floating">Survey Period</ion-label>
+          <ion-select placeholder="Select One" formControlName="surveyperiod">
+            <ion-select-option *ngFor="let item of surveyperiods" value="{{item.name}}">{{item.name}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.surveyperiod">
+          <ng-container
+            *ngIf="(isSubmitted && settingsForm.get('surveyperiod')?.hasError(validation.type)) || (settingsForm.get('surveyperiod')?.hasError(validation.type) && (settingsForm.get('surveyperiod')?.dirty || settingsForm.get('surveyperiod')?.touched))">
+            <small class="text-danger">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+        <ion-item>
+          <ion-label position="floating">Sync Server URL</ion-label>
+          <ion-input inputmode="text"
+            formControlName="syncserver"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.syncserver">
+          <ng-container
+            *ngIf="(isSubmitted && settingsForm.get('syncserver')?.hasError(validation.type)) || (settingsForm.get('syncserver')?.hasError(validation.type) && (settingsForm.get('syncserver')?.dirty || settingsForm.get('syncserver')?.touched))">
+            <small class="text-danger">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+      </form>
+
+      <ion-button fill="clear" (click)="startApp()">
+        Continue
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

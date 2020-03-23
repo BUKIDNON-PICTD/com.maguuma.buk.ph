@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 @Injectable({
   providedIn: 'root'
 })
-export class CheckTutorial implements CanLoad {
+export class CheckIntroduction implements CanLoad {
   constructor(private storage: Storage, private router: Router) {}
 
   canLoad() {

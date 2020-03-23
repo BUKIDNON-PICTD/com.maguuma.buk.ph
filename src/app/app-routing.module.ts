@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CheckTutorial } from './providers/check-tutorial.service';
+import { CheckIntroduction } from './providers/checkintroduction.service';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/tutorial',
+    redirectTo: '/introduction',
     pathMatch: 'full'
   },
   {
@@ -28,11 +29,11 @@ const routes: Routes = [
     path: 'app',
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule)
   },
-  {
-    path: 'tutorial',
-    loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
-    canLoad: [CheckTutorial]
-  },
+  // {
+  //   path: 'tutorial',
+  //   loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
+  //   canLoad: [CheckTutorial]
+  // },
   // maguuma modules
   {
     path: 'farminventorylist',
@@ -51,20 +52,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/master/facility/facility.module').then( m => m.FacilityPageModule)
   },
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'capturefarm',
-    loadChildren: () => import('./pages/transactions/capturefarm/capturefarm.module').then( m => m.CapturefarmPageModule)
-  },
-  {
     path: 'capturefarmer',
     loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule)
-  },
-  {
-    path: 'entityindividual',
-    loadChildren: () => import('./pages/transactions/entityindividual/entityindividual.module').then( m => m.EntityindividualPageModule)
   },
   {
     path: 'livestock',
@@ -81,14 +70,21 @@ const routes: Routes = [
   {
     path: 'capturefarmer',
     loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule)
-  },  {
+  },
+  {
     path: 'assistance',
     loadChildren: () => import('./pages/master/assistance/assistance.module').then( m => m.AssistancePageModule)
   },
   {
     path: 'surveyperiod',
     loadChildren: () => import('./pages/master/surveyperiod/surveyperiod.module').then( m => m.SurveyperiodPageModule)
+  },
+  {
+    path: 'introduction',
+    loadChildren: () => import('./pages/introduction/introduction.module').then( m => m.IntroductionPageModule),
+    canLoad: [CheckIntroduction]
   }
+
 
 ];
 

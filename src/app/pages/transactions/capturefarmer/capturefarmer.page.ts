@@ -35,17 +35,6 @@ import { Base64 } from "@ionic-native/base64/ngx";
   styleUrls: ["./capturefarmer.page.scss"]
 })
 export class CapturefarmerPage implements OnInit {
-  // farmProfileSlider: IonSlides;
-  // @ViewChildren("farmProfileSlider", {read: any}) farmProfileSlider: IonSlides;
-  // @ViewChild("farmProfileSlider", {static: false}) set ionSlides(ionSlides: IonSlides) {
-  //     if (ionSlides) {
-  //       this.farmProfileSlider = ionSlides;
-  //     }
-  // }
-  // @ViewChild("farmProfileSlider") set content(content: IonSlides) {
-  //   this.farmProfileSlider = content;
-  //   // this.farmProfileSlider.updateAutoHeight();
-  // }
   @ViewChild("farmProfileSlider", { static: false })
   protected farmProfileSlider: IonSlides;
 
@@ -884,7 +873,7 @@ export class CapturefarmerPage implements OnInit {
   //     });
   //     // formData.append("file", imgBlob, file.name);
   //     // this.uploadImageData(formData);
-      
+
   //   };
   //   reader.readAsDataURL(file);
   // }
