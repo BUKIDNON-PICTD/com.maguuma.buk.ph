@@ -20,24 +20,78 @@ import { UserData } from './providers/user-data';
 export class AppComponent implements OnInit {
   appPages = [
     {
-      title: 'Schedule',
-      url: '/app/tabs/schedule',
-      icon: 'calendar'
+      folderid: 'txn',
+      title: 'Transaction',
+      items: [
+        {
+          title: 'About Project',
+          url: '/app/tabs/about',
+          icon: 'information-circle'
+        },
+        {
+          title: 'Capture Farmer',
+          url: '/capturefarmer',
+          icon: 'person-add'
+        },
+        {
+          title: 'Farmer List',
+          url: '/app/tabs/farmerlist',
+          icon: 'people'
+        },
+        {
+          title: 'Farm Inventory List',
+          url: '/farminventorylist',
+          icon: 'map'
+        }
+      ]
     },
     {
-      title: 'Speakers',
-      url: '/app/tabs/speakers',
-      icon: 'people'
+      folderid: 'master',
+      title: 'Master',
+      items: [
+        {
+          title: 'Commodity',
+          url: '/commodity',
+          icon: 'list'
+        },
+        {
+          title: 'Facility',
+          url: '/facility',
+          icon: 'build'
+        },
+        {
+          title: 'Livestock',
+          url: '/livestock',
+          icon: 'paw'
+        },
+        {
+          title: 'Assistance Classification',
+          url: '/assistance',
+          icon: 'heart'
+        },
+        {
+          title: 'Survey Period',
+          url: '/surveyperiod',
+          icon: 'calendar'
+        },
+      ]
+
     },
     {
-      title: 'Map',
-      url: '/app/tabs/map',
-      icon: 'map'
-    },
-    {
-      title: 'About',
-      url: '/app/tabs/about',
-      icon: 'information-circle'
+      folderid: 'settings',
+      title: 'Settings',
+      items: [
+        {
+          title: 'App Setting',
+          url: '/settings',
+          icon: 'settings'
+        },
+        {
+          title: 'Sync Service',
+          url: '/syncpage',
+          icon: 'sync'
+        },
+      ]
     }
   ];
   loggedIn = false;

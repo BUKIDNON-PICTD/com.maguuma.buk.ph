@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Livestock</ion-title>
+    <ion-title>Survey Period</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,13 +8,10 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">{{currentmastertype}}</h3>
+            <!-- <h3 class="card-title">Facility</h3> -->
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 300px;">
-                <div class="input-group-append" *ngIf="prevmastertype">
-                  <button class="btn btn-default" (click)="prevItems()">back to {{prevmastertype}} <i class="fas fa-arrow-left"></i></button>
-                </div>
                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -28,14 +25,12 @@
                 <tr>
                   <th>Name</th>
                   <th>Code</th>
-                  <th>Unit of Measure</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of items" (click)="itemSelected(item)">
+                <tr *ngFor="let item of items">
                   <td>{{item.name}}</td>
                   <td>{{item.code}}</td>
-                  <td *ngIf="item.unit">{{item.unit}}</td>
                 </tr>
               </tbody>
             </table>

@@ -81,7 +81,15 @@ const routes: Routes = [
   {
     path: 'capturefarmer',
     loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule)
+  },  {
+    path: 'assistance',
+    loadChildren: () => import('./pages/master/assistance/assistance.module').then( m => m.AssistancePageModule)
+  },
+  {
+    path: 'surveyperiod',
+    loadChildren: () => import('./pages/master/surveyperiod/surveyperiod.module').then( m => m.SurveyperiodPageModule)
   }
+
 ];
 
 @NgModule({

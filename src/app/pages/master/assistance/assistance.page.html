@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Livestock</ion-title>
+    <ion-title>Assistance Classification</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -28,14 +28,12 @@
                 <tr>
                   <th>Name</th>
                   <th>Code</th>
-                  <th>Unit of Measure</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of items" (click)="itemSelected(item)">
                   <td>{{item.name}}</td>
                   <td>{{item.code}}</td>
-                  <td *ngIf="item.unit">{{item.unit}}</td>
                 </tr>
               </tbody>
             </table>
