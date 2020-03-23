@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Farm List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+   <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-searchbar [(ngModel)]="queryText" (ionChange)="loadFarmLocations(null)" placeholder="Search"></ion-searchbar>
+      <!-- <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmlocationdetail/{{farmer?.objid}}">
+        <i class="fas fa-plus">
+        </i>
+        Add
+      </a> -->
+    </nav>
+  </ion-toolbar>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of farmlocations" #slidingItem>
+      <!-- <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/{{item.objid}}"> -->
+        <ion-item>
+        <ion-label>
+          <h3>{{item.location.text}}</h3>
+          <p>
+            Area(sqm) : {{item.areasqm}} <br>
+            Mode of Acquisition : {{item.modeofacquisition}}
+          </p>
+        </ion-label>
+        <app-previewmap *ngIf='item.geolocation' slot="end" [farmlocation]='item' [farmerid]='null'></app-previewmap>
+        <ion-label *ngIf='!item.geolocation' slot="end" >No Map Available</ion-label>
+      </ion-item>
+      <!-- <ion-item-options>
+        <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmLocation)">
+          <i class="fas fa-trash-alt"></i>
+          Delete
+        </a>
+    </ion-item-options> -->
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list-header [hidden]="farmlocations?.length > 0">
+    No Livestock Found
+  </ion-list-header>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadFarmLocations($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

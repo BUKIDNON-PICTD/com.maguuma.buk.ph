@@ -1,0 +1,34 @@
+<ion-toolbar color="primary" *ngIf="!mapsloaded">
+  <nav class="navbar navbar-expand navbar-primary navbar-dark">
+    <ion-title>Loading Maps..please wait..<ion-spinner name="bubbles"></ion-spinner>
+    </ion-title>
+  </nav>
+</ion-toolbar>
+<ion-toolbar color="primary" *ngIf="map && mapsloaded && mapmode !== 'preview'">
+  <nav class="navbar navbar-expand navbar-primary navbar-dark">
+    <!-- <ion-title>Map View</ion-title> -->
+    <a class="btn btn-primary btn-lg" (click)="startDraw()" *ngIf="enabledraw">
+      <i class="fas fa-draw-polygon">
+      </i>
+      Draw Polygon
+    </a>
+    <a class="btn btn-primary btn-lg" (click)="savePolygon()" *ngIf="enablesave">
+      <i class="fas fa-draw-polygon">
+      </i>
+      Save Drawing
+    </a>
+    <a class="btn btn-primary btn-lg" (click)="startModify()" *ngIf="enablemodify">
+      <i class="fas fa-mouse-pointer">
+      </i>
+      Modify Geometry
+    </a>
+
+  </nav>
+</ion-toolbar>
+<div id="map" class="map" *ngIf='mapmode !== "preview"'></div>
+<div id="preview" class="preview" *ngIf='mapmode === "preview"'></div>
+<div #popup id="popup" class="ol-popup" [hidden]="!mapsloaded">
+  <a (click)='closepopup()' id="popup-closer" class="ol-popup-closer"></a>
+  <div #popupcontent id="popup-content"></div>
+</div>
+<!-- <div #helpTooltipElement class="ol-tooltip hidden">Click to continue drawing the polygon</div> -->

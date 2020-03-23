@@ -32,6 +32,55 @@ const routes: Routes = [
     path: 'tutorial',
     loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
     canLoad: [CheckTutorial]
+  },
+  // maguuma modules
+  {
+    path: 'farminventorylist',
+    loadChildren: () => import('./pages/transactions/farminventorylist/farminventorylist.module').then( m => m.FarminventorylistPageModule)
+  },
+  {
+    path: 'farmerlist',
+    loadChildren: () => import('./pages/transactions/farmerlist/farmerlist.module').then( m => m.FarmerlistPageModule)
+  },
+  {
+    path: 'commodity',
+    loadChildren: () => import('./pages/master/commodity/commodity.module').then( m => m.CommodityPageModule)
+  },
+  {
+    path: 'facility',
+    loadChildren: () => import('./pages/master/facility/facility.module').then( m => m.FacilityPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'capturefarm',
+    loadChildren: () => import('./pages/transactions/capturefarm/capturefarm.module').then( m => m.CapturefarmPageModule)
+  },
+  {
+    path: 'capturefarmer',
+    loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule)
+  },
+  {
+    path: 'entityindividual',
+    loadChildren: () => import('./pages/transactions/entityindividual/entityindividual.module').then( m => m.EntityindividualPageModule)
+  },
+  {
+    path: 'livestock',
+    loadChildren: () => import('./pages/master/livestock/livestock.module').then( m => m.LivestockPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'syncpage',
+    loadChildren: () => import('./pages/syncpage/syncpage.module').then( m => m.SyncpagePageModule)
+  },
+  {
+    path: 'capturefarmer',
+    loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule)
   }
 ];
 

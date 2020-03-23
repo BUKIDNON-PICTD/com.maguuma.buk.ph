@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Farm Facility Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Farm Facility</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
+  </ion-toolbar>
+  <form [formGroup]="farmFacilityForm">
+    <!-- {{farmFacilityForm.value | json}} -->
+    <div formGroupName="facility">
+      <ion-item>
+        <ion-label position="floating">Facility</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let facility of facilities" value="{{facility.objid}}">{{facility.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.facility">
+        <ng-container
+          *ngIf="(isSubmitted && farmFacilityForm.get('facility.objid')?.hasError(validation.type)) || (farmFacilityForm.get('facility.objid')?.hasError(validation.type) && (farmFacilityForm.get('facility.objid')?.dirty || farmFacilityForm.get('facility.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Quantity</ion-label>
+      <ion-input type="number" formControlName="quantity"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.quantity">
+      <ng-container
+        *ngIf="(isSubmitted && farmFacilityForm.get('quantity')?.hasError(validation.type)) || (farmFacilityForm.get('quantity')?.hasError(validation.type) && (farmFacilityForm.get('quantity')?.dirty || farmFacilityForm.get('quantity')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Mode of Acquisition</ion-label>
+      <ion-select placeholder="Select One" formControlName="modeofacquisition">
+        <ion-select-option value="OWNED">OWNED</ion-select-option>
+        <ion-select-option value="RENTED">RENTED</ion-select-option>
+        <ion-select-option value="LEASED">LEASED</ion-select-option>
+        <ion-select-option value="TENANT">TENANT</ion-select-option>
+        <ion-select-option value="OTHERS">OTHERS</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.modeofacquisition">
+      <ng-container
+        *ngIf="(isSubmitted && farmFacilityForm.get('modeofacquisition')?.hasError(validation.type)) || (farmFacilityForm.get('modeofacquisition')?.hasError(validation.type) && (farmFacilityForm.get('modeofacquisition')?.dirty || farmFacilityForm.get('modeofacquisition')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+  </form>
+</ion-content>

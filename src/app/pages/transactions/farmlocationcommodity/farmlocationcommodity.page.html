@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Farm Location Commodity</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Commodity Detail</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
+  </ion-toolbar>
+  <form [formGroup]="commodityForm">
+    <!-- {{commodityForm.value | json}} -->
+    <div formGroupName="commodity">
+      <ion-item>
+        <ion-label position="floating">Commodity</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onCommodityChange()">
+          <ion-select-option *ngFor="let item of commodities" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.commodity">
+        <ng-container
+          *ngIf="(isSubmitted && commodityForm.get('commodity.objid')?.hasError(validation.type)) || (commodityForm.get('commodity.objid')?.hasError(validation.type) && (commodityForm.get('commodity.objid')?.dirty || commodityForm.get('commodity.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+    <div formGroupName="commoditytype">
+      <ion-item>
+        <ion-label position="floating">Commodity Type</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid" (ionChange)="onCommodityTypeChange()">
+          <ion-select-option *ngFor="let item of commoditytypes" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.commoditytype">
+        <ng-container
+          *ngIf="(isSubmitted && commodityForm.get('commoditytype.objid')?.hasError(validation.type)) || (commodityForm.get('commoditytype.objid')?.hasError(validation.type) && (commodityForm.get('commoditytype.objid')?.dirty || commodityForm.get('commoditytype.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+    <div formGroupName="variety">
+      <ion-item>
+        <ion-label position="floating">Variety</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let item of varieties" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.variety">
+        <ng-container
+          *ngIf="(isSubmitted && commodityForm.get('variety.objid')?.hasError(validation.type)) || (commodityForm.get('variety.objid')?.hasError(validation.type) && (commodityForm.get('variety.objid')?.dirty || commodityForm.get('variety.objid')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+    <ion-item>
+      <ion-label position="floating">{{unitofmeasure}}</ion-label>
+      <ion-input autocapitalize type="number" formControlName="quantity"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.quantity">
+      <ng-container
+        *ngIf="(isSubmitted && commodityForm.get('quantity')?.hasError(validation.type)) || (commodityForm.get('quantity')?.hasError(validation.type) && (commodityForm.get('quantity')?.dirty || commodityForm.get('quantity')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+    <div formGroupName="surveyperiod">
+      <ion-item>
+        <ion-label position="floating">Survey Period</ion-label>
+        <ion-select placeholder="Select One" formControlName="objid">
+          <ion-select-option *ngFor="let item of surveyperiods" value="{{item.objid}}">{{item.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngFor="let validation of validation_messages.surveyperiod">
+        <ng-container
+          *ngIf="(isSubmitted && commodityForm.get('surveyperiod')?.hasError(validation.type)) || (commodityForm.get('surveyperiod')?.hasError(validation.type) && (commodityForm.get('surveyperiod')?.dirty || commodityForm.get('surveyperiod')?.touched))">
+          <small class="text-danger">{{ validation.message }}</small>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="commodity">
+    <ion-toolbar color="primary">
+      <nav class="navbar navbar-expand navbar-primary navbar-dark">
+        <ion-title>Farm Locations</ion-title>
+        <a *ngIf="!commodity.location" class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmlocationdetail/commodity/{{farmerid}}/{{commodityid}}">
+          <i class="fas fa-plus">
+          </i>
+          Map Commodity
+        </a>
+        <a *ngIf="commodity.location" class="btn btn-primary btn-sm" (click)="unlinkLocation()">
+          <i class="fas fa-trash">
+          </i>
+          Unlink Location
+        </a>
+      </nav>
+    </ion-toolbar>
+    <ion-list *ngIf="commodity.location">
+      <!-- <ion-item-sliding *ngFor="let item of farmer?.farmlocations" #slidingItem> -->
+      <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/commodity/{{farmerid}}/{{commodityid}}">
+        <ion-label>
+          <h3>{{commodity.location.location.text}}</h3>
+          <p>
+            Area(sqm) : {{commodity.location.areasqm}} <br>
+            Mode of Acquisition : {{commodity.location.modeofacquisition}}
+          </p>
+        </ion-label>
+        <app-olmappreview *ngIf='commodity.location?.geolocation' slot="end" [farmlocation]='commodity.location'
+          [farmerid]='farmerid'>
+        </app-olmappreview>
+        <ion-label *ngIf='!commodity.location?.geolocation' slot="end">No Map Available</ion-label>
+      </ion-item>
+      <!-- <ion-item-options>
+        <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmLocation)">
+          <i class="fas fa-trash-alt"></i>
+          Delete
+        </a>
+      </ion-item-options> -->
+      <!-- </ion-item-sliding> -->
+    </ion-list>
+    <ion-list-header [hidden]="commodity.location != null">
+      No Location Found
+    </ion-list-header>
+  </div>
+</ion-content>
