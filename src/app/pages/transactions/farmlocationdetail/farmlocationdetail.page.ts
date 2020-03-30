@@ -432,7 +432,7 @@ export class FarmlocationdetailPage {
               o => o.objid === this.itemid
             );
             this.location = this.commodity.location;
-            if (this.location) {
+            if (this.location?.objid) {
               await this.masterService
                 .getMasterFile("barangay")
                 .then(async items => {
@@ -456,7 +456,7 @@ export class FarmlocationdetailPage {
               this.itemid;
             this.livestock = item.livestocks.find(o => o.objid === this.itemid);
             this.location = this.livestock.location;
-            if (this.location) {
+            if (this.location?.objid) {
               await this.masterService
                 .getMasterFile("barangay")
                 .then(async items => {
@@ -479,7 +479,7 @@ export class FarmlocationdetailPage {
       this.defaultHref = `/farminventorylist`;
       this.masterService.getItems("agri_farmerprofile_location").then( async items => {
           this.location = items.find(o => o.objid = this.locationid);
-          if (this.location) {
+          if (this.location?.objid) {
             await this.masterService.getMasterFile("barangay").then(async items => {
               let brgy = items.find(o => o.objid === this.location.barangay.objid);
               await this.farmerLocationForm.patchValue({

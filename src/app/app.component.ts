@@ -1,3 +1,7 @@
+import { AuthService } from 'src/app/services/auth.service';
+import { SettingService } from './services/setting.service';
+import { OfflineManagerService } from './services/offlinemanager.service';
+import { NetworkService } from './services/network.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
@@ -10,6 +14,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
 
 import { UserData } from './providers/user-data';
+import { ConnectionStatus } from './interfaces/connectionstatus';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +22,7 @@ import { UserData } from './providers/user-data';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit {
+export class AppComponent{
   appPages = [
     {
       folderid: 'txn',
@@ -96,6 +101,9 @@ export class AppComponent implements OnInit {
   ];
   loggedIn = false;
   dark = false;
+  syncserverstatus = false;
+  settingsavailable = false;
+  componentloaded = false;
 
   constructor(
     private menu: MenuController,
@@ -107,46 +115,83 @@ export class AppComponent implements OnInit {
     private userData: UserData,
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
+    private networkService: NetworkService,
+    private offlineManager: OfflineManagerService,
+    private toastController: ToastController,
+    private settingService: SettingService,
+    private authService: AuthService
   ) {
     this.initializeApp();
   }
 
-  async ngOnInit() {
-    this.checkLoginStatus();
-    this.listenForLoginEvents();
+initializeApp() {
+    this.platform.ready().then(async () => {
+      await this.checkLoginStatus();
+      await this.listenForLoginEvents();
 
-    this.swUpdate.available.subscribe(async res => {
-      const toast = await this.toastCtrl.create({
-        message: 'Update available!',
-        position: 'bottom',
-        buttons: [
-          {
-            role: 'cancel',
-            text: 'Reload'
-          }
-        ]
+      await this.settingService.getItems().then( items => {
+        if (!items) {
+          this.settingsavailable = false;
+        } else {
+          this.settingsavailable = true;
+        }
       });
 
-      await toast.present();
+      await this.swUpdate.available.subscribe(async res => {
+        const toast = await this.toastCtrl.create({
+          message: 'Update available!',
+          position: 'bottom',
+          buttons: [
+            {
+              role: 'cancel',
+              text: 'Reload'
+            }
+          ]
+        });
 
-      toast
-        .onDidDismiss()
-        .then(() => this.swUpdate.activateUpdate())
-        .then(() => window.location.reload());
-    });
-  }
+        await toast.present();
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+        toast
+          .onDidDismiss()
+          .then(() => this.swUpdate.activateUpdate())
+          .then(() => window.location.reload());
+      });
+
+      await this.statusBar.styleDefault();
+      await this.splashScreen.hide();
+      await this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
+        if (status === ConnectionStatus.Online) {
+          // this.offlineManager.checkForEvents().subscribe();
+            // if (this.networkService.isSyncServerOnline()) {
+            //   this.syncserverstatus = true;
+            // } else {
+            //   this.syncserverstatus = false;
+            // }
+          this.networkService.onSyncServerStatusChange().subscribe( (syncserverstatus: ConnectionStatus) => {
+            if (syncserverstatus === ConnectionStatus.Online) {
+              this.syncserverstatus = true;
+              this.offlineManager.checkForEvents().subscribe();
+              // this.showToast("Sync Server is Online");
+            } else {
+              this.syncserverstatus = false;
+              // this.showToast("Sync Server is Offline");
+            }
+          });
+        }
+      });
+      this.componentloaded = true;
     });
   }
 
   checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
-      return this.updateLoggedInStatus(loggedIn);
+    return this.authService.authenticationState.subscribe(state => {
+      return this.updateLoggedInStatus(state);
     });
+
+    // return this.userData.isLoggedIn().then(loggedIn => {
+    //   console.log(loggedIn);
+    //   return this.updateLoggedInStatus(loggedIn);
+    // });
   }
 
   updateLoggedInStatus(loggedIn: boolean) {
@@ -171,7 +216,8 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.userData.logout().then(() => {
-      return this.router.navigateByUrl('/app/tabs/schedule');
+      this.authService.logout();
+      return this.router.navigateByUrl('/login');
     });
   }
 
@@ -179,5 +225,14 @@ export class AppComponent implements OnInit {
     this.menu.enable(false);
     this.storage.set('ion_did_tutorial', false);
     this.router.navigateByUrl('/tutorial');
+  }
+
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+
+    toast.present();
   }
 }

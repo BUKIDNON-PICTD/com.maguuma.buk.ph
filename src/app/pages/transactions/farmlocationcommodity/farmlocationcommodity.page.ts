@@ -115,6 +115,7 @@ export class FarmlocationcommodityPage {
       if (this.mode === "create") {
         let newitem = {
           objid: this.farmerService.create_UUID(),
+          state: 'CURRENT',
           commodity: {},
           commoditytype: {},
           variety: {},
@@ -166,6 +167,7 @@ export class FarmlocationcommodityPage {
         updateditem.surveyperiod = this.surveyperiods.find(
           o => o.objid === this.commodityForm.get("surveyperiod.objid").value
         );
+
 
         this.farmer.commodities = this.farmer.commodities.map(
           commodity =>

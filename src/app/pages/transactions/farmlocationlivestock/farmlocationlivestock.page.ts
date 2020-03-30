@@ -99,6 +99,7 @@ export class FarmlocationlivestockPage {
       if (this.mode === "create") {
         let newitem = {
           objid: this.farmerService.create_UUID(),
+          state: 'CURRENT',
           species: {},
           breed: {},
           surveyperiod: {}

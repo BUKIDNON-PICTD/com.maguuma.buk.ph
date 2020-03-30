@@ -22,15 +22,15 @@
   </ion-list-header>
   <ion-progress-bar [value]="syncFarmerProgress" *ngIf="showProgressbarForFarmerSync"></ion-progress-bar>
 
-  <ion-content  #loglist class="loglist"> 
+  <ion-content  #loglist class="loglist">
     <ion-list *ngIf="showProgressbarForFarmerSync" >
       <ion-item *ngFor="let log of logs">
         <p>{{log.message}}</p>
       </ion-item>
     </ion-list>
   </ion-content>
-  
-<!--   
+
+<!--
   <ion-list-header>
     <ion-label *ngIf="prepEntityProgress == 0">Preparing Entity Sync</ion-label>
     <ion-label *ngIf="prepEntityProgress > 0 && prepEntityProgress != 100">Preparation in progress at {{(prepEntityProgress * 100).toFixed(2)}}%</ion-label>

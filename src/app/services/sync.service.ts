@@ -45,7 +45,7 @@ export class SyncService {
       storeName: '_agri_farmerprofile',
       driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
-     this.settingservice.getItemByName('syncserver').then(item => {
+    this.settingservice.getItemByName('syncserver').then(item => {
       this.syncserver = item.value;
     });
 

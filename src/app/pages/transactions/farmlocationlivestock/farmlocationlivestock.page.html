@@ -126,19 +126,19 @@
     <ion-toolbar color="primary">
       <nav class="navbar navbar-expand navbar-primary navbar-dark">
         <ion-title>Farm Locations</ion-title>
-        <a *ngIf="!livestock.location" class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmlocationdetail/livestock/{{farmerid}}/{{livestockid}}">
+        <a *ngIf="!livestock.location?.objid" class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/farmlocationdetail/livestock/{{farmerid}}/{{livestockid}}">
           <i class="fas fa-plus">
           </i>
           Map Livestock
         </a>
-        <a *ngIf="livestock.location" class="btn btn-primary btn-sm" (click)="unlinkLocation()">
+        <a *ngIf="livestock.location?.objid" class="btn btn-primary btn-sm" (click)="unlinkLocation()">
           <i class="fas fa-trash">
           </i>
           Unlink Location
         </a>
       </nav>
     </ion-toolbar>
-    <ion-list *ngIf="livestock.location">
+    <ion-list *ngIf="livestock.location?.objid">
       <!-- <ion-item-sliding *ngFor="let item of farmer?.farmlocations" #slidingItem> -->
       <ion-item routerLink="/app/tabs/farmerlist/farmlocationdetail/livestock/{{farmerid}}/{{livestockid}}">
         <ion-label>
@@ -161,7 +161,7 @@
       </ion-item-options> -->
       <!-- </ion-item-sliding> -->
     </ion-list>
-    <ion-list-header [hidden]="livestock.location != null">
+    <ion-list-header [hidden]="livestock.location?.objid != null">
       No Location Found
     </ion-list-header>
   </div>

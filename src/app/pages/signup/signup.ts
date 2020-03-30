@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,15 +20,24 @@ export class SignupPage {
 
   constructor(
     public router: Router,
-    public userData: UserData
-  ) {}
+    public userData: UserData,
+    public authService: AuthService
+  ) {
+    this.userData.isLoggedIn().then( isLoggedIn => {
+      if (isLoggedIn) {
+        this.router.navigateByUrl('/app/tabs/about');
+      }
+    });
+  }
 
   onSignup(form: NgForm) {
     this.submitted = true;
 
     if (form.valid) {
-      this.userData.signup(this.signup.username);
-      this.router.navigateByUrl('/app/tabs/schedule');
+      this.authService.register(form.value).subscribe(res => {
+        this.authService.login(form.value).subscribe();
+      });
+
     }
   }
 }

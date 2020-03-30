@@ -22,7 +22,7 @@
   <div>
     <ion-item>
       <ion-label><strong>Farmer Name:</strong> {{farmer.farmer.name}}</ion-label>
-      <ion-thumbnail slot="end" *ngIf="farmer.farmer.photo">
+      <ion-thumbnail slot="end" *ngIf="farmer.farmer?.photo">
         <img [src]="farmer.farmer.photo" />
       </ion-thumbnail>
     </ion-item>
@@ -61,7 +61,7 @@
 
     <ion-item>
       <ion-label><strong>Spouse:</strong> {{farmer?.spouse?.name}}</ion-label>
-      <ion-thumbnail slot="end" *ngIf="farmer.spouse.photo">
+      <ion-thumbnail slot="end" *ngIf="farmer.spouse?.photo">
         <img [src]="farmer.spouse.photo" />
       </ion-thumbnail>
       <a class="btn btn-primary btn-sm" routerLink="/app/tabs/farmerlist/capturefarmer/spouse/{{farmer?.objid}}">

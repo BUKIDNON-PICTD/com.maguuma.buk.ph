@@ -435,27 +435,27 @@ export class CapturefarmerPage implements OnInit {
   next() {
     this.isSubmitted = true;
     this.farmProfileSlider.getActiveIndex().then(index => {
+
       if (this.farmerPersonalInformationForm.valid && index === 0) {
         if (this.mode === "create") {
           this.verifyfarmername();
         }
-        this.lockswipe();
-      } else if (
-        this.farmerPersonalInformationDetailForm.valid &&
-        index === 1
-      ) {
-        this.lockswipe();
-      } else if (this.farmerContactInformationForm.valid && index === 2) {
-        this.lockswipe();
-      } else if (this.farmerAddressForm.valid && index === 3) {
-        this.lockswipe();
+        this.nextslide();
+      } else if (this.matches.length > 0 && index === 1) {
+        this.nextslide();
+      } else if (this.farmerPersonalInformationDetailForm.valid && index === 1 + (this.matches.length > 0 ? 1 : 0)) {
+        this.nextslide();
+      } else if (this.farmerContactInformationForm.valid && index === 2 + (this.matches.length > 0 ? 1 : 0)) {
+        this.nextslide();
+      } else if (this.farmerAddressForm.valid && index === 3 + (this.matches.length > 0 ? 1 : 0)) {
+        this.nextslide();
       } else {
         this.showToast("Form validation error.");
       }
     });
   }
 
-  lockswipe() {
+  nextslide() {
     this.farmProfileSlider.lockSwipes(false);
     this.farmProfileSlider.slideNext();
     this.farmProfileSlider.lockSwipes(true);
@@ -568,23 +568,25 @@ export class CapturefarmerPage implements OnInit {
     } else if (spouseid) {
       this.mode = "edit";
       this.isspouse = true;
-      await this.farmerService.getItem(spouseid).then(item => {
-        if (item.spouse) {
-          this.farmerPersonalInformationForm.patchValue(item.spouse);
-          this.farmerPersonalInformationDetailForm.patchValue(item.spouse);
-          this.farmerContactInformationForm.patchValue(item.spouse);
-          this.farmerAddressForm.patchValue(item.spouse.address);
+      await this.farmerService.getItem(spouseid).then(async item => {
+        if (item.spouse.objid) {
+          await this.farmerPersonalInformationForm.patchValue(item.spouse);
+          await this.farmerPersonalInformationDetailForm.patchValue(item.spouse);
+          await this.farmerContactInformationForm.patchValue(item.spouse);
+          if (item.spouse.address) {
+            await this.farmerAddressForm.patchValue(item.spouse.address);
+            await this.masterService.getMasterFile("barangay").then(items => {
+              let brgy = items.find(
+                o => o.objid === this.farmerAddressForm.get("barangay.objid").value
+              );
+              this.farmerAddressForm.patchValue({
+                municipality: { objid: brgy.parentid }
+              });
+            });
+          }
         }
         this.farmer = item;
         this.photo = this.farmer.spouse.photo;
-      });
-      await this.masterService.getMasterFile("barangay").then(items => {
-        let brgy = items.find(
-          o => o.objid === this.farmerAddressForm.get("barangay.objid").value
-        );
-        this.farmerAddressForm.patchValue({
-          municipality: { objid: brgy.parentid }
-        });
       });
     }
     this.farmerAddressForm.patchValue({
@@ -717,7 +719,7 @@ export class CapturefarmerPage implements OnInit {
     };
     spouseformdata.address = this.farmerAddressForm.value;
 
-    if (!this.farmer.spouse) {
+    if (!this.farmer.spouse || !this.farmer.spouse.objid) {
       this.farmer.spouse = {
         objid: this.create_UUID()
       };

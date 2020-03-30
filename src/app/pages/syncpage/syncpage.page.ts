@@ -44,13 +44,14 @@ export class SyncpagePage implements OnInit {
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      this.networkService.syncserverstatus.subscribe(status => {
-        if (status === ConnectionStatus.Online) {
+      console.log(this.networkService.getCurrentSyncServerStatus());
+      this.networkService.onSyncServerStatusChange().subscribe( (syncserverstatus: ConnectionStatus) => {
+        if (syncserverstatus === ConnectionStatus.Online) {
           this.syncserverstatus = true;
-          this.showToast("Sync Server is Online");
+          // this.showToast("Sync Server is Online");
         } else {
           this.syncserverstatus = false;
-          this.showToast("Sync Server is Offline");
+          // this.showToast("Sync Server is Offline");
         }
       });
     });

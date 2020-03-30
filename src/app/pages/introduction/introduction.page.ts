@@ -1,3 +1,4 @@
+import { NetworkService } from 'src/app/services/network.service';
 import { SettingService } from './../../services/setting.service';
 import { MasterService } from './../../services/master.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -26,7 +27,8 @@ export class IntroductionPage {
     public storage: Storage,
     private formBuilder: FormBuilder,
     private masterService: MasterService,
-    private settingService: SettingService
+    private settingService: SettingService,
+    private networkService: NetworkService
   ) {
 
     this.settingsForm = this.formBuilder.group({
@@ -108,9 +110,9 @@ export class IntroductionPage {
         value: this.settingsForm.get("syncserver").value,
       };
       await this.settingService.addItem(syncserver);
-
+      this.networkService.initializeSocketEvents();
       this.router
-      .navigateByUrl('/app/tabs/about', { replaceUrl: true })
+      .navigateByUrl('/login', { replaceUrl: true })
       .then(() => this.storage.set('ion_did_intro', true));
     }
   }

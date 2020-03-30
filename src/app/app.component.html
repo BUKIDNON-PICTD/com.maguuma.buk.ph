@@ -1,8 +1,16 @@
-<ion-app [class.dark-theme]="dark">
+<ion-app [class.dark-theme]="dark" *ngIf="componentloaded">
   <ion-split-pane contentId="main-content">
 
     <ion-menu contentId="main-content">
+      <nav class="navbar navbar-expand navbar-primary navbar-dark" *ngIf="!syncserverstatus">
+        <ion-title class="titleicon" style="display:inline-block" class="brand-text font-weight-light">Maguuma</ion-title>
+      </nav>
+      <nav class="navbar navbar-expand navbar-success navbar-dark" *ngIf="syncserverstatus">
+        <!-- <img src="assets/pgblogo.png" alt="PGB" width="40px" style="display:inline-block" height="40px"> -->
+        <ion-title class="titleicon" style="display:inline-block" class="brand-text font-weight-light">Maguuma</ion-title>
+      </nav>
       <ion-content>
+        <div *ngIf="loggedIn">
         <ion-list lines="none" *ngFor="let p of appPages; let i = index">
           <ion-list-header>
             {{p.title}}
@@ -17,6 +25,7 @@
 
           </ion-menu-toggle>
         </ion-list>
+      </div>
 
         <ion-list *ngIf="loggedIn" lines="none">
           <ion-list-header>

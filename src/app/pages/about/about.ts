@@ -10,20 +10,20 @@ import { PopoverPage } from '../about-popover/about-popover';
   styleUrls: ['./about.scss'],
 })
 export class AboutPage {
-  location = 'madison';
-  conferenceDate = '2047-05-17';
+  // location = 'madison';
+  // conferenceDate = '2047-05-17';
 
-  selectOptions = {
-    header: 'Select a Location'
-  };
+  // selectOptions = {
+  //   header: 'Select a Location'
+  // };
 
   constructor(public popoverCtrl: PopoverController) { }
 
-  async presentPopover(event: Event) {
-    const popover = await this.popoverCtrl.create({
-      component: PopoverPage,
-      event
-    });
-    await popover.present();
-  }
+  // async presentPopover(event: Event) {
+  //   const popover = await this.popoverCtrl.create({
+  //     component: PopoverPage,
+  //     event
+  //   });
+  //   await popover.present();
+  // }
 }
