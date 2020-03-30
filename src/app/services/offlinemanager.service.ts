@@ -2,7 +2,7 @@ import { FarmerService } from "src/app/services/farmer.service";
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { Observable, from, of, forkJoin } from "rxjs";
-import { switchMap, finalize, tap } from "rxjs/operators";
+import { switchMap, finalize, tap, catchError } from "rxjs/operators";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ToastController } from "@ionic/angular";
 
@@ -56,8 +56,8 @@ export class OfflineManagerService {
                 position: "bottom"
               });
               toast.then(toast => toast.present());
-
-              this.storage.remove(STORAGE_REQ_KEY);
+              // this.storage.set(STORAGE_REQ_KEY, JSON.stringify(storedObj));
+              // this.storage.remove(STORAGE_REQ_KEY);
             })
           );
         } else {
@@ -103,7 +103,7 @@ export class OfflineManagerService {
 
   sendRequests(operations: StoredRequest[]) {
     let obs = [];
-
+    this.storage.remove(STORAGE_REQ_KEY);
     for (let op of operations) {
       console.log("Make one request: ", op);
       let oneObs = this.http
@@ -116,6 +116,20 @@ export class OfflineManagerService {
         .pipe(
           tap(res => {
             this.updatefarmer(res.data);
+          }),
+          catchError(err => {
+            this.storage.get(STORAGE_REQ_KEY).then(storedOperations => {
+              let storedObj = JSON.parse(storedOperations);
+
+              if (storedObj) {
+                storedObj.push(op);
+              } else {
+                storedObj = [op];
+              }
+              // Save old & new local transactions back to Storage
+              return this.storage.set(STORAGE_REQ_KEY, JSON.stringify(storedObj));
+            });
+            throw new Error(err);
           })
         );
       obs.push(oneObs);
