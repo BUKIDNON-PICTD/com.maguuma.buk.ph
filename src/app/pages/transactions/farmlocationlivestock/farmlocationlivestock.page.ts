@@ -6,6 +6,8 @@ import { MasterService } from "src/app/services/master.service";
 import { Storage } from "@ionic/storage";
 import { ToastController } from "@ionic/angular";
 import { SettingService } from "src/app/services/setting.service";
+import { FarmlocationService } from 'src/app/services/farmlocation.service';
+import { MapService } from 'src/app/services/map.service';
 
 @Component({
   selector: "app-farmlocationlivestock",
@@ -37,7 +39,9 @@ export class FarmlocationlivestockPage {
     private masterService: MasterService,
     private toastController: ToastController,
     private settingService: SettingService,
-    private router: Router
+    private router: Router,
+    private farmlocationService: FarmlocationService,
+    private mapService: MapService
   ) {
     this.livestockForm = this.formBuilder.group({
       remarks: [""],
@@ -163,6 +167,10 @@ export class FarmlocationlivestockPage {
     }
   }
   unlinkLocation() {
+    this.livestock.location.geolocation.features[0].properties = {};
+    this.farmlocationService.updateItem(this.livestock.location.geolocation);
+    this.mapService.updateItem(this.livestock.location.geolocation);
+
     this.livestock.location = null;
     this.farmer.livestocks = this.farmer.commodities.map(
       livestock =>

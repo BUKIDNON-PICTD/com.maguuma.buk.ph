@@ -436,8 +436,8 @@ export class OlmapComponent implements OnInit {
       });
     } else {
       this.source.clear();
-      var extent = this.barangayvector.getSource().getExtent();
-      this.map.getView().fit(extent);
+      // var extent = this.barangayvector.getSource().getExtent();
+      // this.map.getView().fit(extent);
     }
   }
 

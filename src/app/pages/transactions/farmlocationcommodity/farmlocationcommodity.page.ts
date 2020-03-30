@@ -1,3 +1,5 @@
+import { MapService } from './../../../services/map.service';
+import { FarmlocationService } from './../../../services/farmlocation.service';
 import { SettingService } from "src/app/services/setting.service";
 import { ToastController } from "@ionic/angular";
 import { Component, OnInit } from "@angular/core";
@@ -39,7 +41,9 @@ export class FarmlocationcommodityPage {
     private masterService: MasterService,
     private toastController: ToastController,
     private settingService: SettingService,
-    private router: Router
+    private router: Router,
+    private farmlocationService: FarmlocationService,
+    private mapService: MapService
   ) {
     this.commodityForm = this.formBuilder.group({
       quantity: ["", Validators.compose([Validators.required])],
@@ -188,6 +192,10 @@ export class FarmlocationcommodityPage {
     }
   }
   unlinkLocation() {
+    this.commodity.location.geolocation.features[0].properties = {};
+    this.farmlocationService.updateItem(this.commodity.location.geolocation);
+    this.mapService.updateItem(this.commodity.location.geolocation);
+
     this.commodity.location = null;
     this.farmer.commodities = this.farmer.commodities.map(
       commodity =>

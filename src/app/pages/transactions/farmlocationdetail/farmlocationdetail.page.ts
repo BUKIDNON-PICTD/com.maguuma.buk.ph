@@ -315,8 +315,8 @@ export class FarmlocationdetailPage {
   featureSelectedHandler(data: any) {
     this.selectedLocation = data;
   }
-  claimLocation() {
-    if (this.selectedLocation) {
+  async claimLocation() {
+    if (this.selectedLocation.farmerid) {
       this.farmerService
         .getItem(this.selectedLocation.farmerid)
         .then(async prevowner => {
@@ -359,18 +359,20 @@ export class FarmlocationdetailPage {
                 this.commodity.location.geolocation
               );
 
-              await this.farmerService.updatefarmer(this.farmer).then(async item => {
-                this.showToast("Farm Location Claimed.");
-                this.router.navigate([
-                  "/app/tabs/farmerlist/farmlocationdetail/commodity/" +
-                    item.objid +
-                    "/" +
-                    this.livestock.objid
-                ]);
-              });
+              this.farmerService
+                .updatefarmer(this.farmer)
+                .then(async item => {
+                  this.showToast("Farm Location Claimed.");
+                  this.router.navigate([
+                    "/app/tabs/farmerlist/farmlocationdetail/commodity/" +
+                      item.objid +
+                      "/" +
+                      this.commodity.objid
+                  ]);
+                });
             } else {
               this.presentAlert(
-                "You are not allowed to claim this current location? It is currently linked to " +
+                "You are not allowed to claim this current location. It is currently linked to " +
                   prevowner.farmer.name
               );
             }
@@ -414,23 +416,103 @@ export class FarmlocationdetailPage {
                 this.livestock.location.geolocation
               );
 
-              await this.farmerService.updatefarmer(this.farmer).then(async item => {
-                this.showToast("Farm Location Claimed.");
-                this.router.navigate([
-                  "/app/tabs/farmerlist/farmlocationdetail/livestock/" +
-                    item.objid +
-                    "/" +
-                    this.livestock.objid
-                ]);
-              });
+              this.farmerService
+                .updatefarmer(this.farmer)
+                .then(async item => {
+                  this.showToast("Farm Location Claimed.");
+                  this.router.navigate([
+                    "/app/tabs/farmerlist/farmlocationdetail/livestock/" +
+                      item.objid +
+                      "/" +
+                      this.livestock.objid
+                  ]);
+                });
             } else {
               this.presentAlert(
-                "You are not allowed to claim this current location? It is currently linked to " +
+                "You are not allowed to claim this current location. It is currently linked to " +
                   prevowner.farmer.name
               );
             }
           }
         });
+    } else if (this.selectedLocation) {
+      if (this.type === "commodity") {
+        await this.farmlocationService
+          .getItem(this.selectedLocation.locationid)
+          .then(item => {
+            if (item) {
+              this.commodity.location = item;
+            }
+          });
+
+        if (this.commodity.location.objid) {
+          this.commodity.location.geolocation.features[0].properties = {
+            farmerid: this.farmerid,
+            itemtype: "commodity",
+            itemid: this.commodity.objid
+          };
+          this.farmer.commodities = this.farmer.commodities.map(commodity =>
+            commodity.objid === this.commodity.objid
+              ? (commodity = this.commodity)
+              : commodity
+          );
+          await this.mapService.updateItem(this.commodity.location.geolocation);
+
+          this.farmerService
+            .updatefarmer(this.farmer)
+            .then(async item => {
+              this.showToast("Farm Location Claimed.");
+              this.router.navigate([
+                "/app/tabs/farmerlist/farmlocationdetail/commodity/" +
+                  item.objid +
+                  "/" +
+                  this.commodity.objid
+              ]);
+            });
+        } else {
+          this.presentAlert(
+            "You are not allowed to claim this current location"
+          );
+        }
+      } else {
+        await this.farmlocationService
+          .getItem(this.selectedLocation.locationid)
+          .then(item => {
+            if (item) {
+              this.livestock.location = item;
+            }
+          });
+
+        if (this.livestock.location.objid) {
+          this.livestock.location.geolocation.features[0].properties = {
+            farmerid: this.farmerid,
+            itemtype: "livestock",
+            itemid: this.livestock.objid
+          };
+          this.farmer.livestocks = this.farmer.livestocks.map(livestock =>
+            livestock.objid === this.livestock.objid
+              ? (livestock = this.livestock)
+              : livestock
+          );
+          await this.mapService.updateItem(this.livestock.location.geolocation);
+
+          this.farmerService
+            .updatefarmer(this.farmer)
+            .then(async item => {
+              this.showToast("Farm Location Claimed.");
+              this.router.navigate([
+                "/app/tabs/farmerlist/farmlocationdetail/livestock/" +
+                  item.objid +
+                  "/" +
+                  this.livestock.objid
+              ]);
+            });
+        } else {
+          this.presentAlert(
+            "You are not allowed to claim this current location."
+          );
+        }
+      }
     } else {
       this.presentAlert("Please select a location on the map frist");
     }
