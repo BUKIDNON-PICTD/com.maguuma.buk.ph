@@ -1,3 +1,4 @@
+import { FarmlocationService } from './../../services/farmlocation.service';
 import { MapService } from "./../../services/map.service";
 import {
   Component,
@@ -102,7 +103,8 @@ export class OlmapmodalComponent implements OnInit {
     private renderer: Renderer2,
     private el: ElementRef,
     private mapService: MapService,
-    private modalCtrl : ModalController
+    private modalCtrl : ModalController,
+    private farmlocationService: FarmlocationService
   ) {}
 
   ngOnInit() {
@@ -265,10 +267,11 @@ export class OlmapmodalComponent implements OnInit {
         type: "FeatureCollection",
         features: []
       };
+
       if (items && this.item.location) {
-        geojson.features = items.filter(o => o.id !== this.item.location.objid);
+        geojson.features = items.filter(o => o.features[0].id !== this.item.location.objid).map(item => item.features[0]);
       } else {
-        geojson.features = items;
+        geojson.features = items.map(item => item.features[0]);
       }
       if (items) {
         this.farmsource.clear();
@@ -315,7 +318,7 @@ export class OlmapmodalComponent implements OnInit {
             content +=
               "<h5><strong>Farmer</strong> : " + item.farmer.name + "</h5>";
             if (itemtype === "commodity") {
-              let commodity = item.commodities.find(o => (o.objid = itemid));
+              let commodity = item.commodities.find(o => o.objid === itemid);
               content +=
                 " <h5>" +
                 commodity.variety.commoditytype.commodity.name +
@@ -339,7 +342,7 @@ export class OlmapmodalComponent implements OnInit {
               //   Survey Period : {{item.surveyperiod.name}}
               // </p>
             } else {
-              let livestock = item.livestocks.find(o => (o.objid = itemid));
+              let livestock = item.livestocks.find(o => o.objid === itemid);
               content += " <h5>" + livestock.breed.species.name + "</h5>";
               content +=
                 "<p>" + "Sruvey Period : " + livestock.surveyperiod.name;
@@ -400,7 +403,7 @@ export class OlmapmodalComponent implements OnInit {
       })
     });
     var drawstyle = [drawFillStyle, drawLabelStyle];
-    if (this.item.location?.geolocation) {
+    if (this.item.location?.geolocation?.type) {
       this.source.clear();
       this.source.addFeatures(
         new GeoJSON().readFeatures(this.item.location.geolocation)
@@ -602,7 +605,8 @@ export class OlmapmodalComponent implements OnInit {
       }
       // console.log(item);
       this.farmerService.updatefarmer(item);
-      this.mapService.saveItem(JSON.parse(data).features[0]);
+      this.mapService.saveItem(JSON.parse(data));
+      this.farmlocationService.updateItem(this.item.location);
     });
     this.enablemodify = true;
     this.enablesave = false;
@@ -615,7 +619,7 @@ export class OlmapmodalComponent implements OnInit {
 
   clearMap() {
     this.vector.getSource().clear();
-    this.item.location = { ...this.item.location, geolocation: null };
+    this.item.location = { ...this.item.location, geolocation: {} };
     this.farmerService.getItem(this.farmerid).then(item => {
       if (this.type === "commodity") {
         item.commodities = item.commodities.map(c =>
@@ -628,7 +632,8 @@ export class OlmapmodalComponent implements OnInit {
       }
 
       this.farmerService.updatefarmer(item);
-      this.mapService.deleteItem(item.objid);
+      this.mapService.deleteItem(this.item.location.objid);
+      this.farmlocationService.updateItem(this.item.location);
     });
     this.enabledraw = true;
     this.enablemodify = false;

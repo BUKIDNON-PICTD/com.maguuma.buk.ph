@@ -1,3 +1,4 @@
+import { FarmlocationService } from './farmlocation.service';
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 
@@ -7,28 +8,35 @@ import { Storage } from "@ionic/storage";
 export class MapService {
   public _agri_map: any;
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private farmlocationService: FarmlocationService) {
     this._agri_map = new Storage({
       storeName: "_agri_map",
       driverOrder: ["indexeddb", "sqlite", "websql", "localstorage"]
     });
   }
- 
+
+  makemap() {
+   this._agri_map.remove("maplist");
+   this.farmlocationService.getItems().then(async items => {
+      this._agri_map.set(
+        "maplist",
+        items.filter( item => item.geolocation && item.geolocation?.type === 'FeatureCollection' ).map(item => item.geolocation)
+      );
+    });
+  }
+
   saveItem(item: any): Promise<any> {
     return this.getItems().then(async items => {
       if (!items) {
         await this._agri_map.set("maplist", [item]);
       } else {
-        if (items.find(o => o.id === item.id)) {
-          items = items.map( mapitem =>
-            mapitem.id === item.id
-              ? mapitem = item
-              : mapitem
-          );
+        if (items.find(o => o.features[0].id === item.features[0].id)) {
+          return this.updateItem(item);
         } else {
           items.push(item);
+          await this._agri_map.set("maplist", items);
         }
-        await this._agri_map.set("maplist", items);
+
       }
       return await this.getItem(item.id);
     });
@@ -42,7 +50,7 @@ export class MapService {
       let newItems: any[] = [];
 
       for (let i of items) {
-        if (i.id === item.id) {
+        if (i.features[0].id === item.features[0].id) {
           newItems.push(item);
         } else {
           newItems.push(i);
@@ -88,7 +96,7 @@ export class MapService {
         return null;
       }
 
-      let updateditems = items.filter( o => o.id !== id);
+      let updateditems = items.filter( o => o.features[0].id !== id);
       await this._agri_map.set("maplist", updateditems);
       return this.getItems();
     });

@@ -38,16 +38,16 @@ import OverlayPositioning from "ol/OverlayPositioning";
 import { unByKey } from "ol/Observable";
 
 @Component({
-  selector: 'app-olmap',
-  templateUrl: './olmap.component.html',
-  styleUrls: ['./olmap.component.scss'],
+  selector: "app-olmap",
+  templateUrl: "./olmap.component.html",
+  styleUrls: ["./olmap.component.scss"]
 })
 export class OlmapComponent implements OnInit {
   @Input() item;
   @Input() type;
   @Input() farmerid;
   @Input() mapmode;
-  @Output() selectedFeature: EventEmitter<any> =   new EventEmitter();
+  @Output() selectedFeature: EventEmitter<any> = new EventEmitter();
   map: Map;
   raster: TileLayer;
   source: VectorSource;
@@ -108,9 +108,6 @@ export class OlmapComponent implements OnInit {
     setTimeout(_ => this.initMap(), 2000);
   }
 
-  // ngAfterViewInit() {
-  //   setTimeout(_ => this.initMap(), 2000);
-  // }
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges.item.previousValue) {
       this.drawlocationfeature();
@@ -266,11 +263,11 @@ export class OlmapComponent implements OnInit {
       };
 
       if (items && this.item.location) {
-        geojson.features = items.filter(o => o.id !== this.item.location.objid);
+        geojson.features = items.filter(o => o.features[0].id !== this.item.location.objid).map(item => item.features[0]);
       } else {
-        geojson.features = items;
+        geojson.features = items.map(item => item.features[0]);
       }
-      if (items){
+      if (items) {
         this.farmsource.clear();
         this.farmsource.addFeatures(new GeoJSON().readFeatures(geojson));
         this.farmvector.setStyle((feature, resolution) => {
@@ -286,11 +283,9 @@ export class OlmapComponent implements OnInit {
       }
 
       this.mapsloaded = true;
-
     });
   }
   createpopup() {
-
     this.popupoverlay = new Overlay({
       element: this.popup.nativeElement,
       autoPan: true,
@@ -304,11 +299,18 @@ export class OlmapComponent implements OnInit {
       var selectSingleClick = new Select();
       this.map.addInteraction(selectSingleClick);
       selectSingleClick.on("select", e => {
-        var extent = e.selected[0].getGeometry().getExtent();
-        let farmerid = e.selected[0].get("farmerid");
-        let itemtype = e.selected[0].get("itemtype");
-        let itemid = e.selected[0].get("itemid");
-        this.selectedFeature.emit({'locationid':e.selected[0].getId(),'farmerid':farmerid,'itemtype':itemtype,'itemid':itemid});
+        let selecteditem = e.selected[0];
+        let extent = selecteditem.getGeometry().getExtent();
+        let farmerid = selecteditem.get("farmerid");
+        let itemtype = selecteditem.get("itemtype");
+        let itemid = selecteditem.get("itemid");
+
+        this.selectedFeature.emit({
+          locationid: selecteditem.getId(),
+          farmerid: farmerid,
+          itemtype: itemtype,
+          itemid: itemid
+        });
 
         this.farmerService.getItem(farmerid).then(item => {
           if (item) {
@@ -316,47 +318,55 @@ export class OlmapComponent implements OnInit {
             content +=
               "<h5><strong>Farmer</strong> : " + item.farmer.name + "</h5>";
             if (itemtype === "commodity") {
-              let commodity = item.commodities.find(o => (o.objid = itemid));
-              content +=
-                " <h5>" +
-                commodity.variety.commoditytype.commodity.name +
-                "</h5>";
-              content +=
-                "<p>" +
-                commodity.variety.commoditytype.unit +
-                " : " +
-                commodity.quantity;
-              content +=
-                "<br>Commodity Type : " + commodity.variety.commoditytype.name;
-              content += "<br>Variety : " + commodity.variety.name;
-              content +=
-                "<br>Sruvey Period : " + commodity.surveyperiod.name + "</p>";
-
-              // <h3>{{item.variety.commoditytype.commodity.name}}</h3>
-              // <p>
-              //   {{item.variety.commoditytype.unit}} : {{item.quantity}} <br>
-              //   Commodity Type : {{item.variety.commoditytype.name}} <br>
-              //   Variety : {{item.variety.name}} <br>
-              //   Survey Period : {{item.surveyperiod.name}}
-              // </p>
+              let commodity = item.commodities.find(o => o.objid === itemid);
+              console.log(commodity);
+              if (commodity) {
+                content +=
+                  " <h5>" +
+                  commodity.variety.commoditytype.commodity.name +
+                  "</h5>";
+                content +=
+                  "<p>" +
+                  commodity.variety.commoditytype.unit +
+                  " : " +
+                  commodity.quantity;
+                content +=
+                  "<br>Commodity Type : " +
+                  commodity.variety.commoditytype.name;
+                content += "<br>Variety : " + commodity.variety.name;
+                content +=
+                  "<br>Sruvey Period : " + commodity.surveyperiod.name + "</p>";
+                this.renderer.setProperty(
+                  this.popupcontent.nativeElement,
+                  "innerHTML",
+                  content
+                );
+              } else {
+                this.renderer.setProperty(
+                  this.popupcontent.nativeElement,
+                  "innerHTML",
+                  "No Farmer Data"
+                );
+              }
             } else {
-              let livestock = item.livestocks.find(o => (o.objid = itemid));
-              content += " <h5>" + livestock.breed.species.name + "</h5>";
-              content +=
-                "<p>" + "Sruvey Period : " + livestock.surveyperiod.name;
-              // <h3>{{item.breed.species.name}}</h3>
-              // <p>
-              //   Harvesting qty. : {{item.breed.name}}<br>
-              //   Seeding qty. : {{item.seedingqty}} <br>
-              //   Harvesting qty. : {{item.harvestingqty}} <br>
-              //   Survey Period : {{item.surveyperiod.name}}
-              // </p>
+              let livestock = item.livestocks.find(o => o.objid === itemid);
+              if (livestock) {
+                content += " <h5>" + livestock.breed.species.name + "</h5>";
+                content +=
+                  "<p>" + "Sruvey Period : " + livestock.surveyperiod.name;
+                this.renderer.setProperty(
+                  this.popupcontent.nativeElement,
+                  "innerHTML",
+                  content
+                );
+              } else {
+                this.renderer.setProperty(
+                  this.popupcontent.nativeElement,
+                  "innerHTML",
+                  "No Farmer Data"
+                );
+              }
             }
-            this.renderer.setProperty(
-              this.popupcontent.nativeElement,
-              "innerHTML",
-              content
-            );
           } else {
             this.renderer.setProperty(
               this.popupcontent.nativeElement,
@@ -401,7 +411,8 @@ export class OlmapComponent implements OnInit {
       })
     });
     var drawstyle = [drawFillStyle, drawLabelStyle];
-    if (this.item.location?.geolocation) {
+
+    if (this.item.location?.geolocation?.type) {
       this.source.clear();
       this.source.addFeatures(
         new GeoJSON().readFeatures(this.item.location.geolocation)
@@ -423,6 +434,10 @@ export class OlmapComponent implements OnInit {
         drawLabelStyle.getText().setText(output);
         return drawstyle;
       });
+    } else {
+      this.source.clear();
+      var extent = this.barangayvector.getSource().getExtent();
+      this.map.getView().fit(extent);
     }
   }
 
@@ -603,7 +618,7 @@ export class OlmapComponent implements OnInit {
       }
       // console.log(item);
       this.farmerService.updatefarmer(item);
-      this.mapService.saveItem(JSON.parse(data).features[0]);
+      this.mapService.saveItem(JSON.parse(data));
     });
     this.enablemodify = true;
     this.enablesave = false;

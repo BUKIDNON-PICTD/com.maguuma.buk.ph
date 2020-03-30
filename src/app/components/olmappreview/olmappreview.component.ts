@@ -141,7 +141,7 @@ export class OlmappreviewComponent implements OnInit {
       .getView()
       .fit([13784343.025655, 814368.207926, 14048821.648763, 978738.393527]);
 
-    if (this.farmlocation?.geolocation) {
+    if (this.farmlocation?.geolocation && this.farmlocation?.geolocation.type === "FeatureCollection") {
       this.source.addFeatures(
         new GeoJSON().readFeatures(this.farmlocation.geolocation)
       );

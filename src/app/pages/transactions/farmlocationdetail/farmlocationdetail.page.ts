@@ -1,4 +1,5 @@
-import { OlmapmodalComponent } from './../../../components/olmapmodal/olmapmodal.component';
+import { FarmlocationService } from "./../../../services/farmlocation.service";
+import { OlmapmodalComponent } from "./../../../components/olmapmodal/olmapmodal.component";
 import { MapService } from "./../../../services/map.service";
 import { SettingService } from "./../../../services/setting.service";
 // import { MapPage } from "../../map/map.page";
@@ -53,7 +54,8 @@ export class FarmlocationdetailPage {
     private alertController: AlertController,
     private modalController: ModalController,
     private settingService: SettingService,
-    private mapService: MapService
+    private mapService: MapService,
+    private farmlocationService: FarmlocationService
   ) {
     this.farmerLocationForm = this.formBuilder.group({
       areasqm: ["", Validators.compose([Validators.required])],
@@ -198,10 +200,13 @@ export class FarmlocationdetailPage {
               : commodity
           );
         }
-
         this.farmerService.updatefarmer(this.farmer).then(item => {
           this.showToast("Farm Location Created.");
-          this.location = (this.type === 'commodity' ? this.commodity.location : this.livestock.location);
+          this.location =
+            this.type === "commodity"
+              ? this.commodity.location
+              : this.livestock.location;
+          this.farmlocationService.addItem(this.location);
           // if (this.type === 'commodity') {
           //   this.router.navigate([
           //     "/app/tabs/farmerlist/farmlocationcommodity/commodity/" +
@@ -283,7 +288,11 @@ export class FarmlocationdetailPage {
 
         this.farmerService.updatefarmer(this.farmer).then(item => {
           this.showToast("Farm Location Updated.");
-          this.location = (this.type === 'commodity' ? this.commodity.location : this.livestock.location);
+          this.location =
+            this.type === "commodity"
+              ? this.commodity.location
+              : this.livestock.location;
+          this.farmlocationService.updateItem(this.location);
           // if (this.type === 'commodity') {
           //   this.router.navigate([
           //     "/app/tabs/farmerlist/farmlocationcommodity/" +
@@ -321,30 +330,42 @@ export class FarmlocationdetailPage {
               .then(item => {
                 currentsurveyperiod = item.value;
               });
-            if (prevcomodity.surveyperiod.name !== currentsurveyperiod) {
-              this.commodity.location = prevcomodity.location;
+            if (prevcomodity) {
+              if (prevcomodity?.surveyperiod.name !== currentsurveyperiod) {
+                this.commodity.location = prevcomodity.location;
+              }
+            } else {
+              await this.farmlocationService
+                .getItem(this.selectedLocation.locationid)
+                .then(item => {
+                  if (item) {
+                    this.commodity.location = item;
+                  }
+                });
+            }
+
+            if (this.commodity.location.objid) {
+              this.commodity.location.geolocation.features[0].properties = {
+                farmerid: this.farmerid,
+                itemtype: "commodity",
+                itemid: this.commodity.objid
+              };
               this.farmer.commodities = this.farmer.commodities.map(commodity =>
                 commodity.objid === this.commodity.objid
                   ? (commodity = this.commodity)
                   : commodity
               );
-              this.farmerService.updatefarmer(this.farmer).then(async item => {
-                await this.mapService
-                  .getItem(prevcomodity.location.objid)
-                  .then(item => {
-                    item.properties = {
-                      farmerid: this.farmerid,
-                      itemtype: "commodity",
-                      itemid: this.commodity.objid
-                    };
-                    this.mapService.updateItem(item);
-                  });
+              await this.mapService.updateItem(
+                this.commodity.location.geolocation
+              );
+
+              await this.farmerService.updatefarmer(this.farmer).then(async item => {
                 this.showToast("Farm Location Claimed.");
                 this.router.navigate([
                   "/app/tabs/farmerlist/farmlocationdetail/commodity/" +
                     item.objid +
                     "/" +
-                    this.commodity.objid
+                    this.livestock.objid
                 ]);
               });
             } else {
@@ -363,24 +384,37 @@ export class FarmlocationdetailPage {
               .then(item => {
                 currentsurveyperiod = item.value;
               });
-            if (prevlivestock.surveyperiod.name !== currentsurveyperiod) {
-              this.livestock.location = prevlivestock.location;
+
+            if (prevlivestock) {
+              if (prevlivestock.surveyperiod.name !== currentsurveyperiod) {
+                this.livestock.location = prevlivestock.location;
+              }
+            } else {
+              await this.farmlocationService
+                .getItem(this.selectedLocation.locationid)
+                .then(item => {
+                  if (item) {
+                    this.livestock.location = item;
+                  }
+                });
+            }
+
+            if (this.livestock.location.objid) {
+              this.livestock.location.geolocation.features[0].properties = {
+                farmerid: this.farmerid,
+                itemtype: "livestock",
+                itemid: this.livestock.objid
+              };
               this.farmer.livestocks = this.farmer.livestocks.map(livestock =>
                 livestock.objid === this.livestock.objid
                   ? (livestock = this.livestock)
                   : livestock
               );
-              this.farmerService.updatefarmer(this.farmer).then(async item => {
-                await this.mapService
-                  .getItem(prevlivestock.location.objid)
-                  .then(item => {
-                    item.properties = {
-                      farmerid: this.farmerid,
-                      itemtype: "livestock",
-                      itemid: this.livestock.objid
-                    };
-                    this.mapService.updateItem(item);
-                  });
+              await this.mapService.updateItem(
+                this.livestock.location.geolocation
+              );
+
+              await this.farmerService.updatefarmer(this.farmer).then(async item => {
                 this.showToast("Farm Location Claimed.");
                 this.router.navigate([
                   "/app/tabs/farmerlist/farmlocationdetail/livestock/" +
@@ -477,23 +511,27 @@ export class FarmlocationdetailPage {
       });
     } else {
       this.defaultHref = `/farminventorylist`;
-      this.masterService.getItems("agri_farmerprofile_location").then( async items => {
-          this.location = items.find(o => o.objid = this.locationid);
+      this.masterService
+        .getItems("agri_farmerprofile_location")
+        .then(async items => {
+          this.location = items.find(o => o.objid === this.locationid);
           if (this.location?.objid) {
-            await this.masterService.getMasterFile("barangay").then(async items => {
-              let brgy = items.find(o => o.objid === this.location.barangay.objid);
-              await this.farmerLocationForm.patchValue({
-                municipality: { objid: brgy.parentid }
+            await this.masterService
+              .getMasterFile("barangay")
+              .then(async items => {
+                let brgy = items.find(
+                  o => o.objid === this.location.barangay.objid
+                );
+                await this.farmerLocationForm.patchValue({
+                  municipality: { objid: brgy.parentid }
+                });
               });
-            });
             await this.farmerLocationForm.patchValue(this.location);
             this.onProvinceChange();
             this.onMunicipalityChange();
             this.mode = "edit";
           }
-      });
-
-
+        });
     }
   }
 
@@ -545,7 +583,7 @@ export class FarmlocationdetailPage {
             this.itemid;
         } else {
           this.defaultHref =
-            `/app/tabs/farmerlist/farmlocationcommodity/` +
+            `/app/tabs/farmerlist/farmlocationlivestock/` +
             this.farmerid +
             "/" +
             this.itemid;

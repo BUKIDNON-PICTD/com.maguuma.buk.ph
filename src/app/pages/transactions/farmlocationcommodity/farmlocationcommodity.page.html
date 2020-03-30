@@ -118,10 +118,10 @@
             Mode of Acquisition : {{commodity.location.modeofacquisition}}
           </p>
         </ion-label>
-        <app-olmappreview *ngIf='commodity.location?.geolocation' slot="end" [farmlocation]='commodity.location'
+        <app-olmappreview *ngIf='commodity.location?.geolocation?.type' slot="end" [farmlocation]='commodity.location'
           [farmerid]='farmerid'>
         </app-olmappreview>
-        <ion-label *ngIf='!commodity.location?.geolocation' slot="end">No Map Available</ion-label>
+        <ion-label *ngIf='!commodity.location?.geolocation?.type' slot="end">No Map Available</ion-label>
       </ion-item>
       <!-- <ion-item-options>
         <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteFarmLocation)">

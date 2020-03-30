@@ -1,3 +1,4 @@
+import { MapService } from './../../services/map.service';
 import { takeWhile, expand } from "rxjs/operators";
 import { ConnectionStatus } from "./../../interfaces/connectionstatus";
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
@@ -39,7 +40,8 @@ export class SyncpagePage implements OnInit {
     private storage: Storage,
     private toastController: ToastController,
     private settingservice: SettingService,
-    private farmerService: FarmerService
+    private farmerService: FarmerService,
+    private mapService: MapService
   ) {}
 
   ngOnInit() {
@@ -68,7 +70,8 @@ export class SyncpagePage implements OnInit {
           err => {
             this.showToast(err);
           },
-          () => {
+          async () => {
+            await this.mapService.makemap();
             this.showToast("Master file sync completed!");
             this.showProgressbarForMasterFileSync = false;
           }
@@ -116,8 +119,8 @@ export class SyncpagePage implements OnInit {
             err => {
               this.showToast(err);
             },
-            () => {
-              this.farmerService.makelist();
+            async () => {
+              await this.farmerService.makelist();
               this.showToast("Farmer Sync Complete!");
               this.showProgressbarForFarmerSync = false;
               this.syncinprogress = false;
