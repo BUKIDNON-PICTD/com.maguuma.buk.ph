@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Report List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let item of reports">
+    <!-- <ion-item routerLink="/report/list/farmerlist"> -->
+    <ion-item [routerLink]="item.url">
+      <!-- <ion-icon slot="start" name="document-outline"></ion-icon> -->
+      <ion-label>
+        {{item.title}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <!-- <embed *ngIf="content" [src]="content" style="width:200px;height:200px;" /> -->
+  <!-- <div *ngIf="content">
+    <pdf-viewer  [src]="content"
+                [render-text]="true"
+                style="display: block;"
+    ></pdf-viewer>
+  </div> -->
+</ion-content>
