@@ -29,9 +29,9 @@ export class UserData {
     }
   }
 
-  login(username: string): Promise<any> {
+  login(user: any): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-      this.setUsername(username);
+      this.setUsername(user.username);
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
   }

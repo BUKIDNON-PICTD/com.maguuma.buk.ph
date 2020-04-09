@@ -23,19 +23,20 @@ export class LoginPage {
     public router: Router,
     public authService: AuthService
   ) {
-    this.userData.isLoggedIn().then( isLoggedIn => {
-      if (isLoggedIn) {
-        this.router.navigateByUrl('/app/tabs/about');
-      }
-    });
+    if (this.authService.isAuthenticated) {
+      this.router.navigateByUrl('/app/tabs/about');
+    }
+    // this.userData.isLoggedIn().then( isLoggedIn => {
+    //   if (isLoggedIn) {
+    //     this.router.navigateByUrl('/app/tabs/about');
+    //   }
+    // });
   }
 
   onLogin(form: NgForm) {
     this.submitted = true;
-
     if (form.valid) {
       this.authService.login(form.value).subscribe();
-
     }
   }
 

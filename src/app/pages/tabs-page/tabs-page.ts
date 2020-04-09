@@ -1,5 +1,6 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { UserData } from 'src/app/providers/user-data';
+
 
 @Component({
   templateUrl: 'tabs-page.html'
@@ -8,39 +9,39 @@ import { UserData } from 'src/app/providers/user-data';
 export class TabsPage implements OnInit {
   loggedIn = false;
   constructor(
-    private userData: UserData,
+    private authService: AuthService,
   ) {
 
   }
   async ngOnInit() {
     this.checkLoginStatus();
-    this.listenForLoginEvents();
+    // this.listenForLoginEvents();
   }
 
 
   checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
-      return this.updateLoggedInStatus(loggedIn);
+    this.authService.authenticationState.subscribe(state => {
+      this.loggedIn = state;
     });
   }
 
-  listenForLoginEvents() {
-    window.addEventListener('user:login', () => {
-      this.updateLoggedInStatus(true);
-    });
+  // listenForLoginEvents() {
+  //   window.addEventListener('user:login', () => {
+  //     this.updateLoggedInStatus(true);
+  //   });
 
-    window.addEventListener('user:signup', () => {
-      this.updateLoggedInStatus(true);
-    });
+  //   window.addEventListener('user:signup', () => {
+  //     this.updateLoggedInStatus(true);
+  //   });
 
-    window.addEventListener('user:logout', () => {
-      this.updateLoggedInStatus(false);
-    });
-  }
+  //   window.addEventListener('user:logout', () => {
+  //     this.updateLoggedInStatus(false);
+  //   });
+  // }
 
-  updateLoggedInStatus(loggedIn: boolean) {
-    setTimeout(() => {
-      this.loggedIn = loggedIn;
-    }, 300);
-  }
+  // updateLoggedInStatus(loggedIn: boolean) {
+  //   setTimeout(() => {
+  //     this.loggedIn = loggedIn;
+  //   }, 300);
+  // }
 }

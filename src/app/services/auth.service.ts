@@ -6,7 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Storage } from '@ionic/storage';
 import { environment } from '../../environments/environment';
 import { tap, catchError } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserData } from '../providers/user-data';
 
@@ -76,7 +76,7 @@ export class AuthService {
           this.storage.set(TOKEN_KEY, res['token']);
           this.user = this.helper.decodeToken(res['token']);
           this.authenticationState.next(true);
-          this.userData.login(credentials.username);
+          this.userData.login(credentials);
           this.router.navigateByUrl('/app/tabs/about');
         }),
         catchError(e => {
@@ -108,6 +108,12 @@ export class AuthService {
   isAuthenticated() {
     return this.authenticationState.value;
   }
+
+  // hasRoles(roles: string[]): boolean {
+  //   for (const role of roles) {
+  //     if (!this.user)
+  //   }
+  // }
 
   showAlert(msg) {
     let alert = this.alertController.create({

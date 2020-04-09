@@ -26,6 +26,7 @@ import { FilePath } from "@ionic-native/file-path/ngx";
 import { Base64 } from "@ionic-native/base64/ngx";
 import { OlmapmoduleModule } from "./modules/olmapmodule/olmapmodule.module";
 import { JwtModule, JWT_OPTIONS } from "@auth0/angular-jwt";
+import { HasroleDirective } from './directives/hasrole.directive';
 
 function extractHostname(url) {
   var hostname;
@@ -84,7 +85,7 @@ const config: SocketIoConfig = {
       }
     })
   ],
-  declarations: [AppComponent, PagenotfoundComponent],
+  declarations: [AppComponent, PagenotfoundComponent, HasroleDirective],
   providers: [
     InAppBrowser,
     SplashScreen,

@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { UserData } from "./../providers/user-data";
 import { OfflineManagerService } from "./offlinemanager.service";
 import { Injectable } from "@angular/core";
@@ -25,7 +26,8 @@ export class FarmerService {
     private http: HttpClient,
     private settingservice: SettingService,
     private offlineManager: OfflineManagerService,
-    private userData: UserData
+    private userData: UserData,
+    private authService: AuthService
   ) {
     this._agri_farmerprofile = new Storage({
       storeName: "_agri_farmerprofile",
@@ -115,10 +117,11 @@ export class FarmerService {
       await this.settingservice.getItemByName("lguid").then(o => {
         lguid = o.value;
       });
-      var username = "";
-      await this.userData.getUsername().then(o => {
-        username = o;
-      });
+      var username = this.authService.user.username;
+      // await this.userData.getUsername().then(o => {
+      //   username = o;
+      // });
+
       if (!item) {
         farmer.lguid = lguid;
         var params = {
@@ -207,10 +210,10 @@ export class FarmerService {
       await this.settingservice.getItemByName("lguid").then(o => {
         lguid = o.value;
       });
-      var username = "";
-      await this.userData.getUsername().then(o => {
-        username = o;
-      });
+      var username = this.authService.user.username;
+      // await this.userData.getUsername().then(o => {
+      //   username = o;
+      // });
 
       if (!item) {
         return null;

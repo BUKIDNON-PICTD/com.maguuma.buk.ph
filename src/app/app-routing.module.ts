@@ -120,7 +120,15 @@ const routes: Routes = [
   {
     path: 'comodityareacrosstab',
     loadChildren: () => import('./reports/comodityareacrosstab/comodityareacrosstab.module').then( m => m.ComodityareacrosstabPageModule)
+  },  {
+    path: 'usermanagement',
+    loadChildren: () => import('./pages/usermanagement/usermanagement.module').then( m => m.UsermanagementPageModule)
   },
+  {
+    path: 'rolemanagement',
+    loadChildren: () => import('./pages/rolemanagement/rolemanagement.module').then( m => m.RolemanagementPageModule)
+  },
+
 
 
 

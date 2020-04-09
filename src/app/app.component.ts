@@ -106,7 +106,23 @@ export class AppComponent{
           title: 'Sync Service',
           url: '/syncpage',
           icon: 'sync'
+        }
+      ]
+    },
+    {
+      folderid: 'admin',
+      title: 'Administrator',
+      items: [
+        {
+          title: 'User Management',
+          url: '/usermangement',
+          icon: 'people'
         },
+        {
+          title: 'Role Management',
+          url: '/rolemangement',
+          icon: 'key'
+        }
       ]
     }
   ];
@@ -142,7 +158,7 @@ initializeApp() {
           this.settingsavailable = false;
         } else {
           await this.checkLoginStatus();
-          await this.listenForLoginEvents();
+          // await this.listenForLoginEvents();
           this.settingsavailable = true;
         }
       });
@@ -194,48 +210,53 @@ initializeApp() {
   }
 
   checkLoginStatus() {
-    return this.authService.authenticationState.subscribe(state => {
-      return this.updateLoggedInStatus(state);
-    });
+    // return this.authService.authenticationState.subscribe(state => {
+    //   return this.updateLoggedInStatus(state);
+    // });
 
+    this.authService.authenticationState.subscribe(state => {
+      this.loggedIn = state;
+    });
     // return this.userData.isLoggedIn().then(loggedIn => {
     //   console.log(loggedIn);
     //   return this.updateLoggedInStatus(loggedIn);
     // });
   }
 
-  updateLoggedInStatus(loggedIn: boolean) {
-    setTimeout(() => {
-      this.loggedIn = loggedIn;
-    }, 300);
-  }
+  // updateLoggedInStatus(loggedIn: boolean) {
+  //   setTimeout(() => {
+  //     this.loggedIn = loggedIn;
+  //   }, 300);
+  // }
 
-  listenForLoginEvents() {
-    window.addEventListener('user:login', () => {
-      this.updateLoggedInStatus(true);
-    });
+  // listenForLoginEvents() {
+  //   window.addEventListener('user:login', () => {
+  //     this.updateLoggedInStatus(true);
+  //   });
 
-    window.addEventListener('user:signup', () => {
-      this.updateLoggedInStatus(true);
-    });
+  //   window.addEventListener('user:signup', () => {
+  //     this.updateLoggedInStatus(true);
+  //   });
 
-    window.addEventListener('user:logout', () => {
-      this.updateLoggedInStatus(false);
-    });
-  }
+  //   window.addEventListener('user:logout', () => {
+  //     this.updateLoggedInStatus(false);
+  //   });
+  // }
 
   logout() {
-    this.userData.logout().then(() => {
-      this.authService.logout();
-      return this.router.navigateByUrl('/login');
-    });
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
+    // this.userData.logout().then(() => {
+    //   this.authService.logout();
+    //   return this.router.navigateByUrl('/login');
+    // });
   }
 
-  openTutorial() {
-    this.menu.enable(false);
-    this.storage.set('ion_did_tutorial', false);
-    this.router.navigateByUrl('/tutorial');
-  }
+  // openTutorial() {
+  //   this.menu.enable(false);
+  //   this.storage.set('ion_did_tutorial', false);
+  //   this.router.navigateByUrl('/tutorial');
+  // }
 
   async showToast(msg) {
     const toast = await this.toastController.create({
