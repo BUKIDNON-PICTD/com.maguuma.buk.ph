@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { Component } from '@angular/core';
 
 import { PopoverController } from '@ionic/angular';

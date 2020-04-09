@@ -38,7 +38,7 @@ export class SignupPage {
 
     if (form.valid) {
       this.authService.register(form.value).subscribe(res => {
-        this.authService.login(form.value).subscribe();
+        // this.authService.login(form.value).subscribe();
       });
 
     }

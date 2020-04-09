@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -13,11 +14,14 @@ import { UserData } from '../../providers/user-data';
 })
 export class AccountPage implements AfterViewInit {
   username: string;
+  password: string;
+  confirmpassword: string;
 
   constructor(
     public alertCtrl: AlertController,
     public router: Router,
-    public userData: UserData
+    public userData: UserData,
+    public authService: AuthService
   ) { }
 
   ngAfterViewInit() {
@@ -57,21 +61,62 @@ export class AccountPage implements AfterViewInit {
   }
 
   getUsername() {
-    this.userData.getUsername().then((username) => {
-      this.username = username;
-    });
+    this.username = this.authService.user.username;
+    // this.userData.getUsername().then((username) => {
+    //   this.username = username;
+    // });
   }
 
-  changePassword() {
-    console.log('Clicked to change password');
+  async changePassword() {
+    const alert = await this.alertCtrl.create({
+      header: 'Change Password',
+      buttons: [
+        'Cancel',
+        {
+          text: 'Ok',
+          handler: (data: any) => {
+
+            if (data.password !== data.confirmpassword) {
+                alert.setAttribute('message', 'Password must match.');
+                return false;
+            } else {
+                data.username = this.authService.user.username;
+                this.authService.changepassword(data).subscribe( res => {
+                  // this.authService.login(data).subscribe();
+                  return true;
+                });
+                // alert.setAttribute('message', 'Password updated.');
+                // return true;
+            }
+
+            // this.userData.setUsername(data.username);
+            // this.getUsername();
+          }
+        }
+      ],
+      inputs: [
+        {
+          type: 'password',
+          name: 'password',
+          value: this.password,
+          placeholder: 'password'
+        },
+        {
+          type: 'password',
+          name: 'confirmpassword',
+          value: this.confirmpassword,
+          placeholder: 'confirm password'
+        }
+      ]
+    });
+    await alert.present();
   }
 
   logout() {
-    this.userData.logout();
-    this.router.navigateByUrl('/login');
+    this.authService.logout();
   }
 
-  support() {
-    this.router.navigateByUrl('/support');
-  }
+  // support() {
+  //   this.router.navigateByUrl('/support');
+  // }
 }

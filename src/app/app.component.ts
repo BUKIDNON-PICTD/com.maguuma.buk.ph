@@ -245,7 +245,7 @@ initializeApp() {
 
   logout() {
     this.authService.logout();
-    this.router.navigateByUrl('/login');
+    // this.router.navigateByUrl('/login');
     // this.userData.logout().then(() => {
     //   this.authService.logout();
     //   return this.router.navigateByUrl('/login');

@@ -59,8 +59,28 @@ export class AuthService {
   register(credentials) {
     return this.http.post(`${this.syncserver}/api/register`, credentials).pipe(
       tap( res => {
-        this.userData.signup(credentials.username);
-        this.router.navigateByUrl('/app/tabs/about');
+        // this.userData.signup(credentials.username);
+        // this.router.navigateByUrl('/app/tabs/about');
+        this.login(credentials).subscribe();;
+      }),
+      catchError(e => {
+        this.showAlert(e.error.msg);
+        throw new Error(e);
+      })
+    );
+  }
+
+  changepassword(credentials) {
+    return this.http.post(`${this.syncserver}/api/changepassword`, credentials).pipe(
+      tap( res => {
+        this.login(credentials).subscribe();
+        // console.log(res);
+        // this.storage.set(TOKEN_KEY, res['token']);
+        // this.user = this.helper.decodeToken(res['token']);
+        // this.authenticationState.next(true);
+        // this.router.navigateByUrl('/app/tabs/about');
+        // this.userData.signup(credentials.username);
+        // this.router.navigateByUrl('/app/tabs/about');
       }),
       catchError(e => {
         this.showAlert(e.error.msg);
@@ -76,7 +96,7 @@ export class AuthService {
           this.storage.set(TOKEN_KEY, res['token']);
           this.user = this.helper.decodeToken(res['token']);
           this.authenticationState.next(true);
-          this.userData.login(credentials);
+          // this.userData.login(credentials);
           this.router.navigateByUrl('/app/tabs/about');
         }),
         catchError(e => {
@@ -89,6 +109,7 @@ export class AuthService {
   logout() {
     this.storage.remove(TOKEN_KEY).then(() => {
       this.authenticationState.next(false);
+      this.router.navigateByUrl('/login');
     });
   }
 
