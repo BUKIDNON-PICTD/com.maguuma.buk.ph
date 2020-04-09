@@ -1,3 +1,4 @@
+import { SyncService } from 'src/app/services/sync.service';
 import { NetworkService } from 'src/app/services/network.service';
 import { SettingService } from './../../services/setting.service';
 import { MasterService } from './../../services/master.service';
@@ -17,6 +18,7 @@ export class IntroductionPage {
 
   @ViewChild('slides', { static: true }) slides: IonSlides;
   settingsForm: FormGroup;
+  syncserversettingsForm: FormGroup;
   validation_messages: any;
   surveyperiods: any[];
   isSubmitted: boolean = false;
@@ -28,9 +30,23 @@ export class IntroductionPage {
     private formBuilder: FormBuilder,
     private masterService: MasterService,
     private settingService: SettingService,
-    private networkService: NetworkService
+    private networkService: NetworkService,
+    private syncService: SyncService
   ) {
-
+    this.syncserversettingsForm = this.formBuilder.group({
+      syncserver: [
+        "",
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      reportserver: [
+        "",
+        Validators.compose([
+          Validators.required
+        ])
+      ]
+    });
     this.settingsForm = this.formBuilder.group({
       lguid: [
         "",
@@ -40,12 +56,6 @@ export class IntroductionPage {
         ])
       ],
       surveyperiod: [
-        "",
-        Validators.compose([
-          Validators.required
-        ])
-      ],
-      syncserver: [
         "",
         Validators.compose([
           Validators.required
@@ -65,18 +75,43 @@ export class IntroductionPage {
         { type: "required", message: "Survey Period is required." },
       ],
       syncserver: [
-        { type: "required", message: "Survey Period is required." },
+        { type: "required", message: "Sync Server is required." },
+      ],
+      reportserver: [
+        { type: "required", message: "Report Server is required." },
       ]
     };
-
-    this.masterService.getMasterFile("municipality").then(items => {
-      this.municipalities = items;
-    });
-    this.masterService.getMasterFile("master_surveyperiod").then(items => {
-      this.surveyperiods = items;
-    });
   }
+  async syncMaster() {
+    if (this.syncserversettingsForm.valid) {
+      let syncserver = {
+        objid: this.create_UUID(),
+        name: 'syncserver',
+        value: this.syncserversettingsForm.get("syncserver").value,
+      };
 
+      let reportserver = {
+        objid: this.create_UUID(),
+        name: 'reportserver',
+        value: this.syncserversettingsForm.get("reportserver").value,
+      };
+
+      this.networkService.initializeSocketEvents();
+
+      await this.syncService.getMasterFilesFromServerFirst(syncserver.value);
+      await this.settingService.addItem(syncserver);
+      await this.settingService.addItem(reportserver);
+      await this.masterService.getMasterFile("municipality").then(items => {
+        this.municipalities = items;
+      });
+      await this.masterService.getMasterFile("master_surveyperiod").then(items => {
+        this.surveyperiods = items;
+      });
+
+      this.slides.slideNext();
+    }
+
+  }
   async startApp() {
     if (this.settingsForm.valid) {
       let clientid = {
@@ -104,13 +139,7 @@ export class IntroductionPage {
       };
       await this.settingService.addItem(surveyperiod);
 
-      let syncserver = {
-        objid: this.create_UUID(),
-        name: 'syncserver',
-        value: this.settingsForm.get("syncserver").value,
-      };
-      await this.settingService.addItem(syncserver);
-      this.networkService.initializeSocketEvents();
+
       this.router
       .navigateByUrl('/login', { replaceUrl: true })
       .then(() => this.storage.set('ion_did_intro', true));

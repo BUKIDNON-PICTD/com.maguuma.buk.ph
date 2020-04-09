@@ -98,8 +98,32 @@ const routes: Routes = [
     loadChildren: () => import('./pages/introduction/introduction.module').then( m => m.IntroductionPageModule),
     canLoad: [CheckIntroduction]
   },
+  {
+    path: 'report',
+    loadChildren: () => import('./reports/reportlist/reportlist.module').then( m => m.ReportlistPageModule),
+    canActivate: [AuthGuardService]
+  },
   {path: '404', component: PagenotfoundComponent},
-  {path: '**', redirectTo: '/404'}
+  {path: '**', redirectTo: '/404'},
+  {
+    path: 'farmerlist',
+    loadChildren: () => import('./reports/farmerlist/farmerlist.module').then( m => m.FarmerlistPageModule)
+  },
+  {
+    path: 'farmerlistcrosstab',
+    loadChildren: () => import('./reports/farmerlistcrosstab/farmerlistcrosstab.module').then( m => m.FarmerlistcrosstabPageModule)
+  },
+  {
+    path: 'comodityfarmercrosstab',
+    loadChildren: () => import('./reports/comodityfarmercrosstab/comodityfarmercrosstab.module').then( m => m.ComodityfarmercrosstabPageModule)
+  },
+  {
+    path: 'comodityareacrosstab',
+    loadChildren: () => import('./reports/comodityareacrosstab/comodityareacrosstab.module').then( m => m.ComodityareacrosstabPageModule)
+  },
+
+
+
 
 
 ];

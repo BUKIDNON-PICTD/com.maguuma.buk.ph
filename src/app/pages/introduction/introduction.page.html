@@ -40,6 +40,42 @@
       <p>Please complete the form in the next page to continue.</p>
     </ion-slide>
     <ion-slide>
+      <form [formGroup]="syncserversettingsForm">
+        <ion-toolbar color="primary">
+          <nav class="navbar navbar-expand navbar-primary navbar-dark">
+            <ion-title>Sync Server Settings</ion-title>
+          </nav>
+        </ion-toolbar>
+        <ion-item>
+          <ion-label position="floating">Sync Server URL</ion-label>
+          <ion-input inputmode="text" placeholder="http://localhost:3000"
+            formControlName="syncserver"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.syncserver">
+          <ng-container
+            *ngIf="(isSubmitted && syncserversettingsForm.get('syncserver')?.hasError(validation.type)) || (syncserversettingsForm.get('syncserver')?.hasError(validation.type) && (syncserversettingsForm.get('syncserver')?.dirty || syncserversettingsForm.get('syncserver')?.touched))">
+            <small class="text-danger">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+        <ion-item>
+          <ion-label position="floating">Report Server URL</ion-label>
+          <ion-input inputmode="text" placeholder="http://localhost:3000"
+            formControlName="reportserver"></ion-input>
+        </ion-item>
+        <div *ngFor="let validation of validation_messages.reportserver">
+          <ng-container
+            *ngIf="(isSubmitted && syncserversettingsForm.get('reportserver')?.hasError(validation.type)) || (syncserversettingsForm.get('reportserver')?.hasError(validation.type) && (syncserversettingsForm.get('reportserver')?.dirty || syncserversettingsForm.get('reportserver')?.touched))">
+            <small class="text-danger">{{ validation.message }}</small>
+          </ng-container>
+        </div>
+      </form>
+
+      <ion-button fill="clear" (click)="syncMaster()">
+        Continue
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-slide>
+    <ion-slide>
       <form [formGroup]="settingsForm">
         <ion-toolbar color="primary">
           <nav class="navbar navbar-expand navbar-primary navbar-dark">
@@ -69,17 +105,6 @@
         <div *ngFor="let validation of validation_messages.surveyperiod">
           <ng-container
             *ngIf="(isSubmitted && settingsForm.get('surveyperiod')?.hasError(validation.type)) || (settingsForm.get('surveyperiod')?.hasError(validation.type) && (settingsForm.get('surveyperiod')?.dirty || settingsForm.get('surveyperiod')?.touched))">
-            <small class="text-danger">{{ validation.message }}</small>
-          </ng-container>
-        </div>
-        <ion-item>
-          <ion-label position="floating">Sync Server URL</ion-label>
-          <ion-input inputmode="text" placeholder="http://localhost:3000"
-            formControlName="syncserver"></ion-input>
-        </ion-item>
-        <div *ngFor="let validation of validation_messages.syncserver">
-          <ng-container
-            *ngIf="(isSubmitted && settingsForm.get('syncserver')?.hasError(validation.type)) || (settingsForm.get('syncserver')?.hasError(validation.type) && (settingsForm.get('syncserver')?.dirty || settingsForm.get('syncserver')?.touched))">
             <small class="text-danger">{{ validation.message }}</small>
           </ng-container>
         </div>

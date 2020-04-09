@@ -35,7 +35,7 @@ export class AuthService {
       this.plt.ready().then(() => {
         this.checkToken();
         this.settingservice.getItemByName('syncserver').then(item => {
-          this.syncserver = item.value;
+            this.syncserver = item.value;
         });
     });
   }

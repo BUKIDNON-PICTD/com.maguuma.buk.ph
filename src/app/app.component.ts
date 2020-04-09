@@ -51,6 +51,17 @@ export class AppComponent{
       ]
     },
     {
+      folderid: 'report',
+      title: 'Reports',
+      items: [
+        {
+          title: 'Report list',
+          url: '/report/list',
+          icon: 'document'
+        }
+      ]
+    },
+    {
       folderid: 'master',
       title: 'Master',
       items: [
@@ -126,13 +137,12 @@ export class AppComponent{
 
 initializeApp() {
     this.platform.ready().then(async () => {
-      await this.checkLoginStatus();
-      await this.listenForLoginEvents();
-
-      await this.settingService.getItems().then( items => {
+      await this.settingService.getItems().then( async items => {
         if (!items) {
           this.settingsavailable = false;
         } else {
+          await this.checkLoginStatus();
+          await this.listenForLoginEvents();
           this.settingsavailable = true;
         }
       });

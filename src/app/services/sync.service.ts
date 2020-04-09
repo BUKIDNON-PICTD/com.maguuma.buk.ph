@@ -46,7 +46,7 @@ export class SyncService {
       driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this.settingservice.getItemByName('syncserver').then(item => {
-      this.syncserver = item.value;
+        this.syncserver = item.value;
     });
 
     // this._entityindividual = new Storage({
@@ -119,6 +119,35 @@ export class SyncService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  getMasterFilesFromServerFirst(syncserver): Promise<any> {
+    var data = {
+      requesttype: "post",
+      servicename: "FarmerProfileService",
+      methodname: "getMasterFiles",
+      params: {
+        lguid: "00",
+      }
+    };
+
+    return this.http
+      .post<any>(
+        syncserver + `/api/getmasterfiles`,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(
+        retry(2),
+        tap(res => {
+          if (typeof res.data === "object" && res.data !== null) {
+            Object.keys(res.data).forEach(key => {
+              this.tblmaster.set(`${key}`, res.data[key]);
+            });
+          }
+        }),
+        catchError(this.handleError)
+      ).toPromise();
   }
 
   // prepareFarmersToSync(clientid): Observable<any> {

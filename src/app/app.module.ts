@@ -19,6 +19,8 @@ import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 
 import { Camera } from "@ionic-native/Camera/ngx";
 import { File } from "@ionic-native/File/ngx";
+import { FileTransfer } from "@ionic-native/file-transfer/ngx";
+import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { FilePath } from "@ionic-native/file-path/ngx";
 import { Base64 } from "@ionic-native/base64/ngx";
@@ -93,7 +95,9 @@ const config: SocketIoConfig = {
     File,
     WebView,
     FilePath,
-    Base64
+    Base64,
+    // FileTransfer,
+    DocumentViewer
   ],
   bootstrap: [AppComponent]
 })
