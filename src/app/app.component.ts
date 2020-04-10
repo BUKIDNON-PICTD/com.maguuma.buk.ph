@@ -27,6 +27,7 @@ export class AppComponent{
     {
       folderid: 'txn',
       title: 'Transaction',
+      roles: ["admin","muni"],
       items: [
         {
           title: 'About Project',
@@ -53,6 +54,7 @@ export class AppComponent{
     {
       folderid: 'report',
       title: 'Reports',
+      roles: ["admin","muni","prov"],
       items: [
         {
           title: 'Report list',
@@ -64,6 +66,7 @@ export class AppComponent{
     {
       folderid: 'master',
       title: 'Master',
+      roles: ["admin","muni","prov"],
       items: [
         {
           title: 'Commodity',
@@ -96,6 +99,7 @@ export class AppComponent{
     {
       folderid: 'settings',
       title: 'Settings',
+      roles: ["admin","muni","prov"],
       items: [
         {
           title: 'App Setting',
@@ -112,6 +116,7 @@ export class AppComponent{
     {
       folderid: 'admin',
       title: 'Administrator',
+      roles: ["admin"],
       items: [
         {
           title: 'User Management',
@@ -153,72 +158,74 @@ export class AppComponent{
 
 initializeApp() {
     this.platform.ready().then(() => {
-      // await this.settingService.getItems().then( async items => {
-      //   if (!items) {
-      //     this.settingsavailable = false;
-      //   } else {
-      //     await this.checkLoginStatus();
-      //     // await this.listenForLoginEvents();
-      //     this.settingsavailable = true;
-      //   }
-      // });
-
-      // await this.swUpdate.available.subscribe(async res => {
-      //   const toast = await this.toastCtrl.create({
-      //     message: 'Update available!',
-      //     position: 'bottom',
-      //     buttons: [
-      //       {
-      //         role: 'cancel',
-      //         text: 'Reload'
-      //       }
-      //     ]
-      //   });
-
-      //   await toast.present();
-
-      //   toast
-      //     .onDidDismiss()
-      //     .then(() => this.swUpdate.activateUpdate())
-      //     .then(() => window.location.reload());
-      // });
-
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.authService.authenticationState.subscribe(state => {
-        this.loggedIn = state;
-        // console.log(this.authService.hasSettings());
-        if (state) {
-          this.router.navigate(['/app/tabs/about']);
+      this.authService.hasSettings.subscribe( hassetting => {
+        if (!hassetting) {
+          this.router.navigate(['/introduction']);
         } else {
-          this.authService.hasSettings.subscribe( hassetting => {
-            if (hassetting) {
-              this.router.navigate(['/login']);
-            } else {
-              this.router.navigate(['/introduction']);
-            }
-          });
+          // await this.settingService.getItems().then( async items => {
+          //   if (!items) {
+          //     this.settingsavailable = false;
+          //   } else {
+          //     await this.checkLoginStatus();
+          //     // await this.listenForLoginEvents();
+          //     this.settingsavailable = true;
+          //   }
+          // });
+
+          // await this.swUpdate.available.subscribe(async res => {
+          //   const toast = await this.toastCtrl.create({
+          //     message: 'Update available!',
+          //     position: 'bottom',
+          //     buttons: [
+          //       {
+          //         role: 'cancel',
+          //         text: 'Reload'
+          //       }
+          //     ]
+          //   });
+
+          //   await toast.present();
+
+          //   toast
+          //     .onDidDismiss()
+          //     .then(() => this.swUpdate.activateUpdate())
+          //     .then(() => window.location.reload());
+          // });
+
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
+
+            this.authService.authenticationState.subscribe(state => {
+              this.loggedIn = state;
+              if (state) {
+                this.router.navigate(['/app/tabs/about']);
+              } else {
+                this.router.navigate(['/login']);
+              }
+            });
+
+            this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
+              if (status === ConnectionStatus.Online) {
+                // this.offlineManager.checkForEvents().subscribe();
+                  // if (this.networkService.isSyncServerOnline()) {
+                  //   this.syncserverstatus = true;
+                  // } else {
+                  //   this.syncserverstatus = false;
+                  // }
+                this.networkService.onSyncServerStatusChange().subscribe( (syncserverstatus: ConnectionStatus) => {
+                  if (syncserverstatus === ConnectionStatus.Online) {
+                    this.syncserverstatus = true;
+                    this.offlineManager.checkForEvents().subscribe();
+                    // this.showToast("Sync Server is Online");
+                  } else {
+                    this.syncserverstatus = false;
+                    // this.showToast("Sync Server is Offline");
+                  }
+                });
+              }
+            });
         }
-      });
-      this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
-        if (status === ConnectionStatus.Online) {
-          // this.offlineManager.checkForEvents().subscribe();
-            // if (this.networkService.isSyncServerOnline()) {
-            //   this.syncserverstatus = true;
-            // } else {
-            //   this.syncserverstatus = false;
-            // }
-          this.networkService.onSyncServerStatusChange().subscribe( (syncserverstatus: ConnectionStatus) => {
-            if (syncserverstatus === ConnectionStatus.Online) {
-              this.syncserverstatus = true;
-              this.offlineManager.checkForEvents().subscribe();
-              // this.showToast("Sync Server is Online");
-            } else {
-              this.syncserverstatus = false;
-              // this.showToast("Sync Server is Offline");
-            }
-          });
-        }
+
       });
       // this.componentloaded = true;
     });

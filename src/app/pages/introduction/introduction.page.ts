@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { SyncService } from 'src/app/services/sync.service';
 import { NetworkService } from 'src/app/services/network.service';
 import { SettingService } from './../../services/setting.service';
@@ -31,7 +32,8 @@ export class IntroductionPage {
     private masterService: MasterService,
     private settingService: SettingService,
     private networkService: NetworkService,
-    private syncService: SyncService
+    private syncService: SyncService,
+    private authService: AuthService
   ) {
     this.syncserversettingsForm = this.formBuilder.group({
       syncserver: [
@@ -145,6 +147,9 @@ export class IntroductionPage {
       };
       await this.settingService.addItem(surveyperiod);
 
+      await this.authService.checkSyncServer();
+      await this.networkService.initializeNetworkEvents();
+      await this.networkService.initializeSocketEvents();
 
       this.router
       .navigateByUrl('/login', { replaceUrl: true })

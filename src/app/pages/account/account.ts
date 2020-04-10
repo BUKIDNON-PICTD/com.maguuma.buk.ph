@@ -16,6 +16,8 @@ export class AccountPage implements AfterViewInit {
   username: string;
   password: string;
   confirmpassword: string;
+  user: any;
+  role: any;
 
   constructor(
     public alertCtrl: AlertController,
@@ -61,7 +63,9 @@ export class AccountPage implements AfterViewInit {
   }
 
   getUsername() {
-    this.username = this.authService.user.username;
+    this.user = this.authService.user;
+    this.username = this.user.username;
+    this.role = this.user.role;
     // this.userData.getUsername().then((username) => {
     //   this.username = username;
     // });

@@ -35,12 +35,7 @@ export class AuthService {
     ) {
       this.plt.ready().then(() => {
         this.checkToken();
-        this.settingservice.getItemByName('syncserver').then(item => {
-            if (item) {
-              this.syncserver = item.value;
-              this.hasSettings.next(true);
-            }
-        });
+        this.checkSyncServer();
     });
   }
 
@@ -58,6 +53,16 @@ export class AuthService {
         }
       }
     });
+  }
+  checkSyncServer() {
+    this.settingservice.getItemByName('syncserver').then(item => {
+      if (item) {
+        this.syncserver = item.value;
+        this.hasSettings.next(true);
+      } else {
+        this.hasSettings.next(false);
+      }
+  });
   }
 
   register(credentials) {
@@ -130,22 +135,17 @@ export class AuthService {
     )
   }
 
-  // hasSettings() {
-  //   if (this.syncserver) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   isAuthenticated() {
     return this.authenticationState.value;
   }
 
-  // hasRoles(roles: string[]): boolean {
-  //   for (const role of roles) {
-  //     if (!this.user || !this.user.roleid)
-  //   }
-  // }
+  hasRole(roles: string[]): boolean {
+    if (this.isAuthenticated && roles.includes(this.user.role.code)) {
+      return true;
+    }
+    return false;
+  }
 
   showAlert(msg) {
     let alert = this.alertController.create({
