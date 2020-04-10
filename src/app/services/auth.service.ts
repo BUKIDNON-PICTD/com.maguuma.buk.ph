@@ -21,6 +21,7 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(false);
   syncserver: any;
+  hasSettings =  new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
@@ -35,7 +36,10 @@ export class AuthService {
       this.plt.ready().then(() => {
         this.checkToken();
         this.settingservice.getItemByName('syncserver').then(item => {
-            this.syncserver = item.value;
+            if (item) {
+              this.syncserver = item.value;
+              this.hasSettings.next(true);
+            }
         });
     });
   }
@@ -61,7 +65,7 @@ export class AuthService {
       tap( res => {
         // this.userData.signup(credentials.username);
         // this.router.navigateByUrl('/app/tabs/about');
-        this.login(credentials).subscribe();;
+        this.login(credentials).subscribe();
       }),
       catchError(e => {
         this.showAlert(e.error.msg);
@@ -97,7 +101,7 @@ export class AuthService {
           this.user = this.helper.decodeToken(res['token']);
           this.authenticationState.next(true);
           // this.userData.login(credentials);
-          this.router.navigateByUrl('/app/tabs/about');
+          // this.router.navigateByUrl('/app/tabs/about');
         }),
         catchError(e => {
           this.showAlert(e.error.msg);
@@ -109,7 +113,7 @@ export class AuthService {
   logout() {
     this.storage.remove(TOKEN_KEY).then(() => {
       this.authenticationState.next(false);
-      this.router.navigateByUrl('/login');
+      // this.router.navigateByUrl('/login');
     });
   }
 
@@ -126,13 +130,20 @@ export class AuthService {
     )
   }
 
+  // hasSettings() {
+  //   if (this.syncserver) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
   isAuthenticated() {
     return this.authenticationState.value;
   }
 
   // hasRoles(roles: string[]): boolean {
   //   for (const role of roles) {
-  //     if (!this.user)
+  //     if (!this.user || !this.user.roleid)
   //   }
   // }
 

@@ -17,20 +17,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule),
     canActivate: [AuthGuardService]
   },
-  {
-    path: 'support',
-    loadChildren: () => import('./pages/support/support.module').then(m => m.SupportModule),
-    canLoad: [CheckSettingAvailable]
-  },
+  // {
+  //   path: 'support',
+  //   loadChildren: () => import('./pages/support/support.module').then(m => m.SupportModule),
+  //   canLoad: [CheckSettingAvailable]
+  // },
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule),
-    canLoad: [CheckSettingAvailable]
+    // canLoad: [CheckSettingAvailable]
   },
   {
     path: 'signup',
     loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignUpModule),
-    canLoad: [CheckSettingAvailable]
+    // canLoad: [CheckSettingAvailable]
   },
   {
     path: 'app',
@@ -120,7 +120,8 @@ const routes: Routes = [
   {
     path: 'comodityareacrosstab',
     loadChildren: () => import('./reports/comodityareacrosstab/comodityareacrosstab.module').then( m => m.ComodityareacrosstabPageModule)
-  },  {
+  },
+  {
     path: 'usermanagement',
     loadChildren: () => import('./pages/usermanagement/usermanagement.module').then( m => m.UsermanagementPageModule)
   },
@@ -128,12 +129,6 @@ const routes: Routes = [
     path: 'rolemanagement',
     loadChildren: () => import('./pages/rolemanagement/rolemanagement.module').then( m => m.RolemanagementPageModule)
   },
-
-
-
-
-
-
 ];
 
 @NgModule({

@@ -81,7 +81,12 @@ export class IntroductionPage {
         { type: "required", message: "Report Server is required." },
       ]
     };
+    // this.slides.lockSwipes(false);
+    // this.slides.slideNext();
+    // this.slides.lockSwipes(true);
+    // this.slides.lockSwipeToNext(true);
   }
+
   async syncMaster() {
     if (this.syncserversettingsForm.valid) {
       let syncserver = {
@@ -107,8 +112,9 @@ export class IntroductionPage {
       await this.masterService.getMasterFile("master_surveyperiod").then(items => {
         this.surveyperiods = items;
       });
-
+      this.slides.lockSwipes(false);
       this.slides.slideNext();
+      this.slides.lockSwipeToPrev(true);
     }
 
   }
@@ -157,9 +163,18 @@ export class IntroductionPage {
   }
 
   onSlideChangeStart(event) {
-    event.target.isEnd().then(isEnd => {
-      // this.showSkip = !isEnd;
+    // event.target.isEnd().then(isEnd => {
+    //   // this.showSkip = !isEnd;
+    // });
+
+    this.slides.getActiveIndex().then(index => {
+      if (index === 4) {
+        this.slides.lockSwipeToNext(true);
+      } else if (index < 4) {
+        this.slides.lockSwipes(false);
+      }
     });
+
   }
 
   ionViewWillEnter() {

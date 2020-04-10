@@ -14,16 +14,19 @@ export class TabsPage implements OnInit {
 
   }
   async ngOnInit() {
-    this.checkLoginStatus();
+    this.authService.authenticationState.subscribe(state => {
+      this.loggedIn = state;
+    });
+    // this.checkLoginStatus();
     // this.listenForLoginEvents();
   }
 
 
-  checkLoginStatus() {
-    this.authService.authenticationState.subscribe(state => {
-      this.loggedIn = state;
-    });
-  }
+  // checkLoginStatus() {
+  //   this.authService.authenticationState.subscribe(state => {
+  //     this.loggedIn = state;
+  //   });
+  // }
 
   // listenForLoginEvents() {
   //   window.addEventListener('user:login', () => {

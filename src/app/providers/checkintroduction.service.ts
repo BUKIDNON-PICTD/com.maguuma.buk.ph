@@ -12,11 +12,11 @@ export class CheckIntroduction implements CanLoad {
   canLoad() {
     return this.storage.get('ion_did_intro').then( res => {
       if (res) {
-        if (this.authService.isAuthenticated) {
-          this.router.navigate(['/app/tabs/about']);
-        } else {
-          this.router.navigate(['/login']);
-        }
+        // if (this.authService.isAuthenticated) {
+        //   this.router.navigate(['/app/tabs/about']);
+        // } else {
+        //   this.router.navigate(['/login']);
+        // }
         // console.log(this.userData.isLoggedIn());
         // if (this.userData.isLoggedIn()) {
         //   this.router.navigate(['/app/tabs/about']);
@@ -30,7 +30,6 @@ export class CheckIntroduction implements CanLoad {
         //     this.router.navigate(['/login']);
         //   }
         // });
-
         return false;
       } else {
         return true;

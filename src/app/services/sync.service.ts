@@ -46,7 +46,9 @@ export class SyncService {
       driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
     });
     this.settingservice.getItemByName('syncserver').then(item => {
-        this.syncserver = item.value;
+        if (item) {
+          this.syncserver = item.value;
+        }
     });
 
     // this._entityindividual = new Storage({

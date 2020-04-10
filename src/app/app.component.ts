@@ -152,40 +152,55 @@ export class AppComponent{
   }
 
 initializeApp() {
-    this.platform.ready().then(async () => {
-      await this.settingService.getItems().then( async items => {
-        if (!items) {
-          this.settingsavailable = false;
+    this.platform.ready().then(() => {
+      // await this.settingService.getItems().then( async items => {
+      //   if (!items) {
+      //     this.settingsavailable = false;
+      //   } else {
+      //     await this.checkLoginStatus();
+      //     // await this.listenForLoginEvents();
+      //     this.settingsavailable = true;
+      //   }
+      // });
+
+      // await this.swUpdate.available.subscribe(async res => {
+      //   const toast = await this.toastCtrl.create({
+      //     message: 'Update available!',
+      //     position: 'bottom',
+      //     buttons: [
+      //       {
+      //         role: 'cancel',
+      //         text: 'Reload'
+      //       }
+      //     ]
+      //   });
+
+      //   await toast.present();
+
+      //   toast
+      //     .onDidDismiss()
+      //     .then(() => this.swUpdate.activateUpdate())
+      //     .then(() => window.location.reload());
+      // });
+
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+      this.authService.authenticationState.subscribe(state => {
+        this.loggedIn = state;
+        // console.log(this.authService.hasSettings());
+        if (state) {
+          this.router.navigate(['/app/tabs/about']);
         } else {
-          await this.checkLoginStatus();
-          // await this.listenForLoginEvents();
-          this.settingsavailable = true;
+          this.authService.hasSettings.subscribe( hassetting => {
+            if (hassetting) {
+              this.router.navigate(['/login']);
+            } else {
+              this.router.navigate(['/introduction']);
+            }
+          });
         }
       });
-
-      await this.swUpdate.available.subscribe(async res => {
-        const toast = await this.toastCtrl.create({
-          message: 'Update available!',
-          position: 'bottom',
-          buttons: [
-            {
-              role: 'cancel',
-              text: 'Reload'
-            }
-          ]
-        });
-
-        await toast.present();
-
-        toast
-          .onDidDismiss()
-          .then(() => this.swUpdate.activateUpdate())
-          .then(() => window.location.reload());
-      });
-
-      await this.statusBar.styleDefault();
-      await this.splashScreen.hide();
-      await this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
+      this.networkService.onNetworkChange().subscribe((status: ConnectionStatus) => {
         if (status === ConnectionStatus.Online) {
           // this.offlineManager.checkForEvents().subscribe();
             // if (this.networkService.isSyncServerOnline()) {
@@ -205,23 +220,23 @@ initializeApp() {
           });
         }
       });
-      this.componentloaded = true;
+      // this.componentloaded = true;
     });
   }
 
-  checkLoginStatus() {
-    // return this.authService.authenticationState.subscribe(state => {
-    //   return this.updateLoggedInStatus(state);
-    // });
+  // checkLoginStatus() {
+  //   // return this.authService.authenticationState.subscribe(state => {
+  //   //   return this.updateLoggedInStatus(state);
+  //   // });
 
-    this.authService.authenticationState.subscribe(state => {
-      this.loggedIn = state;
-    });
-    // return this.userData.isLoggedIn().then(loggedIn => {
-    //   console.log(loggedIn);
-    //   return this.updateLoggedInStatus(loggedIn);
-    // });
-  }
+  //   this.authService.authenticationState.subscribe(state => {
+  //     this.loggedIn = state;
+  //   });
+  //   // return this.userData.isLoggedIn().then(loggedIn => {
+  //   //   console.log(loggedIn);
+  //   //   return this.updateLoggedInStatus(loggedIn);
+  //   // });
+  // }
 
   // updateLoggedInStatus(loggedIn: boolean) {
   //   setTimeout(() => {

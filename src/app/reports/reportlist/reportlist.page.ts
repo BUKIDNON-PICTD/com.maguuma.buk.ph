@@ -53,19 +53,22 @@ export class ReportlistPage implements OnInit {
 
 
   async ngOnInit() {
-    this.checkLoginStatus();
+    this.authService.authenticationState.subscribe(state => {
+      this.loggedIn = state;
+    });
+    // this.checkLoginStatus();
     // this.listenForLoginEvents();
   }
 
 
-  checkLoginStatus() {
-    this.authService.authenticationState.subscribe(state => {
-      this.loggedIn = state;
-    });
-    // return this.userData.isLoggedIn().then(loggedIn => {
-    //   return this.updateLoggedInStatus(loggedIn);
-    // });
-  }
+  // checkLoginStatus() {
+  //   this.authService.authenticationState.subscribe(state => {
+  //     this.loggedIn = state;
+  //   });
+  //   // return this.userData.isLoggedIn().then(loggedIn => {
+  //   //   return this.updateLoggedInStatus(loggedIn);
+  //   // });
+  // }
 
   // listenForLoginEvents() {
   //   window.addEventListener('user:login', () => {

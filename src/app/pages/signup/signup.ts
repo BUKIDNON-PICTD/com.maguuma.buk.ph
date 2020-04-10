@@ -23,9 +23,9 @@ export class SignupPage {
     public userData: UserData,
     public authService: AuthService
   ) {
-    if (this.authService.isAuthenticated) {
-      this.router.navigateByUrl('/app/tabs/about');
-    }
+    // if (this.authService.isAuthenticated) {
+    //   this.router.navigateByUrl('/app/tabs/about');
+    // }
     // this.userData.isLoggedIn().then( isLoggedIn => {
     //   if (isLoggedIn) {
     //     this.router.navigateByUrl('/app/tabs/about');
