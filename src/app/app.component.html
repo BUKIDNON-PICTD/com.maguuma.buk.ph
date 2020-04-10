@@ -16,8 +16,8 @@
           <ion-list-header *appHasrole="p.roles">
             {{p.title}}
           </ion-list-header>
-          <ion-menu-toggle autoHide="false" *ngFor="let item of p.items; let i = index">
-            <ion-item [routerLink]="item.url" routerLinkActive="selected" routerDirection="root" detail="false">
+          <ion-menu-toggle autoHide="false" *ngFor="let item of p.items; let i = index" >
+            <ion-item [routerLink]="item.url" routerLinkActive="selected" routerDirection="root" detail="false" *appHasrole="item.roles">
               <ion-icon slot="start" [name]="item.icon + '-outline'"></ion-icon>
               <ion-label>
                 {{item.title}}

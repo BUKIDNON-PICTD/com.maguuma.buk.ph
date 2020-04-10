@@ -32,22 +32,26 @@ export class AppComponent{
         {
           title: 'About Project',
           url: '/app/tabs/about',
-          icon: 'information-circle'
+          icon: 'information-circle',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Capture Farmer',
           url: '/capturefarmer',
-          icon: 'person-add'
+          icon: 'person-add',
+          roles: ["admin","muni"],
         },
         {
           title: 'Farmer List',
           url: '/app/tabs/farmerlist',
-          icon: 'people'
+          icon: 'people',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Farm Inventory List',
           url: '/farminventorylist',
-          icon: 'map'
+          icon: 'map',
+          roles: ["admin","muni","prov"],
         }
       ]
     },
@@ -59,7 +63,8 @@ export class AppComponent{
         {
           title: 'Report list',
           url: '/report/list',
-          icon: 'document'
+          icon: 'document',
+          roles: ["admin","muni","prov"],
         }
       ]
     },
@@ -71,27 +76,32 @@ export class AppComponent{
         {
           title: 'Commodity',
           url: '/commodity',
-          icon: 'list'
+          icon: 'list',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Facility',
           url: '/facility',
-          icon: 'build'
+          icon: 'build',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Livestock',
           url: '/livestock',
-          icon: 'paw'
+          icon: 'paw',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Assistance Classification',
           url: '/assistance',
-          icon: 'heart'
+          icon: 'heart',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Survey Period',
           url: '/surveyperiod',
-          icon: 'calendar'
+          icon: 'calendar',
+          roles: ["admin","muni","prov"],
         },
       ]
 
@@ -104,12 +114,14 @@ export class AppComponent{
         {
           title: 'App Setting',
           url: '/settings',
-          icon: 'settings'
+          icon: 'settings',
+          roles: ["admin","muni","prov"],
         },
         {
           title: 'Sync Service',
           url: '/syncpage',
-          icon: 'sync'
+          icon: 'sync',
+          roles: ["admin","muni","prov"],
         }
       ]
     },
@@ -120,13 +132,15 @@ export class AppComponent{
       items: [
         {
           title: 'User Management',
-          url: '/usermangement',
-          icon: 'people'
+          url: '/usermanagement',
+          icon: 'people',
+          roles: ["admin"],
         },
         {
           title: 'Role Management',
-          url: '/rolemangement',
-          icon: 'key'
+          url: '/rolemanagement',
+          icon: 'key',
+          roles: ["admin"],
         }
       ]
     }

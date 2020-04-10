@@ -15,7 +15,10 @@ const routes: Routes = [
   {
     path: 'account',
     loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   // {
   //   path: 'support',
@@ -35,63 +38,84 @@ const routes: Routes = [
   {
     path: 'app',
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
-  // {
-  //   path: 'tutorial',
-  //   loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
-  //   canLoad: [CheckTutorial]
-  // },
+
   // maguuma modules
   {
     path: 'farminventorylist',
     loadChildren: () => import('./pages/transactions/farminventorylist/farminventorylist.module').then( m => m.FarminventorylistPageModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'farmerlist',
     loadChildren: () => import('./pages/transactions/farmerlist/farmerlist.module').then( m => m.FarmerlistPageModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'commodity',
     loadChildren: () => import('./pages/master/commodity/commodity.module').then( m => m.CommodityPageModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'facility',
     loadChildren: () => import('./pages/master/facility/facility.module').then( m => m.FacilityPageModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'livestock',
     loadChildren: () => import('./pages/master/livestock/livestock.module').then( m => m.LivestockPageModule),
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule),
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'syncpage',
-    loadChildren: () => import('./pages/syncpage/syncpage.module').then( m => m.SyncpagePageModule),
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'capturefarmer',
-    loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule),
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'assistance',
-    loadChildren: () => import('./pages/master/assistance/assistance.module').then( m => m.AssistancePageModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'surveyperiod',
     loadChildren: () => import('./pages/master/surveyperiod/surveyperiod.module').then( m => m.SurveyperiodPageModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule),
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
+  },
+  {
+    path: 'syncpage',
+    loadChildren: () => import('./pages/syncpage/syncpage.module').then( m => m.SyncpagePageModule),
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
+  },
+  {
+    path: 'capturefarmer',
+    loadChildren: () => import('./pages/transactions/capturefarmer/capturefarmer.module').then( m => m.CapturefarmerPageModule),
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'introduction',
@@ -101,34 +125,28 @@ const routes: Routes = [
   {
     path: 'report',
     loadChildren: () => import('./reports/reportlist/reportlist.module').then( m => m.ReportlistPageModule),
-    canActivate: [AuthGuardService]
-  },
-  {path: '404', component: PagenotfoundComponent},
-  {path: '**', redirectTo: '/404'},
-  {
-    path: 'farmerlist',
-    loadChildren: () => import('./reports/farmerlist/farmerlist.module').then( m => m.FarmerlistPageModule)
-  },
-  {
-    path: 'farmerlistcrosstab',
-    loadChildren: () => import('./reports/farmerlistcrosstab/farmerlistcrosstab.module').then( m => m.FarmerlistcrosstabPageModule)
-  },
-  {
-    path: 'comodityfarmercrosstab',
-    loadChildren: () => import('./reports/comodityfarmercrosstab/comodityfarmercrosstab.module').then( m => m.ComodityfarmercrosstabPageModule)
-  },
-  {
-    path: 'comodityareacrosstab',
-    loadChildren: () => import('./reports/comodityareacrosstab/comodityareacrosstab.module').then( m => m.ComodityareacrosstabPageModule)
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
   },
   {
     path: 'usermanagement',
-    loadChildren: () => import('./pages/usermanagement/usermanagement.module').then( m => m.UsermanagementPageModule)
+    loadChildren: () => import('./pages/usermanagement/usermanagement.module').then( m => m.UsermanagementPageModule),
+    data: {
+      roles:['admin']
+    }
   },
   {
     path: 'rolemanagement',
-    loadChildren: () => import('./pages/rolemanagement/rolemanagement.module').then( m => m.RolemanagementPageModule)
+    loadChildren: () => import('./pages/rolemanagement/rolemanagement.module').then( m => m.RolemanagementPageModule),
+    data: {
+      roles:['admin']
+    }
   },
+  {path: '404', component: PagenotfoundComponent},
+  {path: '**', redirectTo: '/404'},
+
 ];
 
 @NgModule({
