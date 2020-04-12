@@ -1,7 +1,6 @@
 import { PagenotfoundComponent } from "./components/pagenotfound/pagenotfound.component";
-import { OlmapComponent } from "./components/olmap/olmap.component";
 import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
@@ -19,7 +18,6 @@ import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 
 import { Camera } from "@ionic-native/Camera/ngx";
 import { File } from "@ionic-native/File/ngx";
-import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { FilePath } from "@ionic-native/file-path/ngx";
@@ -27,6 +25,7 @@ import { Base64 } from "@ionic-native/base64/ngx";
 import { OlmapmoduleModule } from "./modules/olmapmodule/olmapmodule.module";
 import { JwtModule, JWT_OPTIONS } from "@auth0/angular-jwt";
 import { SharedModule } from './directives/shared.module';
+import { AppConfigService } from './services/app-config.service';
 
 function extractHostname(url) {
   var hostname;
@@ -56,7 +55,11 @@ export function jwtOptionsFactory(storage) {
     whitelistedDomains: syncserver
   };
 }
-
+export function init(appInitService: AppConfigService) {
+  return (): Promise<any> => {
+    return appInitService.load();
+  }
+}
 const config: SocketIoConfig = {
   url: "http://localhost:3001",
   options: { options: { autoConnect: false } }
@@ -99,7 +102,14 @@ const config: SocketIoConfig = {
     FilePath,
     Base64,
     // FileTransfer,
-    DocumentViewer
+    DocumentViewer,
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: init,
+      multi: true,
+      deps: [AppConfigService]
+    },
   ],
   bootstrap: [AppComponent]
 })

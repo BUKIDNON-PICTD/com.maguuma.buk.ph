@@ -1,9 +1,44 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>usermanagement</ion-title>
+    <ion-title>User Management</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-searchbar [(ngModel)]="queryText" (ionChange)="loadUsers(null)" placeholder="Search"></ion-searchbar>
+      <a class="btn btn-primary btn-sm" routerLink="/usermanagement/user">
+        <i class="fas fa-plus">
+        </i>
+        Add
+      </a>
+    </nav>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of users">
+      <ion-item routerLink="/usermanagement/user/{{item.id}}">
+        <ion-label>
+          <h3>{{item.username}} ( {{item.role.name}} )</h3>
+          <p>
+            Last Name: {{item.lastname}}
+            First Name: {{item.firstname}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteUser)">
+            <i class="fas fa-trash-alt"></i>
+            Delete
+          </a>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list-header [hidden]="users.length > 0">
+    No Users Found
+  </ion-list-header>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadUsers($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

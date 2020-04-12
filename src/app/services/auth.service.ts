@@ -49,7 +49,9 @@ export class AuthService {
           this.user = decoded;
           this.authenticationState.next(true);
         } else {
-          this.storage.remove(TOKEN_KEY);
+          this.storage.remove(TOKEN_KEY).then(() => {
+            this.authenticationState.next(false);
+          });
         }
       }
     });
@@ -82,7 +84,8 @@ export class AuthService {
   changepassword(credentials) {
     return this.http.post(`${this.syncserver}/api/changepassword`, credentials).pipe(
       tap( res => {
-        this.login(credentials).subscribe();
+        return res;
+        // this.login(credentials).subscribe();
         // console.log(res);
         // this.storage.set(TOKEN_KEY, res['token']);
         // this.user = this.helper.decodeToken(res['token']);

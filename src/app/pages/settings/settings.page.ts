@@ -11,7 +11,7 @@ import { addCoordinateTransforms } from 'ol/proj';
   styleUrls: ["./settings.page.scss"]
 })
 export class SettingsPage implements OnInit {
-  @ViewChild("itemList", { static: true }) scheduleList: IonList;
+
   ios: boolean;
   public items: any[] = [];
   public pagenumber: number;

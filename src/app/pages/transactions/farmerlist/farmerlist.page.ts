@@ -58,7 +58,7 @@ export class FarmerlistPage implements OnInit {
           }
         });
         event.target.complete();
-        if (this.farmers.length === 1000) {
+        if (this.farmers.length === 100000) {
           event.target.disabled = true;
         }
       }, 500);

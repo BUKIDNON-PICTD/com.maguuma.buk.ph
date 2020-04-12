@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: UsermanagementPage
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
+  },
+  {
+    path: 'user/:userid',
+    loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
   }
 ];
 
