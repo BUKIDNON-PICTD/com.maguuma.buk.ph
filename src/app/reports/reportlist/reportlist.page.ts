@@ -21,7 +21,7 @@ export class ReportlistPage implements OnInit {
   reports = [
         {
           title: 'Farmer List (Commodity)',
-          url: '/report/list/farmerlist'
+          url: '/report/list/farmerlistcommodity'
         },
         {
           title: 'Farmer List (Livestock)',

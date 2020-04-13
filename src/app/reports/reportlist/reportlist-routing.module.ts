@@ -15,8 +15,8 @@ const routes: Routes = [
         component: ReportlistPage,
       },
       {
-        path: 'farmerlist',
-        loadChildren: () => import('../../reports/farmerlist/farmerlist.module').then(m => m.FarmerlistPageModule)
+        path: 'farmerlistcommodity',
+        loadChildren: () => import('../../reports/farmerlistcommodity/farmerlist.module').then(m => m.FarmerlistPageModule)
       },
       {
         path: 'farmerlistlivestock',
