@@ -20,8 +20,12 @@ export class ReportlistPage implements OnInit {
   loggedIn = false;
   reports = [
         {
-          title: 'Farmer Master List',
+          title: 'Farmer List (Commodity)',
           url: '/report/list/farmerlist'
+        },
+        {
+          title: 'Farmer List (Livestock)',
+          url: '/report/list/farmerlistlivestock'
         },
         {
           title: 'Farmer List Crosstab',

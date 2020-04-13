@@ -1,9 +1,44 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>rolemanagement</ion-title>
+    <ion-title>Role Management</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-searchbar [(ngModel)]="queryText" (ionChange)="loadRoles(null)" placeholder="Search"></ion-searchbar>
+      <a class="btn btn-primary btn-sm" routerLink="/rolemanagement/role">
+        <i class="fas fa-plus">
+        </i>
+        Add
+      </a>
+    </nav>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of roles">
+      <ion-item routerLink="/rolemanagement/role/{{item.id}}">
+        <ion-label>
+          <h3>{{item.name}}</h3>
+          <p>
+            {{item.code}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options>
+          <a class="btn btn-app btn-danger btn-sm" (click)="presentAlertConfirm(item,deleteRole)">
+            <i class="fas fa-trash-alt"></i>
+            Delete
+          </a>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list-header [hidden]="roles.length > 0">
+    No Users Found
+  </ion-list-header>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadRoles($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
+

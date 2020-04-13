@@ -610,10 +610,18 @@ export class CapturefarmerPage implements OnInit {
         postnametitle: farmertoadd.postnametitle,
         prenametitle: farmertoadd.prenametitle,
         nameextension: farmertoadd.nameextension,
-        maidenname: farmertoadd.maidenname
+        maidenname: farmertoadd.maidenname,
+        lguid : farmertoadd.address.municipality.objid,
+        barangay: {
+          objid : farmertoadd.address.barangay.objid,
+        },
+        is4ps: false,
+        isFarmerAssociationMember: false,
+        isIP: false
       };
 
       newfarmer.farmer.objid = newfarmer.objid;
+      newfarmer.lguid =
       newfarmer.fno =
         newfarmer.farmer.address.municipality.objid +
         "-TEMP-" +
@@ -663,6 +671,10 @@ export class CapturefarmerPage implements OnInit {
           ...this.farmerPersonalInformationForm.value,
           ...this.farmerPersonalInformationDetailForm.value,
           ...this.farmerContactInformationForm.value
+        };
+        farmerupdate.lguid = farmerupdate.address.municipality.objid;
+        farmerupdate.barangay = {
+          objid : farmerupdate.address.barangay.objid,
         };
         farmerupdate.address = this.farmerAddressForm.value;
         farmerupdate.address.text =

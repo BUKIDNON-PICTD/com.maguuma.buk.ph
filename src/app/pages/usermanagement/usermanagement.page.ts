@@ -86,7 +86,7 @@ export class UsermanagementPage implements OnInit {
     if (queryWords.length) {
       // of any query word is in the session name than it passes the query test
       queryWords.forEach((queryWord: string) => {
-        if (item.user.lastname.toLowerCase().indexOf(queryWord) > -1) {
+        if (item.lastname.toLowerCase().indexOf(queryWord) > -1) {
           matchesQueryText = true;
         }
       });
@@ -102,9 +102,9 @@ export class UsermanagementPage implements OnInit {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
   }
 
- async deleteuser(x, item) {
-    await x.userService.deleteuser(item.objid).then(item => {
-      x.showToast("user removed.");
+ async deleteUser(x, item) {
+    await x.userService.deleteItem(item.id).then(item => {
+      x.showToast("User removed.");
     });
     await x.loadUsers(null);
   }
@@ -134,7 +134,9 @@ export class UsermanagementPage implements OnInit {
 
     await alert.present();
   }
-
+  ionViewDidEnter() {
+    this.loadUsers(null);
+  }
   async showToast(msg) {
     const toast = await this.toastController.create({
       message: msg,

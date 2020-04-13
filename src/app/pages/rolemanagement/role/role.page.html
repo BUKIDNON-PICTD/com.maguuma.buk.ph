@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{roleForm.get('name').value}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding" *ngIf='viewEntered'>
+  <ion-toolbar color="primary">
+    <nav class="navbar navbar-expand navbar-primary navbar-dark">
+      <ion-title>Role Detail</ion-title>
+      <a class="btn btn-primary btn-sm" (click)="save()">
+        <i class="fas fa-save">
+        </i>
+        Save
+      </a>
+    </nav>
+  </ion-toolbar>
+  <form [formGroup]="roleForm">
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+        formControlName="name"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.name">
+      <ng-container
+        *ngIf="(isSubmitted && roleForm.get('name')?.hasError(validation.type)) || (roleForm.get('name')?.hasError(validation.type) && (roleForm.get('name')?.dirty || roleForm.get('name')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Code</ion-label>
+      <ion-input class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+        formControlName="code"></ion-input>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.code">
+      <ng-container
+        *ngIf="(isSubmitted && roleForm.get('code')?.hasError(validation.type)) || (roleForm.get('code')?.hasError(validation.type) && (roleForm.get('code')?.dirty || roleForm.get('code')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-textarea class="text-uppercase" oninput="this.value = this.value.toUpperCase()" inputmode="text"
+        formControlName="description"></ion-textarea>
+    </ion-item>
+    <div *ngFor="let validation of validation_messages.description">
+      <ng-container
+        *ngIf="(isSubmitted && roleForm.get('description')?.hasError(validation.type)) || (roleForm.get('description')?.hasError(validation.type) && (roleForm.get('description')?.dirty || roleForm.get('description')?.touched))">
+        <small class="text-danger">{{ validation.message }}</small>
+      </ng-container>
+    </div>
+  </form>
+</ion-content>

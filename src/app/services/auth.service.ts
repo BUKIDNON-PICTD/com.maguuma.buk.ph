@@ -144,7 +144,7 @@ export class AuthService {
   }
 
   hasRole(roles: string[]): boolean {
-    if (this.isAuthenticated && roles.includes(this.user.role.code)) {
+    if (this.isAuthenticated && roles.includes(this.user.role.code.toLowerCase())) {
       return true;
     }
     return false;

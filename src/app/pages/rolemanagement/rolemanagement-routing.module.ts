@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: RolemanagementPage
+  },
+  {
+    path: 'role',
+    loadChildren: () => import('./role/role.module').then( m => m.RolePageModule)
+  },
+  {
+    path: 'role/:roleid',
+    loadChildren: () => import('./role/role.module').then( m => m.RolePageModule)
   }
 ];
 

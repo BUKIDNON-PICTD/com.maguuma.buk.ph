@@ -19,6 +19,10 @@ const routes: Routes = [
         loadChildren: () => import('../../reports/farmerlist/farmerlist.module').then(m => m.FarmerlistPageModule)
       },
       {
+        path: 'farmerlistlivestock',
+        loadChildren: () => import('../../reports/farmerlistlivestock/farmerlistlivestock.module').then(m => m.FarmerlistlivestockPageModule)
+      },
+      {
         path: 'farmerlistcrosstab',
         loadChildren: () => import('../../reports/farmerlistcrosstab/farmerlistcrosstab.module').then(m => m.FarmerlistcrosstabPageModule)
       },

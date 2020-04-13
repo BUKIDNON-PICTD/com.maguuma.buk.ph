@@ -86,6 +86,14 @@ const routes: Routes = [
     }
   },
   {
+    path: 'assistance',
+    loadChildren: () => import('./pages/master/assistance/assistance.module').then( m => m.AssistancePageModule),
+    canActivate: [AuthGuardService],
+    data: {
+      roles:['admin','muni','prov']
+    }
+  },
+  {
     path: 'surveyperiod',
     loadChildren: () => import('./pages/master/surveyperiod/surveyperiod.module').then( m => m.SurveyperiodPageModule),
     canActivate: [AuthGuardService],
@@ -145,7 +153,11 @@ const routes: Routes = [
     }
   },
   {path: '404', component: PagenotfoundComponent},
-  {path: '**', redirectTo: '/404'},
+  {path: '**', redirectTo: '/404'},  {
+    path: 'farmerlistlivestock',
+    loadChildren: () => import('./reports/farmerlistlivestock/farmerlistlivestock.module').then( m => m.FarmerlistlivestockPageModule)
+  },
+
 
 ];
 
