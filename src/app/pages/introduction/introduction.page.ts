@@ -1,3 +1,4 @@
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SyncService } from 'src/app/services/sync.service';
 import { NetworkService } from 'src/app/services/network.service';
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 
 import { MenuController, IonSlides } from '@ionic/angular';
 import { Storage } from "@ionic/storage";
+import { AppComponent } from 'src/app/app.component';
 @Component({
   selector: 'app-introduction',
   templateUrl: './introduction.page.html',
@@ -24,6 +26,8 @@ export class IntroductionPage {
   surveyperiods: any[];
   isSubmitted: boolean = false;
   municipalities: any[];
+  syncserver: { objid: string; name: string; value: any; };
+  reportserver: { objid: string; name: string; value: any; };
   constructor(
     public menu: MenuController,
     public router: Router,
@@ -33,7 +37,8 @@ export class IntroductionPage {
     private settingService: SettingService,
     private networkService: NetworkService,
     private syncService: SyncService,
-    private authService: AuthService
+    private authService: AuthService,
+    private appComponent: AppComponent,
   ) {
     this.syncserversettingsForm = this.formBuilder.group({
       syncserver: [
@@ -91,13 +96,13 @@ export class IntroductionPage {
 
   async syncMaster() {
     if (this.syncserversettingsForm.valid) {
-      let syncserver = {
+      this.syncserver = {
         objid: this.create_UUID(),
         name: 'syncserver',
         value: this.syncserversettingsForm.get("syncserver").value,
       };
 
-      let reportserver = {
+      this.reportserver = {
         objid: this.create_UUID(),
         name: 'reportserver',
         value: this.syncserversettingsForm.get("reportserver").value,
@@ -105,9 +110,8 @@ export class IntroductionPage {
 
       this.networkService.initializeSocketEvents();
 
-      await this.syncService.getMasterFilesFromServerFirst(syncserver.value);
-      await this.settingService.addItem(syncserver);
-      await this.settingService.addItem(reportserver);
+      await this.syncService.getMasterFilesFromServerFirst(this.syncserver.value);
+
       await this.masterService.getMasterFile("municipality").then(items => {
         this.municipalities = items;
       });
@@ -127,6 +131,8 @@ export class IntroductionPage {
         name: 'clientid',
         value: this.create_UUID(),
       };
+      await this.settingService.addItem(this.syncserver);
+      await this.settingService.addItem(this.reportserver);
       await this.settingService.addItem(clientid);
       let lguid = {
         objid: this.create_UUID(),
@@ -153,7 +159,10 @@ export class IntroductionPage {
 
       this.router
       .navigateByUrl('/login', { replaceUrl: true })
-      .then(() => this.storage.set('ion_did_intro', true));
+      .then(() => {
+        this.storage.set('ion_did_intro', true);
+        this.appComponent.initializeApp();
+      });
     }
   }
 

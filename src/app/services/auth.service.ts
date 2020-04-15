@@ -1,3 +1,4 @@
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { SettingService } from './setting.service';
 import { Platform, AlertController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
@@ -30,6 +31,7 @@ export class AuthService {
     private plt: Platform,
     private alertController: AlertController,
     private settingservice: SettingService,
+    private appConfig: AppConfigService,
     public router: Router,
     public userData: UserData,
     ) {
@@ -57,18 +59,18 @@ export class AuthService {
     });
   }
   checkSyncServer() {
-    this.settingservice.getItemByName('syncserver').then(item => {
-      if (item) {
-        this.syncserver = item.value;
-        this.hasSettings.next(true);
-      } else {
-        this.hasSettings.next(false);
-      }
-  });
+    //   this.settingservice.getItemByName('syncserver').then(item => {
+    //     if (item) {
+    //       this.syncserver = item.value;
+    //       this.hasSettings.next(true);
+    //     } else {
+    //       this.hasSettings.next(false);
+    //     }
+    // });
   }
 
   register(credentials) {
-    return this.http.post(`${this.syncserver}/api/register`, credentials).pipe(
+    return this.http.post(`${this.appConfig.syncserver}/api/register`, credentials).pipe(
       tap( res => {
         // this.userData.signup(credentials.username);
         // this.router.navigateByUrl('/app/tabs/about');
@@ -82,7 +84,7 @@ export class AuthService {
   }
 
   changepassword(credentials) {
-    return this.http.post(`${this.syncserver}/api/changepassword`, credentials).pipe(
+    return this.http.post(`${this.appConfig.syncserver}/api/changepassword`, credentials).pipe(
       tap( res => {
         return res;
         // this.login(credentials).subscribe();
@@ -102,7 +104,7 @@ export class AuthService {
   }
 
   login(credentials) {
-    return this.http.post(`${this.syncserver}/api/login`, credentials)
+    return this.http.post(`${this.appConfig.syncserver}/api/login`, credentials)
       .pipe(
         tap(res => {
           this.storage.set(TOKEN_KEY, res['token']);
@@ -126,7 +128,7 @@ export class AuthService {
   }
 
   getSpecialData() {
-    return this.http.get(`${this.syncserver}/api/special`).pipe(
+    return this.http.get(`${this.appConfig.syncserver}/api/special`).pipe(
       catchError(e => {
         let status = e.status;
         if (status === 401) {

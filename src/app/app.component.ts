@@ -1,3 +1,4 @@
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SettingService } from './services/setting.service';
 import { OfflineManagerService } from './services/offlinemanager.service';
@@ -165,15 +166,16 @@ export class AppComponent{
     private offlineManager: OfflineManagerService,
     private toastController: ToastController,
     private settingService: SettingService,
-    private authService: AuthService
+    private authService: AuthService,
+    private appConfig : AppConfigService
   ) {
     this.initializeApp();
   }
 
 initializeApp() {
     this.platform.ready().then(() => {
-      this.authService.hasSettings.subscribe( hassetting => {
-        if (!hassetting) {
+      // this.authService.hasSettings.subscribe( hassetting => {
+        if (!this.appConfig.syncserver) {
           this.router.navigate(['/introduction']);
         } else {
           // await this.settingService.getItems().then( async items => {
@@ -242,7 +244,7 @@ initializeApp() {
 
       });
       // this.componentloaded = true;
-    });
+    // });
   }
 
   // checkLoginStatus() {

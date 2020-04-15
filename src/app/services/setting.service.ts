@@ -1,3 +1,4 @@
+import { AppConfigService } from './app-config.service';
 import { NetworkService } from 'src/app/services/network.service';
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
@@ -8,15 +9,18 @@ import { BehaviorSubject, Observable } from "rxjs";
 })
 export class SettingService {
   constructor(private storage: Storage) {}
+  settings = new BehaviorSubject<any[]>(null);
 
   addItem(item: any): Promise<any> {
     return this.storage.get("settings").then(items => {
       if (items) {
         items.push(item);
-        return this.storage.set("settings", items);
+        this.storage.set("settings", items);
       } else {
-        return this.storage.set("settings", [item]);
+        this.storage.set("settings", [item]);
       }
+      this.settings.next(items);
+      return item;
     });
   }
 
@@ -25,6 +29,9 @@ export class SettingService {
   //       return item.value;
   //     });
   // }
+  getSettings(): Observable<any[]> {
+    return this.settings.asObservable();
+  }
 
   getItems(): Promise<any[]> {
     return this.storage.get("settings");
@@ -64,7 +71,7 @@ export class SettingService {
           newItems.push(i);
         }
       }
-
+      this.settings.next(newItems);
       return this.storage.set("settings", newItems);
     });
   }
@@ -82,6 +89,7 @@ export class SettingService {
           toKeep.push(i);
         }
       }
+      this.settings.next(toKeep);
       return this.storage.set("settings", toKeep);
     });
   }

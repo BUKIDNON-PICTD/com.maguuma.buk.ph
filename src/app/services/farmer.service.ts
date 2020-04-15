@@ -1,3 +1,4 @@
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserData } from "./../providers/user-data";
 import { OfflineManagerService } from "./offlinemanager.service";
@@ -27,7 +28,8 @@ export class FarmerService {
     private settingservice: SettingService,
     private offlineManager: OfflineManagerService,
     private userData: UserData,
-    private authService: AuthService
+    private authService: AuthService,
+    private appConfig: AppConfigService
   ) {
     this._agri_farmerprofile = new Storage({
       storeName: "_agri_farmerprofile",
@@ -39,9 +41,9 @@ export class FarmerService {
       driverOrder: ["sqlite", "indexeddb", "websql", "localstorage"]
     });
 
-    this.settingservice.getItemByName("syncserver").then(item => {
-      this.syncserver = item.value;
-    });
+    // this.settingservice.getItemByName("syncserver").then(item => {
+    //   this.syncserver = item.value;
+    // });
   }
   httpOptions = {
     headers: new HttpHeaders({
@@ -113,17 +115,17 @@ export class FarmerService {
 
   addfarmer(farmer: any): Promise<any> {
     return this._agri_farmerprofile.get(farmer.objid).then(async item => {
-      var lguid = "";
-      await this.settingservice.getItemByName("lguid").then(o => {
-        lguid = o.value;
-      });
+      // var lguid = "";
+      // await this.settingservice.getItemByName("lguid").then(o => {
+      //   lguid = o.value;
+      // });
       var username = this.authService.user.username;
       // await this.userData.getUsername().then(o => {
       //   username = o;
       // });
 
       if (!item) {
-        farmer.lguid = lguid;
+        farmer.lguid = this.appConfig.lguid;
         var params = {
           farmer: farmer,
           username: username
@@ -166,7 +168,7 @@ export class FarmerService {
 
     return this.http
       .post<any>(
-        this.syncserver + `/api/serverrequest`,
+        `${this.appConfig.syncserver}/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -176,7 +178,7 @@ export class FarmerService {
         }),
         catchError(err => {
           this.offlineManager.storeRequest(
-            this.syncserver + `/api/serverrequest`,
+            `${this.appConfig.syncserver}/api/serverrequest`,
             "post",
             data
           );
@@ -206,10 +208,10 @@ export class FarmerService {
 
   updatefarmer(farmer: any): Promise<any> {
     return this._agri_farmerprofile.get(farmer.objid).then(async item => {
-      var lguid = "";
-      await this.settingservice.getItemByName("lguid").then(o => {
-        lguid = o.value;
-      });
+      // var lguid = "";
+      // await this.settingservice.getItemByName("lguid").then(o => {
+      //   lguid = o.value;
+      // });
       var username = this.authService.user.username;
       // await this.userData.getUsername().then(o => {
       //   username = o;
@@ -218,7 +220,7 @@ export class FarmerService {
       if (!item) {
         return null;
       }
-      farmer.lguid = lguid;
+      farmer.lguid = this.appConfig.lguid;
         var params = {
           farmer: farmer,
           username: username
@@ -267,7 +269,7 @@ export class FarmerService {
 
     return this.http
       .post<any>(
-        this.syncserver + `/api/serverrequest`,
+        `${this.appConfig.syncserver}/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -277,7 +279,7 @@ export class FarmerService {
         }),
         catchError(err => {
           this.offlineManager.storeRequest(
-            this.syncserver + `/api/serverrequest`,
+            `${this.appConfig.syncserver}/api/serverrequest`,
             "post",
             data
           );

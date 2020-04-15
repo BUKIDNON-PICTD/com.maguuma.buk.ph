@@ -1,3 +1,4 @@
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { ToastController } from "@ionic/angular";
 import { Injectable } from "@angular/core";
 import {
@@ -35,7 +36,8 @@ export class SyncService {
     private storage: Storage,
     private http: HttpClient,
     private toastController: ToastController,
-    private settingservice : SettingService
+    private settingservice : SettingService,
+    private appconfig: AppConfigService
   ) {
     this.tblmaster = new Storage({
       storeName: '_tblmaster',
@@ -45,11 +47,11 @@ export class SyncService {
       storeName: '_agri_farmerprofile',
       driverOrder: ['sqlite', 'indexeddb','websql', 'localstorage']
     });
-    this.settingservice.getItemByName('syncserver').then(item => {
-        if (item) {
-          this.syncserver = item.value;
-        }
-    });
+    // this.settingservice.getItemByName('syncserver').then(item => {
+    //     if (item) {
+    //       this.syncserver = item.value;
+    //     }
+    // });
 
     // this._entityindividual = new Storage({
     //   storeName: '_entityindividual',
@@ -94,19 +96,19 @@ export class SyncService {
     return throwError("Something bad happened; please try again later.");
   }
 
-  getMasterFilesFromServer(settings): Observable<any> {
+  getMasterFilesFromServer(): Observable<any> {
     var data = {
       requesttype: "post",
       servicename: "FarmerProfileService",
       methodname: "getMasterFiles",
       params: {
-        lguid: settings.find(o => o.name === 'lguid').value,
+        lguid: this.appconfig.lguid,
       }
     };
 
     return this.http
       .post<any>(
-        this.syncserver + `/api/serverrequest`,
+        `${this.appconfig.syncserver}/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -135,7 +137,7 @@ export class SyncService {
 
     return this.http
       .post<any>(
-        syncserver + `/api/getmasterfiles`,
+        `${syncserver}/api/getmasterfiles`,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -170,31 +172,31 @@ export class SyncService {
   //     .pipe(retry(2), catchError(this.handleError));
   // }
 
-  syncFarmerData(settings): Observable<any> {
+  syncFarmerData(): Observable<any> {
     var data = {
       requesttype: "post",
       servicename: "FarmerProfileService",
       methodname: "startfarmerlocaltoserversync",
       params: {
-        clientid: settings.find(o => o.name === 'clientid').value,
-        lguid: settings.find(o => o.name === 'lguid').value,
+        clientid: this.appconfig.clientid,
+        lguid: this.appconfig.lguid,
         synctype: 'farmer'
       }
     };
     return this.http
       .post<any>(
-        this.syncserver + `/api/serverrequest`,
+        `${this.appconfig.syncserver}/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )
       .pipe(
         retry(2),
-        switchMap(res => this.confirmFarmerSync(res.data, "farmer", settings)),
+        switchMap(res => this.confirmFarmerSync(res.data, "farmer")),
         catchError(this.handleError)
       );
   }
 
-  confirmFarmerSync(farmers, synctype, settings): Observable<any> {
+  confirmFarmerSync(farmers, synctype): Observable<any> {
     if (typeof farmers === 'object' && farmers !== null && !farmers.totalforsync) {
       for (let farmer of farmers) {
         this._agri_farmerprofile.get(farmer.objid).then(item => {
@@ -231,8 +233,8 @@ export class SyncService {
       servicename: "FarmerProfileService",
       methodname: "confirmsync",
       params: {
-        clientid: settings.find(o => o.name === 'clientid').value,
-        lguid: settings.find(o => o.name === 'lguid').value,
+        clientid: this.appconfig.clientid,
+        lguid: this.appconfig.lguid,
         items: farmers.map(item => item.objid),
         // item: farmer.objid,
         synctype: synctype
@@ -240,7 +242,7 @@ export class SyncService {
     };
     return this.http
       .post<any>(
-        this.syncserver + `/api/serverrequest`,
+        `${this.appconfig.syncserver}/api/serverrequest`,
         JSON.stringify(data),
         this.httpOptions
       )

@@ -104,10 +104,10 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule),
-    canActivate: [AuthGuardService],
-    data: {
-      roles:['admin','muni','prov']
-    }
+    // canActivate: [AuthGuardService],
+    // data: {
+    //   roles:['admin','muni','prov']
+    // }
   },
   {
     path: 'syncpage',
@@ -153,7 +153,8 @@ const routes: Routes = [
     }
   },
   {path: '404', component: PagenotfoundComponent},
-  {path: '**', redirectTo: '/404'},  {
+  {path: '**', redirectTo: '/404'},
+  {
     path: 'farmerlistlivestock',
     loadChildren: () => import('./reports/farmerlistlivestock/farmerlistlivestock.module').then( m => m.FarmerlistlivestockPageModule)
   },

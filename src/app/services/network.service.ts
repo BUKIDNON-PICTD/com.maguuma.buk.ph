@@ -1,3 +1,4 @@
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { SettingService } from "./setting.service";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -23,7 +24,8 @@ export class NetworkService {
     private toastController: ToastController,
     private plt: Platform,
     private socket: Socket,
-    private settingservice: SettingService
+    private settingservice: SettingService,
+    private appConfig: AppConfigService
   ) {
     this.plt.ready().then(source => {
       if (this.plt.is("android")) {
@@ -72,10 +74,10 @@ export class NetworkService {
   }
 
   initializeSocketEvents() {
-    this.settingservice.getItemByName("syncserver").then(item => {
-      if (item) {
+    // this.settingservice.getItemByName("syncserver").then(item => {
+      if (this.appConfig.syncserver) {
         this.socket.ioSocket.io.opts.query = { token: "tagabukidagri" };
-        this.socket.ioSocket.io.uri = item.value;
+        this.socket.ioSocket.io.uri = this.appConfig.syncserver
         this.socket.connect();
         this.socket.on("connect", () => {
           console.log("connection established");
@@ -95,7 +97,7 @@ export class NetworkService {
           this.syncserverstatus.next(ConnectionStatus.Offline);
         });
       }
-    });
+    // });
   }
 
   // isSyncServerOnline(): Promise<boolean> {
