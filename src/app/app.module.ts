@@ -72,7 +72,7 @@ const config: SocketIoConfig = {
     FormsModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot({
-      driverOrder: ["indexeddb", "sqlite", "websql"]
+      driverOrder: [ "sqlite","indexeddb", "websql"]
     }),
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production

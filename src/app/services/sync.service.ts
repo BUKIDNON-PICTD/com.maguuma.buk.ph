@@ -39,11 +39,11 @@ export class SyncService {
   ) {
     this.tblmaster = new Storage({
       storeName: '_tblmaster',
-      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
+      driverOrder: ['sqlite', 'indexeddb','websql', 'localstorage']
     });
     this._agri_farmerprofile = new Storage({
       storeName: '_agri_farmerprofile',
-      driverOrder: ['indexeddb','sqlite', 'websql', 'localstorage']
+      driverOrder: ['sqlite', 'indexeddb','websql', 'localstorage']
     });
     this.settingservice.getItemByName('syncserver').then(item => {
         if (item) {

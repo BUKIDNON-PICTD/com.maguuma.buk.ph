@@ -11,7 +11,7 @@ export class MapService {
   constructor(private storage: Storage, private farmlocationService: FarmlocationService) {
     this._agri_map = new Storage({
       storeName: "_agri_map",
-      driverOrder: ["indexeddb", "sqlite", "websql", "localstorage"]
+      driverOrder: ["sqlite", "indexeddb", "websql", "localstorage"]
     });
   }
 

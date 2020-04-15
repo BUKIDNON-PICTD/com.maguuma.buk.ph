@@ -31,12 +31,12 @@ export class FarmerService {
   ) {
     this._agri_farmerprofile = new Storage({
       storeName: "_agri_farmerprofile",
-      driverOrder: ["indexeddb", "sqlite", "websql", "localstorage"]
+      driverOrder: ["sqlite", "indexeddb", "websql", "localstorage"]
     });
 
     this.tblfarmerlist = new Storage({
       storeName: "_tblfarmerlist",
-      driverOrder: ["indexeddb", "sqlite", "websql", "localstorage"]
+      driverOrder: ["sqlite", "indexeddb", "websql", "localstorage"]
     });
 
     this.settingservice.getItemByName("syncserver").then(item => {
