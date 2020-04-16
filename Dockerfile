@@ -24,8 +24,10 @@ RUN npm install -g @ionic/cli
 # Install dependencies
 RUN npm install
 
+RUN npm audit fix
+
 #run application
 CMD ["ionic", "cordova", "build", "browser", "--prod"]
 
 FROM nginx
-COPY --from=builder /usr/app/platforms/browser/www/ /usr/share/nginx/html
+COPY --from=builder platforms/browser/www/ /usr/share/nginx/html
