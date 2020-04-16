@@ -16,7 +16,9 @@ ADD angular.json ./
 ADD config.xml ./
 ADD package.json ./
 ADD ionic.config.json ./
+ADD tsconfig.app.json ./
 ADD tsconfig.json ./
+ADD tsconfig.spec.json ./
 ADD tslint.json ./
 
 # INSTALL IONIC AND CORDOVA
@@ -29,8 +31,8 @@ RUN npm audit fix
 
 #run application
 # CMD ["ionic", "cordova", "build", "browser", "--prod"]
-RUN ionic cordova platform add browser --no-interactive
-RUN ionic cordova build browser --prod --no-interactive
+RUN ionic cordova platform add browser --quiet
+RUN ionic cordova build browser --prod --quiet
 
 FROM nginx
 COPY --from=builder ./platforms/browser/www/ /usr/share/nginx/html
