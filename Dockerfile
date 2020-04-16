@@ -14,6 +14,7 @@ ADD src ./src
 ADD typings ./typings
 ADD angular.json ./
 ADD config.xml ./
+ADD ngsw-config.json ./
 ADD package.json ./
 ADD ionic.config.json ./
 ADD tsconfig.app.json ./
@@ -31,8 +32,8 @@ RUN npm audit fix
 
 #run application
 # CMD ["ionic", "cordova", "build", "browser", "--prod"]
-RUN ionic cordova platform add browser --no-confirm
-RUN ionic cordova build browser --prod
+RUN ionic cordova platform add browser --no-interactive
+RUN ionic cordova build browser --prod --no-interactive
 
 FROM nginx
 COPY --from=builder ./platforms/browser/www/ /usr/share/nginx/html
