@@ -3,7 +3,6 @@ import { SettingService } from './../../services/setting.service';
 import { DocumentViewer, DocumentViewerOptions } from "@ionic-native/document-viewer/ngx";
 import { ReportService } from "./../../services/report.service";
 import { Component, OnInit } from "@angular/core";
-import { File } from "@ionic-native/File/ngx";
 import { Platform } from '@ionic/angular';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { UrlSerializer, Router } from '@angular/router';

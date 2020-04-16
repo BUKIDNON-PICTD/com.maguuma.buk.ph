@@ -17,7 +17,7 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { MasterService } from "src/app/services/master.service";
 import { FarmerService } from "src/app/services/farmer.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { File, FileEntry } from "@ionic-native/File/ngx";
+import { File, FileEntry } from "@ionic-native/file/ngx";
 import { HttpClient } from "@angular/common/http";
 import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { FilePath } from "@ionic-native/file-path/ngx";
@@ -26,7 +26,7 @@ import {
   Camera,
   CameraOptions,
   PictureSourceType
-} from "@ionic-native/Camera/ngx";
+} from "@ionic-native/camera/ngx";
 import { Storage } from "@ionic/storage";
 import { Base64 } from "@ionic-native/base64/ngx";
 @Component({

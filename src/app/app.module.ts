@@ -16,8 +16,8 @@ import { Network } from "@ionic-native/network/ngx";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 
-import { Camera } from "@ionic-native/Camera/ngx";
-import { File } from "@ionic-native/File/ngx";
+import { Camera } from "@ionic-native/camera/ngx";
+import { File } from "@ionic-native/file/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { FilePath } from "@ionic-native/file-path/ngx";
