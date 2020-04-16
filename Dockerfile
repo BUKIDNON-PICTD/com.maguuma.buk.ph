@@ -4,16 +4,17 @@
 FROM node:10-alpine as builder
 
 # Work in /usr/app/ directory
-WORKDIR /usr/app/
+WORKDIR /usr/app/maguuma/
 
 
 # Copy source files
-ADD src ./
-ADD package.json ./
-ADD typings ./
-ADD resources ./
-
+ADD e2e ./e2e
+ADD resources ./resources
+ADD src ./src
+ADD typings ./typings
+ADD angular.json ./
 ADD config.xml ./
+ADD package.json ./
 ADD ionic.config.json ./
 ADD tsconfig.json ./
 ADD tslint.json ./
@@ -30,4 +31,4 @@ RUN npm audit fix
 CMD ["ionic", "cordova", "build", "browser", "--prod"]
 
 FROM nginx
-COPY --from=builder platforms/browser/www/ /usr/share/nginx/html
+COPY --from=builder ./platforms/browser/www/ /usr/share/nginx/html
