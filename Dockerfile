@@ -6,7 +6,7 @@ FROM node:10-alpine as builder
 # Work in /usr/app/ directory
 WORKDIR /usr/app/maguuma/
 
-
+RUN apk --no-cache add python make g++
 # Copy source files
 ADD e2e ./e2e
 ADD resources ./resources
