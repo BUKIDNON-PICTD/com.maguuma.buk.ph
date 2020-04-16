@@ -49,14 +49,14 @@ step-deploy-staging:
     - sudo docker-compose -f docker-compose.yml build --no-cache
     - sudo docker-compose -f docker-compose.yml up -d
 
-step-deploy-production:
+step-deploy-prod:
   stage: deploy
   before_script:
     - export DYNAMIC_ENV_VAR=PRODUCTION
   only:
-    - production
+    - prod
   tags:
-    - production
+    - prod
   script:
     - echo setting up env $DYNAMIC_ENV_VAR
     - sudo apt-get install -y python-pip
