@@ -28,12 +28,13 @@ RUN npm install -g cordova @ionic/cli
 # Install dependencies
 RUN npm install
 
-RUN npm audit fix
+RUN npm audit fix --force
 
 #run application
 # CMD ["ionic", "cordova", "build", "browser", "--prod"]
+RUN cordova telemetry on
 RUN ionic cordova platform add browser --no-interactive --confirm
 RUN ionic cordova build browser --prod --no-interactive --confirm
 
 FROM nginx
-COPY --from=builder ./platforms/browser/www/ /usr/share/nginx/html
+COPY --from=builder /usr/app/maguuma/platforms/browser/www/ /usr/share/nginx/html
