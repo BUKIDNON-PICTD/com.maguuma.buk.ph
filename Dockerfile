@@ -30,7 +30,9 @@ RUN npm audit fix
 #run application
 # CMD ["ionic", "cordova", "build", "browser", "--prod"]
 RUN ionic cordova platform add browser
+Run y
 RUN ionic cordova build browser --prod
+run y
 
 FROM nginx
 COPY --from=builder ./platforms/browser/www/ /usr/share/nginx/html
