@@ -67,7 +67,7 @@ export class OlmappreviewComponent implements OnInit {
   helpMsg: any;
 
   mapsloaded: boolean = false;
-
+  divmapid: any;
   constructor(
     private farmerService: FarmerService,
     private httpClient: HttpClient,
@@ -77,7 +77,8 @@ export class OlmappreviewComponent implements OnInit {
   ngOnInit() {
     let divmap = this.renderer.createElement('div');
     this.renderer.addClass(divmap, 'previewmap');
-    this.renderer.setAttribute(divmap, 'id', this.farmlocation.objid);
+    this.divmapid = this.farmlocation.objid + this.create_UUID();
+    this.renderer.setAttribute(divmap, 'id', this.divmapid);
     this.renderer.appendChild(this.el.nativeElement, divmap);
   }
   ngAfterViewInit() {
@@ -125,7 +126,7 @@ export class OlmappreviewComponent implements OnInit {
 
     this.map = new Map({
       layers: [this.basemap, this.vector],
-      target: this.farmlocation.objid,
+      target: this.divmapid,
       view: new View({
         zoom: 15,
         maxZoom: 20
@@ -150,5 +151,17 @@ export class OlmappreviewComponent implements OnInit {
       var extent = this.vector.getSource().getExtent();
       this.map.getView().fit(extent);
     }
+  }
+
+  create_UUID() {
+    var dt = new Date().getTime();
+    var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
+      c
+    ) {
+      var r = (dt + Math.random() * 16) % 16 | 0;
+      dt = Math.floor(dt / 16);
+      return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    });
+    return uuid;
   }
 }
