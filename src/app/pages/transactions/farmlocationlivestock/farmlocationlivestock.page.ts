@@ -167,9 +167,11 @@ export class FarmlocationlivestockPage {
     }
   }
   unlinkLocation() {
-    this.livestock.location.geolocation.features[0].properties = {};
-    this.farmlocationService.updateItem(this.livestock.location.geolocation);
-    this.mapService.updateItem(this.livestock.location.geolocation);
+    if (this.livestock.location.geolocation){
+      this.livestock.location.geolocation.features[0].properties = {};
+      this.farmlocationService.updateItem(this.livestock.location.geolocation);
+      this.mapService.updateItem(this.livestock.location.geolocation);
+    }
 
     this.livestock.location = null;
     this.farmer.livestocks = this.farmer.commodities.map(
