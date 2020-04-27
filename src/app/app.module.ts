@@ -40,19 +40,19 @@ function extractHostname(url) {
 }
 
 export function jwtOptionsFactory(storage) {
-  let syncserver = [];
-  storage.get("settings").then(items => {
-    if (items) {
-      syncserver.push(
-        extractHostname(items.find(o => o.name === "syncserver").value)
-      );
-    }
-  });
+  // let syncserver = [];
+  // storage.get("settings").then(items => {
+  //   if (items) {
+  //     syncserver.push(
+  //       extractHostname(items.find(o => o.name === "syncserver").value)
+  //     );
+  //   }
+  // });
   return {
     tokenGetter: () => {
       return storage.get("access_token");
     },
-    whitelistedDomains: syncserver
+    whitelistedDomains: ["maguuma.bukidnon.gov.ph:7200"]
   };
 }
 export function init(appInitService: AppConfigService) {
@@ -61,7 +61,7 @@ export function init(appInitService: AppConfigService) {
   }
 }
 const config: SocketIoConfig = {
-  url: "http://localhost:3001",
+  url: "http://maguuma.bukidnon.gov.ph:7200",
   options: { options: { autoConnect: false } }
 };
 @NgModule({

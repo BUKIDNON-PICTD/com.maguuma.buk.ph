@@ -35,6 +35,7 @@ RUN npm audit fix --force
 RUN cordova telemetry on
 RUN ionic cordova platform add browser --no-interactive --confirm
 RUN ionic cordova build browser --prod --no-interactive --confirm
+RUN ionic cordova plugin add cordova-plugin-network-information --confirm
 
 FROM nginx
 COPY --from=builder /usr/app/maguuma/platforms/browser/www/ /usr/share/nginx/html
