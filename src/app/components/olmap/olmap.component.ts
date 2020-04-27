@@ -9,7 +9,7 @@ import {
   Renderer2,
   SimpleChanges,
   EventEmitter,
-  Output
+  Output,
 } from "@angular/core";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -31,7 +31,7 @@ import { getArea } from "ol/sphere";
 import {
   HttpClient,
   HttpErrorResponse,
-  HttpHeaders
+  HttpHeaders,
 } from "@angular/common/http";
 import { Observable } from "rxjs";
 import OverlayPositioning from "ol/OverlayPositioning";
@@ -40,7 +40,7 @@ import { unByKey } from "ol/Observable";
 @Component({
   selector: "app-olmap",
   templateUrl: "./olmap.component.html",
-  styleUrls: ["./olmap.component.scss"]
+  styleUrls: ["./olmap.component.scss"],
 })
 export class OlmapComponent implements OnInit {
   @Input() item;
@@ -105,7 +105,7 @@ export class OlmapComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    setTimeout(_ => this.initMap(), 2000);
+    setTimeout((_) => this.initMap(), 2000);
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
@@ -120,13 +120,13 @@ export class OlmapComponent implements OnInit {
         font: "12px Calibri,sans-serif",
         overflow: true,
         fill: new Fill({
-          color: "#000"
+          color: "#000",
         }),
         stroke: new Stroke({
           color: "#fff",
-          width: 3
-        })
-      })
+          width: 3,
+        }),
+      }),
     });
     var barangaystylefill = new Style({
       // fill: new Fill({
@@ -134,15 +134,15 @@ export class OlmapComponent implements OnInit {
       // }),
       stroke: new Stroke({
         color: "#319FD3",
-        width: 1
-      })
+        width: 1,
+      }),
     });
     var barangaystyle = [barangaystylefill, barangaylabelStyle];
 
     //base map
     this.geometryType = "Polygon";
     this.raster = new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     });
     this.basemap = new TileLayer({
       source: new XYZ({
@@ -152,36 +152,36 @@ export class OlmapComponent implements OnInit {
           'rest/services/World_Imagery/MapServer">ArcGIS</a>',
         url:
           "https://server.arcgisonline.com/ArcGIS/rest/services/" +
-          "World_Imagery/MapServer/tile/{z}/{y}/{x}"
-      })
+          "World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      }),
     });
     //allfarms
     this.farmsource = new VectorSource({
-      format: new GeoJSON()
+      format: new GeoJSON(),
     });
     this.farmvector = new VectorLayer({
-      source: this.farmsource
+      source: this.farmsource,
     });
 
     //draw map
     this.source = new VectorSource({
-      format: new GeoJSON()
+      format: new GeoJSON(),
     });
     this.vector = new VectorLayer({
-      source: this.source
+      source: this.source,
       // style:
     });
     //barangay map
     this.barangaysource = new VectorSource({
-      format: new GeoJSON()
+      format: new GeoJSON(),
     });
     this.barangayvector = new VectorLayer({
       declutter: true,
       source: this.barangaysource,
-      style: function(feature) {
+      style: function (feature) {
         barangaylabelStyle.getText().setText(feature.get("brgyname"));
         return barangaystyle;
-      }
+      },
     });
 
     this.map = new Map({
@@ -189,8 +189,8 @@ export class OlmapComponent implements OnInit {
       target: this.mapmode === "preview" ? "preview" : "map",
       view: new View({
         zoom: 15,
-        maxZoom: 20
-      })
+        maxZoom: 20,
+      }),
     });
 
     var zoomslider = new ZoomSlider();
@@ -200,11 +200,11 @@ export class OlmapComponent implements OnInit {
       .fit([13784343.025655, 814368.207926, 14048821.648763, 978738.393527]);
 
     //add barangay boundaries
-    this.getBrgyBoundaries().subscribe(result => {
+    this.getBrgyBoundaries().subscribe((result) => {
       this.barangaysource.addFeatures(
         new GeoJSON().readFeatures(result, {
           dataProjection: "EPSG:4326",
-          featureProjection: "EPSG:3857"
+          featureProjection: "EPSG:3857",
         })
       );
     });
@@ -229,43 +229,45 @@ export class OlmapComponent implements OnInit {
         font: "12px Calibri,sans-serif",
         overflow: false,
         fill: new Fill({
-          color: "#000"
+          color: "#000",
         }),
         backgroundFill: new Fill({
-          color: "#ffcc33"
+          color: "#ffcc33",
         }),
-        padding: [4, 8, 4, 8]
-      })
+        padding: [4, 8, 4, 8],
+      }),
     });
 
     var farmsFillStyle = new Style({
       fill: new Fill({
-        color: "rgba(255, 255, 255, 0.2)"
+        color: "rgba(255, 255, 255, 0.2)",
       }),
       stroke: new Stroke({
         color: "#fc2803",
-        width: 2
+        width: 2,
       }),
       image: new CircleStyle({
         radius: 7,
         fill: new Fill({
-          color: "#fc2803"
-        })
-      })
+          color: "#fc2803",
+        }),
+      }),
     });
 
     var farmsstyle = [farmsFillStyle, farmsLabelStyle];
 
-    this.mapService.getItems().then(items => {
+    this.mapService.getItems().then((items) => {
       let geojson = {
         type: "FeatureCollection",
-        features: []
+        features: [],
       };
 
       if (items && this.item.location) {
-        geojson.features = items.filter(o => o.features[0].id !== this.item.location.objid).map(item => item.features[0]);
+        geojson.features = items
+          .filter((o) => o.features[0].id !== this.item.location.objid)
+          .map((item) => item.features[0]);
       } else {
-        geojson.features = items.map(item => item.features[0]);
+        geojson.features = items.map((item) => item.features[0]);
       }
       if (items) {
         this.farmsource.clear();
@@ -290,93 +292,99 @@ export class OlmapComponent implements OnInit {
       element: this.popup.nativeElement,
       autoPan: true,
       autoPanAnimation: {
-        duration: 250
-      }
+        duration: 250,
+      },
     });
     this.map.addOverlay(this.popupoverlay);
 
     if (this.mapmode === "preview") {
       var selectSingleClick = new Select();
       this.map.addInteraction(selectSingleClick);
-      selectSingleClick.on("select", e => {
-        let selecteditem = e.selected[0];
-        let extent = selecteditem.getGeometry().getExtent();
-        let farmerid = selecteditem.get("farmerid");
-        let itemtype = selecteditem.get("itemtype");
-        let itemid = selecteditem.get("itemid");
+      selectSingleClick.on("select", (e) => {
+        if (e.selected[0]) {
+          let selecteditem = e.selected[0];
+          let extent = selecteditem.getGeometry().getExtent();
+          let farmerid = selecteditem.get("farmerid");
+          let itemtype = selecteditem.get("itemtype");
+          let itemid = selecteditem.get("itemid");
 
-        this.selectedFeature.emit({
-          locationid: selecteditem.getId(),
-          farmerid: farmerid,
-          itemtype: itemtype,
-          itemid: itemid
-        });
+          this.selectedFeature.emit({
+            locationid: selecteditem.getId(),
+            farmerid: farmerid,
+            itemtype: itemtype,
+            itemid: itemid,
+          });
 
-        this.farmerService.getItem(farmerid).then(item => {
-          if (item) {
-            let content = "";
-            content +=
-              "<h5><strong>Farmer</strong> : " + item.farmer.name + "</h5>";
-            if (itemtype === "commodity") {
-              let commodity = item.commodities.find(o => o.objid === itemid);
-              console.log(commodity);
-              if (commodity) {
-                content +=
-                  " <h5>" +
-                  commodity.variety.commoditytype.commodity.name +
-                  "</h5>";
-                content +=
-                  "<p>" +
-                  commodity.variety.commoditytype.unit +
-                  " : " +
-                  commodity.quantity;
-                content +=
-                  "<br>Commodity Type : " +
-                  commodity.variety.commoditytype.name;
-                content += "<br>Variety : " + commodity.variety.name;
-                content +=
-                  "<br>Sruvey Period : " + commodity.surveyperiod.name + "</p>";
-                this.renderer.setProperty(
-                  this.popupcontent.nativeElement,
-                  "innerHTML",
-                  content
+          this.farmerService.getItem(farmerid).then((item) => {
+            if (item) {
+              let content = "";
+              content +=
+                "<h5><strong>Farmer</strong> : " + item.farmer.name + "</h5>";
+              if (itemtype === "commodity") {
+                let commodity = item.commodities.find(
+                  (o) => o.objid === itemid
                 );
+                console.log(commodity);
+                if (commodity) {
+                  content +=
+                    " <h5>" +
+                    commodity.variety.commoditytype.commodity.name +
+                    "</h5>";
+                  content +=
+                    "<p>" +
+                    commodity.variety.commoditytype.unit +
+                    " : " +
+                    commodity.quantity;
+                  content +=
+                    "<br>Commodity Type : " +
+                    commodity.variety.commoditytype.name;
+                  content += "<br>Variety : " + commodity.variety.name;
+                  content +=
+                    "<br>Sruvey Period : " +
+                    commodity.surveyperiod.name +
+                    "</p>";
+                  this.renderer.setProperty(
+                    this.popupcontent.nativeElement,
+                    "innerHTML",
+                    content
+                  );
+                } else {
+                  this.renderer.setProperty(
+                    this.popupcontent.nativeElement,
+                    "innerHTML",
+                    "No Farmer Data"
+                  );
+                }
               } else {
-                this.renderer.setProperty(
-                  this.popupcontent.nativeElement,
-                  "innerHTML",
-                  "No Farmer Data"
-                );
+                let livestock = item.livestocks.find((o) => o.objid === itemid);
+                if (livestock) {
+                  content += " <h5>" + livestock.breed.species.name + "</h5>";
+                  content +=
+                    "<p>" + "Sruvey Period : " + livestock.surveyperiod.name;
+                  this.renderer.setProperty(
+                    this.popupcontent.nativeElement,
+                    "innerHTML",
+                    content
+                  );
+                } else {
+                  this.renderer.setProperty(
+                    this.popupcontent.nativeElement,
+                    "innerHTML",
+                    "No Farmer Data"
+                  );
+                }
               }
             } else {
-              let livestock = item.livestocks.find(o => o.objid === itemid);
-              if (livestock) {
-                content += " <h5>" + livestock.breed.species.name + "</h5>";
-                content +=
-                  "<p>" + "Sruvey Period : " + livestock.surveyperiod.name;
-                this.renderer.setProperty(
-                  this.popupcontent.nativeElement,
-                  "innerHTML",
-                  content
-                );
-              } else {
-                this.renderer.setProperty(
-                  this.popupcontent.nativeElement,
-                  "innerHTML",
-                  "No Farmer Data"
-                );
-              }
+              this.renderer.setProperty(
+                this.popupcontent.nativeElement,
+                "innerHTML",
+                "No Farmer Data"
+              );
             }
-          } else {
-            this.renderer.setProperty(
-              this.popupcontent.nativeElement,
-              "innerHTML",
-              "No Farmer Data"
-            );
-          }
-        });
+          });
 
-        this.popupoverlay.setPosition(getCenter(extent));
+          this.popupoverlay.setPosition(getCenter(extent));
+        }
       });
     }
   }
@@ -386,29 +394,29 @@ export class OlmapComponent implements OnInit {
         font: "12px Calibri,sans-serif",
         overflow: false,
         fill: new Fill({
-          color: "#000"
+          color: "#000",
         }),
         backgroundFill: new Fill({
-          color: "#ffcc33"
+          color: "#ffcc33",
         }),
-        padding: [4, 8, 4, 8]
-      })
+        padding: [4, 8, 4, 8],
+      }),
     });
 
     var drawFillStyle = new Style({
       fill: new Fill({
-        color: "rgba(255, 255, 255, 0.2)"
+        color: "rgba(255, 255, 255, 0.2)",
       }),
       stroke: new Stroke({
         color: "#ffcc33",
-        width: 2
+        width: 2,
       }),
       image: new CircleStyle({
         radius: 7,
         fill: new Fill({
-          color: "#ffcc33"
-        })
-      })
+          color: "#ffcc33",
+        }),
+      }),
     });
     var drawstyle = [drawFillStyle, drawLabelStyle];
 
@@ -425,7 +433,7 @@ export class OlmapComponent implements OnInit {
       var extent = this.vector.getSource().getExtent();
       this.map.getView().fit(extent);
 
-      this.vector.setStyle(feature => {
+      this.vector.setStyle((feature) => {
         let geom = feature.getGeometry();
         var output;
         if (geom instanceof Polygon) {
@@ -467,7 +475,7 @@ export class OlmapComponent implements OnInit {
     });
   }
   addpointermovehandler() {
-    this.map.on("pointermove", evt => {
+    this.map.on("pointermove", (evt) => {
       if (evt.dragging) {
         return;
       }
@@ -497,7 +505,7 @@ export class OlmapComponent implements OnInit {
     this.helpTooltip = new Overlay({
       element: this.helpTooltipElement,
       offset: [15, 0],
-      positioning: OverlayPositioning.CENTER_LEFT
+      positioning: OverlayPositioning.CENTER_LEFT,
     });
     this.map.addOverlay(this.helpTooltip);
   }
@@ -520,7 +528,7 @@ export class OlmapComponent implements OnInit {
     this.measureTooltip = new Overlay({
       element: this.measureTooltipElement,
       offset: [0, -15],
-      positioning: OverlayPositioning.BOTTOM_CENTER
+      positioning: OverlayPositioning.BOTTOM_CENTER,
     });
     this.map.addOverlay(this.measureTooltip);
   }
@@ -532,7 +540,7 @@ export class OlmapComponent implements OnInit {
 
     this.draw = new Draw({
       source: this.source,
-      type: this.geometryType
+      type: this.geometryType,
     });
     this.map.addInteraction(this.draw);
     this.snap = new Snap({ source: this.source });
@@ -547,13 +555,13 @@ export class OlmapComponent implements OnInit {
     // this.addpointermovehandler();
 
     var listener;
-    this.draw.on("drawstart", evt => {
+    this.draw.on("drawstart", (evt) => {
       // set sketch
       this.sketch = evt.feature;
 
       var tooltipCoord = evt.coordinate;
 
-      listener = this.sketch.getGeometry().on("change", evt => {
+      listener = this.sketch.getGeometry().on("change", (evt) => {
         var geom = evt.target;
         var output;
         if (geom instanceof Polygon) {
@@ -569,7 +577,7 @@ export class OlmapComponent implements OnInit {
         this.measureTooltip.setPosition(tooltipCoord);
       });
     });
-    this.draw.on("drawend", evt => {
+    this.draw.on("drawend", (evt) => {
       // this.renderer.setProperty(this.measureTooltipElement, 'class', 'ol-tooltip ol-tooltip-static');
       // this.measureTooltip.setOffset([0, -7]);
       // unset sketch
@@ -584,7 +592,7 @@ export class OlmapComponent implements OnInit {
       evt.feature.setProperties({
         farmerid: this.farmerid,
         itemtype: this.type,
-        itemid: this.item.objid
+        itemid: this.item.objid,
       });
     });
   }
@@ -604,15 +612,15 @@ export class OlmapComponent implements OnInit {
     let data = format.writeFeatures(this.vector.getSource().getFeatures());
     this.item.location = {
       ...this.item.location,
-      geolocation: JSON.parse(data)
+      geolocation: JSON.parse(data),
     };
-    this.farmerService.getItem(this.farmerid).then(item => {
+    this.farmerService.getItem(this.farmerid).then((item) => {
       if (this.type === "commodity") {
-        item.commodities = item.commodities.map(c =>
+        item.commodities = item.commodities.map((c) =>
           c.objid === this.item.objid ? (c = this.item) : c
         );
       } else {
-        item.livestocks = item.livestocks.map(l =>
+        item.livestocks = item.livestocks.map((l) =>
           l.objid === this.item.objid ? (l = this.item) : l
         );
       }
@@ -632,13 +640,13 @@ export class OlmapComponent implements OnInit {
   clearMap() {
     this.vector.getSource().clear();
     this.item.location = { ...this.item.location, geolocation: null };
-    this.farmerService.getItem(this.farmerid).then(item => {
+    this.farmerService.getItem(this.farmerid).then((item) => {
       if (this.type === "commodity") {
-        item.commodities = item.commodities.map(c =>
+        item.commodities = item.commodities.map((c) =>
           c.objid === this.item.objid ? (c = this.item) : c
         );
       } else {
-        item.livestocks = item.livestocks.map(l =>
+        item.livestocks = item.livestocks.map((l) =>
           l.objid === this.item.objid ? (l = this.item) : l
         );
       }

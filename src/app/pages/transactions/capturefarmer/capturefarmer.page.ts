@@ -62,6 +62,7 @@ export class CapturefarmerPage implements OnInit {
   photo: any;
   currentslide: number;
   private win: any = window;
+  defaultHref: any;
   constructor(
     private formBuilder: FormBuilder,
     private masterService: MasterService,
@@ -552,9 +553,15 @@ export class CapturefarmerPage implements OnInit {
 
   async ionViewDidEnter() {
     this.viewEntered = true;
+
     const farmerid = this.route.snapshot.paramMap.get("farmerid");
     const spouseid = this.route.snapshot.paramMap.get("spouseid");
+    this.defaultHref =
+      `/app/tabs/farmerlist`;
     if (farmerid) {
+      this.defaultHref =
+      `/app/tabs/farmerlist/farmerdetail/` +
+      farmerid;
       this.mode = "edit";
       await this.farmerService.getItem(farmerid).then(item => {
         this.farmerPersonalInformationForm.patchValue(item);
@@ -566,6 +573,7 @@ export class CapturefarmerPage implements OnInit {
         this.photo = this.farmer.farmer.photo;
       });
     } else if (spouseid) {
+
       this.mode = "edit";
       this.isspouse = true;
       await this.farmerService.getItem(spouseid).then(async item => {
@@ -588,6 +596,9 @@ export class CapturefarmerPage implements OnInit {
         this.farmer = item;
         this.photo = this.farmer.spouse.photo;
       });
+      this.defaultHref =
+      `/app/tabs/farmerlist/farmerdetail/` +
+      this.farmer.objid;
     }
     this.farmerAddressForm.patchValue({
       province: { objid: "059" }

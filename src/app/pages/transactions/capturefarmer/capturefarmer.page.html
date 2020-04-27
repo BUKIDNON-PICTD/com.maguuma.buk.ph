@@ -6,6 +6,9 @@
       <ion-button *ngIf="!isbeginning" (click)="prev()">
         <ion-icon slot="start" name="arrow-back"></ion-icon> Prev
       </ion-button>
+      <ion-button *ngIf="isbeginning">
+        <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button *ngIf="!isend" (click)="next()">Next <ion-icon slot="end" name="arrow-forward"></ion-icon>
@@ -420,7 +423,7 @@
             <img [src]="photo" />
           </ion-item>
         </ion-list>
-        
+
       </div>
 
       <!-- <img [src]="photo"/>

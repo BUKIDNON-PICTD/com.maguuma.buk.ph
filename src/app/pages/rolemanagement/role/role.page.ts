@@ -48,7 +48,7 @@ export class RolePage {
         let newitem = this.roleForm.value;
 
         this.roleService.addItem(newitem).then(item => {
-          this.showToast("User Created.");
+          this.showToast("Role Created.");
           this.router.navigate([
             "/rolemanagement/role/" + item.id
           ]);
@@ -59,7 +59,7 @@ export class RolePage {
           ...this.roleForm.value
         };
         this.roleService.updateItem(updateditem).then(item => {
-          this.showToast("User Updated.");
+          this.showToast("Role Updated.");
           this.router.navigate([
             "/rolemanagement/role/" + item.id
           ]);

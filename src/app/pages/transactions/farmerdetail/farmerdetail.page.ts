@@ -15,6 +15,7 @@ export class FarmerdetailPage {
   farmerPersonalProfileForm: FormGroup;
   validation_messages: any;
   farmlocations: any;
+  farmerid: string;
 
   constructor(
     private farmerService: FarmerService,
@@ -38,15 +39,15 @@ export class FarmerdetailPage {
     });
   }
   ionViewWillEnter() {
-    const farmerid = this.route.snapshot.paramMap.get("farmerid");
-    this.farmerService.getItem(farmerid).then(item => {
-      this.farmer = item;
-      this.farmerPersonalProfileForm.patchValue(item, {emitEvent: false});
-    });
+    this.farmerid = this.route.snapshot.paramMap.get("farmerid");
   }
 
   ionViewDidEnter() {
     this.defaultHref = `/app/tabs/farmerlist`;
+    this.farmerService.getItem(this.farmerid).then(item => {
+      this.farmer = item;
+      this.farmerPersonalProfileForm.patchValue(item, {emitEvent: false});
+    });
   }
 
   deleteFarmLocation(x,item) {

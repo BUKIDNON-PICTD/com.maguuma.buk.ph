@@ -201,9 +201,65 @@ export class FarmerService {
   }
 
   getItem(objid): Promise<any> {
-    return this._agri_farmerprofile.get(objid).then(item => {
-      return item;
+    return this._agri_farmerprofile.get(objid).then(async farmer => {
+      await this.getFarmerApi(farmer).then( async res => {
+        farmer = res.data;
+        await this._agri_farmerprofile.set(farmer.objid, farmer);
+        await this.getItems().then(async items => {
+          if (!items || items.length === 0) {
+            return null;
+          }
+          let newItems: any[] = [];
+
+          for (let i of items) {
+            if (i.objid == farmer.objid) {
+              newItems.push(farmer);
+            } else {
+              newItems.push(i);
+            }
+          }
+          await this.tblfarmerlist.set("farmerlist", newItems);
+        });
+      }).catch(e => {
+        if (e) {
+          return;
+        }
+        throwError(e);
+      });
+      return farmer;
     });
+  }
+
+  getFarmerApi(params): Promise<any> {
+    var data = {
+      requesttype: "post",
+      servicename: "FarmerProfileService",
+      methodname: "getFarmerByID",
+      params: {
+        objid: params.objid
+      }
+    };
+
+    return this.http
+      .post<any>(
+        `${this.appConfig.syncserver}/api/serverrequest`,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(
+        tap(res => {
+          console.log(res);
+        }),
+        catchError(err => {
+          this.offlineManager.storeRequest(
+            `${this.appConfig.syncserver}/api/serverrequest`,
+            "post",
+            data
+          );
+          throw new Error(err);
+        })
+      )
+      .toPromise();
   }
 
   updatefarmer(farmer: any): Promise<any> {
