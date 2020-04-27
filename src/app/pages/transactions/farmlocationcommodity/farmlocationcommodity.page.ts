@@ -192,9 +192,11 @@ export class FarmlocationcommodityPage {
     }
   }
   unlinkLocation() {
-    this.commodity.location.geolocation.features[0].properties = {};
-    this.farmlocationService.updateItem(this.commodity.location.geolocation);
-    this.mapService.updateItem(this.commodity.location.geolocation);
+    if (this.commodity.location.geolocation){
+      this.commodity.location.geolocation.features[0].properties = {};
+      this.farmlocationService.updateItem(this.commodity.location.geolocation);
+      this.mapService.updateItem(this.commodity.location.geolocation);
+    }
 
     this.commodity.location = null;
     this.farmer.commodities = this.farmer.commodities.map(
