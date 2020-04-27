@@ -316,12 +316,13 @@ export class FarmlocationdetailPage {
     this.selectedLocation = data;
   }
   async claimLocation() {
-    if (this.selectedLocation.farmerid) {
+    if (this.selectedLocation?.farmerid) {
       this.farmerService
         .getItem(this.selectedLocation.farmerid)
         .then(async prevowner => {
+
           if (this.selectedLocation.itemtype === "commodity") {
-            let prevcomodity = prevowner.commodities.find(
+            let prevcomodity = prevowner?.commodities.find(
               o => o.objid === this.selectedLocation.itemid
             );
             let currentsurveyperiod;
@@ -330,6 +331,7 @@ export class FarmlocationdetailPage {
               .then(item => {
                 currentsurveyperiod = item.value;
               });
+
             if (prevcomodity) {
               if (prevcomodity?.surveyperiod.name !== currentsurveyperiod) {
                 this.commodity.location = prevcomodity.location;
@@ -364,7 +366,7 @@ export class FarmlocationdetailPage {
                 .then(async item => {
                   this.showToast("Farm Location Claimed.");
                   this.router.navigate([
-                    "/app/tabs/farmerlist/farmlocationdetail/commodity/" +
+                    "/app/tabs/farmerlist/farmlocationcommodity/" +
                       item.objid +
                       "/" +
                       this.commodity.objid
@@ -377,7 +379,7 @@ export class FarmlocationdetailPage {
               );
             }
           } else {
-            let prevlivestock = prevowner.livestocks.find(
+            let prevlivestock = prevowner?.livestocks.find(
               o => o.objid === this.selectedLocation.itemid
             );
             let currentsurveyperiod;
@@ -421,7 +423,7 @@ export class FarmlocationdetailPage {
                 .then(async item => {
                   this.showToast("Farm Location Claimed.");
                   this.router.navigate([
-                    "/app/tabs/farmerlist/farmlocationdetail/livestock/" +
+                    "/app/tabs/farmerlist/farmlocationlivestock/" +
                       item.objid +
                       "/" +
                       this.livestock.objid
@@ -463,7 +465,7 @@ export class FarmlocationdetailPage {
             .then(async item => {
               this.showToast("Farm Location Claimed.");
               this.router.navigate([
-                "/app/tabs/farmerlist/farmlocationdetail/commodity/" +
+                "/app/tabs/farmerlist/farmlocationcommodity/" +
                   item.objid +
                   "/" +
                   this.commodity.objid
@@ -501,7 +503,7 @@ export class FarmlocationdetailPage {
             .then(async item => {
               this.showToast("Farm Location Claimed.");
               this.router.navigate([
-                "/app/tabs/farmerlist/farmlocationdetail/livestock/" +
+                "/app/tabs/farmerlist/farmlocationlivestock/" +
                   item.objid +
                   "/" +
                   this.livestock.objid
