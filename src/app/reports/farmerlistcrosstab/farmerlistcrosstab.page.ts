@@ -17,7 +17,7 @@ export class FarmerlistcrosstabPage implements OnInit {
   ngOnInit() {
     let cridentialparams = {
       j_username : 'jasperadmin',
-      j_password : 'jasperadmin',
+      j_password : 'j^5p3r^dm1n@z7a18q',
       LGUNAME : this.config.lguname,
       OFFICENAME: "MUNICIPAL AGRICULTURE OFFICE",
       TITLE : "FARMER LIST CROSSTAB BY GENDER",
