@@ -229,6 +229,7 @@ initializeApp() {
                   //   this.syncserverstatus = false;
                   // }
                 this.networkService.onSyncServerStatusChange().subscribe( (syncserverstatus: ConnectionStatus) => {
+                  console.log(syncserverstatus);
                   if (syncserverstatus === ConnectionStatus.Online) {
                     this.syncserverstatus = true;
                     this.offlineManager.checkForEvents().subscribe();

@@ -61,7 +61,7 @@ export function init(appInitService: AppConfigService) {
   }
 }
 const config: SocketIoConfig = {
-  url: "http://maguuma.bukidnon.gov.ph:7200",
+  url: "http://localhost:3100",
   options: { options: { autoConnect: false } }
 };
 @NgModule({
