@@ -1,3 +1,4 @@
+import { AppConfigService } from './../../../services/app-config.service';
 import {
   ToastController,
   IonSlides,
@@ -80,7 +81,8 @@ export class CapturefarmerPage implements OnInit {
     private loadingController: LoadingController,
     private ref: ChangeDetectorRef,
     private filePath: FilePath,
-    private base64: Base64
+    private base64: Base64,
+    private appconfig: AppConfigService
   ) {
     this.farmerPersonalInformationForm = this.formBuilder.group({
       lastname: [
@@ -622,7 +624,7 @@ export class CapturefarmerPage implements OnInit {
         prenametitle: farmertoadd.prenametitle,
         nameextension: farmertoadd.nameextension,
         maidenname: farmertoadd.maidenname,
-        lguid : farmertoadd.address.municipality.objid,
+        lguid : this.appconfig.lguid,
         barangay: {
           objid : farmertoadd.address.barangay.objid,
         },
@@ -632,7 +634,7 @@ export class CapturefarmerPage implements OnInit {
       };
 
       newfarmer.farmer.objid = newfarmer.objid;
-      newfarmer.lguid =
+      newfarmer.lguid = this.appconfig.lguid;
       newfarmer.fno =
         newfarmer.farmer.address.municipality.objid +
         "-TEMP-" +
@@ -683,7 +685,7 @@ export class CapturefarmerPage implements OnInit {
           ...this.farmerPersonalInformationDetailForm.value,
           ...this.farmerContactInformationForm.value
         };
-        farmerupdate.lguid = farmerupdate.address.municipality.objid;
+        farmerupdate.lguid = this.appconfig.lguid;
         farmerupdate.barangay = {
           objid : farmerupdate.address.barangay.objid,
         };
@@ -729,7 +731,7 @@ export class CapturefarmerPage implements OnInit {
         ]);
       });
     } catch (e) {
-      console.log("error on update");
+      console.log(e);
       this.showToast("Error in updating Farmer Profile.");
     }
   }
