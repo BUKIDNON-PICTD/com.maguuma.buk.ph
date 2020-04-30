@@ -582,7 +582,7 @@ export class CapturefarmerPage implements OnInit {
           });
         }
         this.farmer = item;
-        this.photo = this.farmer.photo;
+        this.photo = this.farmer.fphoto;
       });
     } else if (spouseid) {
 
@@ -606,7 +606,7 @@ export class CapturefarmerPage implements OnInit {
           }
         }
         this.farmer = item;
-        this.photo = this.farmer.spouse.photo;
+        this.photo = this.farmer.sphoto;
       });
       this.defaultHref =
       `/app/tabs/farmerlist/farmerdetail/` +
@@ -674,7 +674,7 @@ export class CapturefarmerPage implements OnInit {
           o => o.objid === newfarmer.farmer.address.province.objid
         ).name;
       this.farmer = newfarmer;
-      this.farmer.photo = this.photo;
+      this.farmer.fphoto = this.photo;
       this.farmerService.addfarmer(this.farmer).then(item => {
         this.showToast("Farmer Profile Saved");
         this.router.navigate([
@@ -729,7 +729,7 @@ export class CapturefarmerPage implements OnInit {
 
         farmerupdate.objid = this.farmer.objid;
         this.farmer.farmer = farmerupdate;
-        this.farmer.photo = this.photo;
+        this.farmer.fphoto = this.photo;
         this.farmer.postnametitle = farmerupdate.postnametitle;
         this.farmer.prenametitle = farmerupdate.prenametitle;
         this.farmer.nameextension = farmerupdate.nameextension;
@@ -784,7 +784,7 @@ export class CapturefarmerPage implements OnInit {
       this.provinces.find(
         o => o.objid === spouseformdata.address.province.objid
       ).name;
-    this.farmer.spouse.photo = this.photo;
+    this.farmer.sphoto = this.photo;
   }
 
   create_UUID() {

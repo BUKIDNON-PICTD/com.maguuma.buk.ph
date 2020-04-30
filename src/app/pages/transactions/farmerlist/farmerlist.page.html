@@ -53,8 +53,8 @@
             {{item.farmer.address.text}}
           </p>
         </ion-label>
-        <ion-thumbnail slot="end" *ngIf="item.farmer.photo">
-          <img [src]="item.farmer.photo"/>
+        <ion-thumbnail slot="end" *ngIf="item?.fphoto">
+          <img [src]="item.fphoto"/>
         </ion-thumbnail>
       </ion-item>
       <ion-item-options>
