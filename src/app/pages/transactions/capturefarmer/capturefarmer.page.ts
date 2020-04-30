@@ -565,14 +565,24 @@ export class CapturefarmerPage implements OnInit {
       `/app/tabs/farmerlist/farmerdetail/` +
       farmerid;
       this.mode = "edit";
-      await this.farmerService.getItem(farmerid).then(item => {
-        this.farmerPersonalInformationForm.patchValue(item);
-        this.farmerPersonalInformationForm.patchValue(item.farmer);
-        this.farmerPersonalInformationDetailForm.patchValue(item.farmer);
-        this.farmerContactInformationForm.patchValue(item.farmer);
-        this.farmerAddressForm.patchValue(item.farmer.address);
+      await this.farmerService.getItem(farmerid).then(async item => {
+        await this.farmerPersonalInformationForm.patchValue(item);
+        await this.farmerPersonalInformationForm.patchValue(item.farmer);
+        await this.farmerPersonalInformationDetailForm.patchValue(item.farmer);
+        await this.farmerContactInformationForm.patchValue(item.farmer);
+        if (item.farmer.address) {
+          await this.farmerAddressForm.patchValue(item.farmer.address);
+          await this.masterService.getMasterFile("barangay").then(items => {
+            let brgy = items.find(
+              o => o.objid === this.farmerAddressForm.get("barangay.objid").value
+            );
+            this.farmerAddressForm.patchValue({
+              municipality: { objid: brgy.parentid }
+            });
+          });
+        }
         this.farmer = item;
-        this.photo = this.farmer.farmer.photo;
+        this.photo = this.farmer.photo;
       });
     } else if (spouseid) {
 
@@ -664,7 +674,7 @@ export class CapturefarmerPage implements OnInit {
           o => o.objid === newfarmer.farmer.address.province.objid
         ).name;
       this.farmer = newfarmer;
-      this.farmer.farmer.photo = this.photo;
+      this.farmer.photo = this.photo;
       this.farmerService.addfarmer(this.farmer).then(item => {
         this.showToast("Farmer Profile Saved");
         this.router.navigate([
@@ -685,11 +695,13 @@ export class CapturefarmerPage implements OnInit {
           ...this.farmerPersonalInformationDetailForm.value,
           ...this.farmerContactInformationForm.value
         };
+        farmerupdate.address = this.farmerAddressForm.value;
+
         farmerupdate.lguid = this.appconfig.lguid;
         farmerupdate.barangay = {
           objid : farmerupdate.address.barangay.objid,
         };
-        farmerupdate.address = this.farmerAddressForm.value;
+
         farmerupdate.address.text =
           (farmerupdate.address.street
             ? farmerupdate.address.street + " "
@@ -717,7 +729,7 @@ export class CapturefarmerPage implements OnInit {
 
         farmerupdate.objid = this.farmer.objid;
         this.farmer.farmer = farmerupdate;
-        this.farmer.farmer.photo = this.photo;
+        this.farmer.photo = this.photo;
         this.farmer.postnametitle = farmerupdate.postnametitle;
         this.farmer.prenametitle = farmerupdate.prenametitle;
         this.farmer.nameextension = farmerupdate.nameextension;
