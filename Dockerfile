@@ -30,7 +30,7 @@ ADD tslint.json ./
 
 
 # INSTALL IONIC AND CORDOVA
-RUN npm install -g cordova @ionic/cli@6.3.0
+RUN npm install -g cordova @ionic/cli
 
 # Install dependencies
 RUN npm install
