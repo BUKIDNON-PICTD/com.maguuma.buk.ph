@@ -420,7 +420,7 @@ export class OlmapComponent implements OnInit {
     });
     var drawstyle = [drawFillStyle, drawLabelStyle];
 
-    if (this.item.location?.geolocation?.type) {
+    if (this.item?.location?.geolocation?.type) {
       this.source.clear();
       this.source.addFeatures(
         new GeoJSON().readFeatures(this.item.location.geolocation)

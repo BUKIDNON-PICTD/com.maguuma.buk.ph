@@ -126,6 +126,6 @@
       </a>
     </nav>
   </ion-toolbar>
-  <app-olmap [type]='type' [item]="(type === 'commodity' ? commodity : livestock)" [farmerid]='farmerid'
+  <app-olmap *ngIf='commodity || livestock' [type]='type' [item]="(type === 'commodity' ? commodity : livestock)" [farmerid]='farmerid'
     [mapmode]='mapmode' (selectedFeature)="featureSelectedHandler($event)"></app-olmap>
 </ion-content>
