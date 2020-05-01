@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ReportlistPageRoutingModule } from './reportlist-routing.module';
 
 import { ReportlistPage } from './reportlist.page';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+// import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FarmerlistPageModule } from '../farmerlistcommodity/farmerlist.module';
 import { FarmerlistcrosstabPageModule } from '../farmerlistcrosstab/farmerlistcrosstab.module';
 import { ComodityareacrosstabPageModule } from '../comodityareacrosstab/comodityareacrosstab.module';
@@ -20,7 +20,7 @@ import { ComodityfarmercrosstabPageModule } from '../comodityfarmercrosstab/como
     FormsModule,
     IonicModule,
     ReportlistPageRoutingModule,
-    PdfViewerModule,
+    // PdfViewerModule,
     FarmerlistPageModule,
     FarmerlistcrosstabPageModule,
     ComodityareacrosstabPageModule,
